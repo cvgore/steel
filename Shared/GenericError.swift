@@ -18,6 +18,6 @@ struct GenericError: Error {
 
 extension GenericError: LocalizedError {
     var errorDescription: String? {
-        _description
+        L10n.string(_description)
     }
 }

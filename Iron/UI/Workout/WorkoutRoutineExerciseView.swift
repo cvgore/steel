@@ -172,6 +172,7 @@ struct WorkoutRoutineExerciseView: View {
                     workoutRoutineExercise.exercise(in: exerciseStore.exercises).map {
                         NavigationLink(destination: ExerciseDetailView(exercise: $0)) {
                                 Image(systemName: "info.circle")
+                    .accessibility(label: Text("Exercise"))
                                     .padding([.leading, .top, .bottom])
                         }
                     }

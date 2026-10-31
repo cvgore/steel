@@ -31,11 +31,12 @@ struct ActivityWorkoutsPerWeekView: View {
         return request
     }
     
-    private static let dateFormatter: DateFormatter = {
+    private static var dateFormatter: DateFormatter {
         let dateFormatter = DateFormatter()
+        dateFormatter.locale = L10n.locale
         dateFormatter.setLocalizedDateFormatFromTemplate("Md")
         return dateFormatter
-    }()
+    }
     
     init() {
         self._workoutHistory = FetchRequest(fetchRequest: Self.fetchRequest(calendar: calendar))

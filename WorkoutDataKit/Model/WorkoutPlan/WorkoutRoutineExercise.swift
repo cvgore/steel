@@ -48,12 +48,12 @@ public class WorkoutRoutineExercise: NSManagedObject, Codable {
                     }
                 }
                 if let reps = reps() {
-                    return "\(workoutRoutineSets.count) sets of \(reps) reps"
+                    return L10n.format("%ld sets of %@ reps", workoutRoutineSets.count, reps)
                 }
             }
         }
         
-        return "\(workoutRoutineSets.count) sets"
+        return L10n.format("%ld sets", workoutRoutineSets.count)
     }
     
     public func exercise(in exercises: [Exercise]) -> Exercise? {
@@ -94,7 +94,7 @@ public class WorkoutRoutineExercise: NSManagedObject, Codable {
         
         if let exercisesKey = CodingUserInfoKey.exercisesKey,
             let exercises = encoder.userInfo[exercisesKey] as? [Exercise] {
-            try container.encodeIfPresent(exercise(in: exercises)?.title, forKey: .exerciseName)
+            try container.encodeIfPresent(exercise(in: exercises)?.canonicalTitle, forKey: .exerciseName)
         }
     }
 }

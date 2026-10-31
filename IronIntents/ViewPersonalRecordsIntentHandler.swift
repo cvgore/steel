@@ -12,12 +12,15 @@ import WorkoutDataKit
 
 class ViewPersonalRecordsIntentHandler: NSObject, ViewPersonalRecordsIntentHandling {
     func handle(intent: ViewPersonalRecordsIntent, completion: @escaping (ViewPersonalRecordsIntentResponse) -> Void) {
-        guard let intentExercise = intent.exercise,
-            let exercise = ExerciseStore.shared.find(intentExercise: intentExercise) else {
+        guard let savedIntentExercise = intent.exercise,
+            let exercise = ExerciseStore.shared.find(intentExercise: savedIntentExercise) else {
                 completion(.init(code: .failure, userActivity: nil))
                 return
         }
         
+        // Saved shortcuts can retain an old-language display name; resolve it afresh.
+        let intentExercise = exercise.intentExercise
+
         let request: NSFetchRequest<WorkoutSet> = WorkoutSet.fetchRequest()
         request.predicate = NSPredicate(format: "\(#keyPath(WorkoutSet.workoutExercise.exerciseUuid)) == %@", exercise.uuid as CVarArg)
         request.sortDescriptors = [NSSortDescriptor(keyPath: \WorkoutSet.workoutExercise?.workout?.start, ascending: false)]
@@ -27,7 +30,9 @@ class ViewPersonalRecordsIntentHandler: NSObject, ViewPersonalRecordsIntentHandl
         }
         
         guard let pr = sets.first(where: { $0.isPersonalRecord ?? false }) else {
-            completion(.init(code: .failureNoPersonalRecords, userActivity: nil))
+            let response = ViewPersonalRecordsIntentResponse(code: .failureNoPersonalRecords, userActivity: nil)
+            response.exercise = intentExercise
+            completion(response)
             return
         }
         

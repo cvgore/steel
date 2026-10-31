@@ -1,0 +1,3 @@
+"NSHealthShareUsageDescription" = "Iron can display your bodyweight next to the sets of a previous workout.";
+"NSHealthUpdateUsageDescription" = "Iron can save your finished workouts to Apple Health.";
+"CFBundleTypeName" = "Iron Backup";

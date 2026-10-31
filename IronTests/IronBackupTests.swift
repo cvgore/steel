@@ -90,6 +90,68 @@ class IronBackupTests: XCTestCase {
         
         XCTAssertNoThrow(try IronBackup.createBackupData(managedObjectContext: context, exerciseStore: exerciseStore))
     }
+
+    func testBackupAndWorkoutJSONKeepCanonicalNamesAcrossLanguages() throws {
+        let previousLanguage = WorkoutDataKit.L10n.language
+        defer { WorkoutDataKit.L10n.language = previousLanguage }
+        WorkoutDataKit.L10n.language = .english
+
+        // Use a real version-3 backup containing workouts, plans and custom
+        // exercises, so both nested exercise-reference encoders are exercised.
+        let context = persistenContainer.viewContext
+        try IronBackup.restoreBackupData(data: backupData(name: "v3"), managedObjectContext: context, exerciseStore: exerciseStore)
+        try context.save()
+        let workouts = try context.fetch(Workout.fetchRequest())
+        let catalog = exerciseStore.exercises
+        let expectedNames = Dictionary(uniqueKeysWithValues: catalog.map { ($0.uuid.uuidString, $0.title) })
+        let builtIn = try XCTUnwrap(exerciseStore.builtInExercises.first)
+        let englishTitle = builtIn.title
+        let customNames = exerciseStore.customExercises.map { $0.title }
+        XCTAssertFalse(customNames.isEmpty)
+
+        func exportWorkouts() throws -> Data {
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            encoder.outputFormatting = [.prettyPrinted, .withoutEscapingSlashes]
+            encoder.userInfo[try XCTUnwrap(CodingUserInfoKey.exercisesKey)] = catalog
+            return try encoder.encode(workouts)
+        }
+
+        let englishBackup = try IronBackup.createBackupData(managedObjectContext: context, exerciseStore: exerciseStore)
+        let englishExport = try exportWorkouts()
+        WorkoutDataKit.L10n.language = .polish
+        XCTAssertNotEqual(builtIn.title, englishTitle, "The test must actually switch presentation language")
+        XCTAssertEqual(exerciseStore.customExercises.map { $0.title }, customNames)
+        let polishBackup = try IronBackup.createBackupData(managedObjectContext: context, exerciseStore: exerciseStore)
+        let polishExport = try exportWorkouts()
+
+        let englishObject = try XCTUnwrap(JSONSerialization.jsonObject(with: englishBackup) as? [String: Any])
+        let polishObject = try XCTUnwrap(JSONSerialization.jsonObject(with: polishBackup) as? [String: Any])
+        // Backup creation timestamps intentionally differ; all payload fields
+        // including authored content and identifiers must remain identical.
+        for key in ["version", "customExercises", "workoutPlans", "workouts"] {
+            XCTAssertEqual(
+                try JSONSerialization.data(withJSONObject: XCTUnwrap(englishObject[key]), options: [.sortedKeys, .fragmentsAllowed]),
+                try JSONSerialization.data(withJSONObject: XCTUnwrap(polishObject[key]), options: [.sortedKeys, .fragmentsAllowed]), key)
+        }
+        XCTAssertEqual(try JSONSerialization.data(withJSONObject: JSONSerialization.jsonObject(with: englishExport), options: [.sortedKeys]),
+                       try JSONSerialization.data(withJSONObject: JSONSerialization.jsonObject(with: polishExport), options: [.sortedKeys]))
+
+        func checkReferences(_ value: Any) -> Int {
+            if let object = value as? [String: Any] {
+                var count = 0
+                if let uuid = object["exerciseUuid"] as? String, let expected = expectedNames[uuid] {
+                    XCTAssertEqual(object["exerciseName"] as? String, expected, uuid)
+                    count += 1
+                }
+                return count + object.values.reduce(0) { $0 + checkReferences($1) }
+            }
+            return (value as? [Any])?.reduce(0) { $0 + checkReferences($1) } ?? 0
+        }
+        XCTAssertGreaterThan(checkReferences(try XCTUnwrap(polishObject["workouts"])), 0)
+        XCTAssertGreaterThan(checkReferences(try XCTUnwrap(polishObject["workoutPlans"])), 0)
+        XCTAssertGreaterThan(checkReferences(try JSONSerialization.jsonObject(with: polishExport)), 0)
+    }
 }
 
 extension IronBackupTests {

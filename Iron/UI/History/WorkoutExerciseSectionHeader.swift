@@ -46,7 +46,7 @@ struct WorkoutExerciseSectionHeader: View {
     
     var body: some View {
         HStack {
-            Text(Workout.dateFormatter.string(from: workoutExercise.workout?.start, fallback: "Unknown date"))
+            Text(Workout.dateFormatter.string(from: workoutExercise.workout?.start, fallback: L10n.string("Unknown date")))
             Spacer()
             bodyWeightFetcher.bodyWeight.map {
                 bodyWeight(weight: $0)

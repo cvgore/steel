@@ -9,12 +9,17 @@ import SwiftUI
 
 @main
 struct IronApp: App {
+    @State private var languageCode = L10n.languageCode
     @WKApplicationDelegateAdaptor private var appDelegate: AppDelegate
     
     @SceneBuilder var body: some Scene {
         WindowGroup {
             NavigationView {
                 ContentView()
+                    .environment(\.locale, Locale(identifier: languageCode))
+                    .onReceive(NotificationCenter.default.publisher(for: .appLanguageChanged)) { _ in
+                        languageCode = L10n.languageCode
+                    }
             }
         }
     }

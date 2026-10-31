@@ -145,13 +145,14 @@ extension BackupFileStore {
 
 // MARK: - Formatters
 extension BackupFileStore.BackupFile {
-    static let dateFormatter: DateFormatter = {
+    static var dateFormatter: DateFormatter {
         let dateFormatter = DateFormatter()
+        dateFormatter.locale = L10n.locale
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .short
         dateFormatter.doesRelativeDateFormatting = true
         return dateFormatter
-    }()
+    }
     
     static let byteCountFormatter: ByteCountFormatter = {
         ByteCountFormatter()

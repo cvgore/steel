@@ -20,7 +20,7 @@ struct RestoreBackupView: View {
     
     var body: some View {
         List {
-            Section(header: Text("Backups".uppercased()), footer: Text("Restore a backup by tapping on it.")) {
+            Section(header: Text(L10n.string("Backups").uppercased(with: L10n.locale)), footer: Text("Restore a backup by tapping on it.")) {
                 ForEach(backupStore.backups) { backup in
                     Button(action: {
                         self.restoreBackupUrl = IdentifiableHolder(value: backup.url)
@@ -93,15 +93,15 @@ enum RestoreActionSheet {
             if let decodingError = error as? DecodingError {
                 switch decodingError {
                 case let .dataCorrupted(context):
-                    errorMessage = "Data corrupted. \(context.debugDescription)"
+                    errorMessage = L10n.format("Data corrupted. %@", context.debugDescription)
                 case let .keyNotFound(_, context):
-                    errorMessage = "Key not found. \(context.debugDescription)"
+                    errorMessage = L10n.format("Key not found. %@", context.debugDescription)
                 case let .typeMismatch(_, context):
-                    errorMessage = "Type mismatch. \(context.debugDescription)"
+                    errorMessage = L10n.format("Type mismatch. %@", context.debugDescription)
                 case let .valueNotFound(_, context):
-                    errorMessage = "Value not found. \(context.debugDescription)"
+                    errorMessage = L10n.format("Value not found. %@", context.debugDescription)
                 @unknown default:
-                    errorMessage = "Decoding error. \(error.localizedDescription)"
+                    errorMessage = L10n.format("Decoding error. %@", error.localizedDescription)
                 }
             } else {
                 errorMessage = error.localizedDescription

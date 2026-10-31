@@ -1,0 +1,5771 @@
+[
+  {
+    "uuid": "AA3C081D-2A51-4E20-B112-3B5C265B0A28",
+    "id": 3,
+    "name": "wyciskanie-nad-glowe-na-maszynie-siedzac",
+    "title": "Wyciskanie nad głowę na maszynie siedząc",
+    "alias": [
+      "Wyciskanie na barki na maszynie siedząc",
+      "Wyciskanie żołnierskie na maszynie siedząc"
+    ],
+    "primer": "Ćwiczenie wzmacniające mięśnie barków.",
+    "type": "isolation",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [
+      "triceps brachii"
+    ],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Usiądź prosto, oprzyj plecy o oparcie i napnij brzuch.",
+      "Chwyć uchwyty i płynnym, równomiernym ruchem wyciśnij je w górę, prostując ręce bez blokowania łokci.",
+      "Zatrzymaj się na górze, a następnie kontrolowanym ruchem opuść uchwyty do pozycji wyjściowej."
+    ],
+    "tips": [
+      "Wyreguluj siedzisko i uchwyty tak, aby zachować prawidłową postawę."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0003-relaxation.pdf",
+      "pdf/0003-tension.pdf"
+    ],
+    "png": [
+      "png/0003-relaxation.png",
+      "png/0003-tension.png"
+    ]
+  },
+  {
+    "uuid": "2234A906-76BD-491C-B8D1-D6FC60CCB4F8",
+    "id": 4,
+    "name": "wyciskanie-sztangi-nad-glowe-siedzac",
+    "title": "Wyciskanie sztangi nad głowę siedząc",
+    "alias": [
+      "Wyciskanie sztangi na barki siedząc",
+      "Wyciskanie żołnierskie sztangi siedząc"
+    ],
+    "primer": "Ćwiczenie wzmacniające barki i mięśnie trójgłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [
+      "triceps brachii"
+    ],
+    "equipment": [
+      "barbell",
+      "bench"
+    ],
+    "steps": [
+      "Usiądź na ławce ze stopami skierowanymi do przodu, prostymi plecami i napiętym brzuchem.",
+      "Chwyć gryf na szerokość barków, kierując wnętrza dłoni do przodu.",
+      "Trzymając sztangę przed głową, wyciśnij ją w górę, prostując ręce bez blokowania łokci.",
+      "Zatrzymaj się na górze, a następnie kontrolowanym ruchem opuść sztangę do pozycji wyjściowej."
+    ],
+    "tips": [
+      "Ustaw biodra, kolana i stawy skokowe pod kątem 90°, aby zachować prawidłową postawę.",
+      "Ćwiczenie można też wykonywać ze sztangą ustawioną początkowo za głową."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0004-relaxation.pdf",
+      "pdf/0004-tension.pdf"
+    ],
+    "png": [
+      "png/0004-relaxation.png",
+      "png/0004-tension.png"
+    ]
+  },
+  {
+    "uuid": "242C1F11-54FE-4EB9-B350-3ED2814E9E2D",
+    "id": 5,
+    "name": "wzruszanie-ramionami-z-hantlami",
+    "title": "Wzruszanie ramionami z hantlami",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające mięśnie czworoboczne.",
+    "type": "isolation",
+    "primary": [
+      "trapezius"
+    ],
+    "secondary": [],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Stań ze stopami na szerokość barków i lekko ugnij kolana.",
+      "Trzymaj po hantlu w każdej dłoni, z rękami wzdłuż tułowia.",
+      "Opuść barki jak najniżej.",
+      "Trzymając ręce prosto, unieś oba barki w stronę uszu.",
+      "Zatrzymaj się na chwilę na górze, po czym kontrolowanym ruchem opuść barki."
+    ],
+    "tips": [
+      "Nie wykonuj ćwiczenia, jeśli odczuwasz ból barków lub szyi."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0005-relaxation.pdf",
+      "pdf/0005-tension.pdf"
+    ],
+    "png": [
+      "png/0005-relaxation.png",
+      "png/0005-tension.png"
+    ]
+  },
+  {
+    "uuid": "3641964C-08E0-40CB-B07E-4FE0F22FB556",
+    "id": 6,
+    "name": "wyciskanie-arnolda",
+    "title": "Wyciskanie Arnolda",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające barki i mięśnie trójgłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [
+      "triceps brachii"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Usiądź na ławce płaskiej, skieruj stopy do przodu i napnij brzuch.",
+      "Chwyć po hantlu w każdej dłoni, kierując wnętrza dłoni do siebie.",
+      "Zegnij łokcie pod kątem 90° i unieś ręce do pozycji wyjściowej na wysokości barków.",
+      "Płynnym, kontrolowanym ruchem unoś ręce, prostując łokcie i obracając przedramiona tak, aby wnętrza dłoni skierowały się do przodu.",
+      "Zbliż hantle do siebie, ale nie prostuj całkowicie łokci.",
+      "Kontrolowanym ruchem opuść hantle do pozycji wyjściowej przy barkach."
+    ],
+    "tips": [
+      "Zacznij od lżejszych hantli, aby opanować technikę.",
+      "Nie wykonuj ćwiczenia, jeśli bolą Cię barki."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0006-relaxation.pdf",
+      "pdf/0006-tension.pdf"
+    ],
+    "png": [
+      "png/0006-relaxation.png",
+      "png/0006-tension.png"
+    ]
+  },
+  {
+    "uuid": "D00DE650-3FA1-4A3E-87F7-E512820EB2FE",
+    "id": 7,
+    "name": "unoszenie-sztangi-w-przod",
+    "title": "Unoszenie sztangi w przód",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające barki, klatkę piersiową i przedramiona.",
+    "type": "isolation",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [
+      "pectoralis major",
+      "forerm"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Chwyć sztangę nachwytem, kierując wnętrza dłoni w dół.",
+      "Stań prosto ze stopami na szerokość barków, lekko ugiętymi kolanami i napiętym brzuchem.",
+      "Trzymając ręce prosto, kontrolowanym ruchem unieś sztangę na wysokość barków.",
+      "Zatrzymaj się na chwilę, a następnie opuść sztangę w ten sam sposób."
+    ],
+    "tips": [
+      "Zachowuj wyprostowaną postawę; nie kołysz tułowiem ani nie wyginaj pleców.",
+      "Nie wykonuj ćwiczenia, jeśli bolą Cię barki."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0007-relaxation.pdf",
+      "pdf/0007-tension.pdf"
+    ],
+    "png": [
+      "png/0007-relaxation.png",
+      "png/0007-tension.png"
+    ]
+  },
+  {
+    "uuid": "5CF92AB3-67F6-444C-A9B3-D4812B6CB06E",
+    "id": 8,
+    "name": "unoszenie-reki-w-przod-na-wyciagu",
+    "title": "Unoszenie ręki w przód na wyciągu",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające barki, klatkę piersiową i przedramiona.",
+    "type": "isolation",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [
+      "pectoralis major",
+      "forearm"
+    ],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Ustaw bloczek wyciągu tuż nad podłogą.",
+      "Stań ze stopami na szerokość barków, napiętym brzuchem i lekko ugiętymi kolanami.",
+      "Chwyć uchwyt lewą dłonią na wysokości pasa nachwytem, wnętrzem dłoni w dół, i unieś prostą rękę w stronę lewego barku.",
+      "Zatrzymaj się na chwilę na wysokości barku.",
+      "Powoli i kontrolowanie opuść rękę do pozycji wyjściowej przy pasie, stawiając opór ciężarowi.",
+      "Powtórz ćwiczenie prawą ręką."
+    ],
+    "tips": [
+      "Zachowuj prawidłową postawę przez cały czas; nie kołysz tułowiem ani nie wyginaj pleców.",
+      "Nie wykonuj ćwiczenia, jeśli bolą Cię barki."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0008-relaxation.pdf",
+      "pdf/0008-tension.pdf"
+    ],
+    "png": [
+      "png/0008-relaxation.png",
+      "png/0008-tension.png"
+    ]
+  },
+  {
+    "uuid": "BDD44C1A-EDC3-48AE-89BC-DE1CB540BBFD",
+    "id": 9,
+    "name": "wzruszanie-ramionami-na-wyciagu",
+    "title": "Wzruszanie ramionami na wyciągu",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające mięśnie czworoboczne.",
+    "type": "isolation",
+    "primary": [
+      "trapezius"
+    ],
+    "secondary": [
+      "deltoid"
+    ],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Ustaw bloczek wyciągu w najniższym położeniu.",
+      "Stań ze stopami na szerokość barków, napiętym brzuchem i prostymi plecami.",
+      "Rozpocznij z uchwytem na wysokości pasa.",
+      "Chwyć uchwyt i unieś barki, trzymając ręce wyprostowane.",
+      "Zatrzymaj się na chwilę, a następnie kontrolowanym ruchem wróć do pozycji wyjściowej z uchwytem przy pasie."
+    ],
+    "tips": [
+      "Stojąc, lekko ugnij kolana."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0009-relaxation.pdf",
+      "pdf/0009-tension.pdf"
+    ],
+    "png": [
+      "png/0009-relaxation.png",
+      "png/0009-tension.png"
+    ]
+  },
+  {
+    "uuid": "2E087495-346B-4824-96BB-9CD854029E87",
+    "id": 12,
+    "name": "wyciskanie-hantli-na-barki",
+    "title": "Wyciskanie hantli na barki",
+    "alias": [
+      "Wyciskanie hantli nad głowę",
+      "Wyciskanie żołnierskie z hantlami"
+    ],
+    "primer": "Ćwiczenie wzmacniające barki, klatkę piersiową i mięśnie trójgłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [
+      "triceps brachii",
+      "pectoralis major"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Siedząc na ławce z napiętym brzuchem, chwyć po hantlu w każdej dłoni, kierując wnętrza dłoni do przodu.",
+      "Rozpocznij z rękami na wysokości barków.",
+      "Wyprostuj ręce i unieś hantle nad głowę.",
+      "W górnej fazie ruchu zbliż ręce do siebie.",
+      "Zatrzymaj się na chwilę, a następnie kontrolowanym ruchem opuść hantle do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0012-relaxation.pdf",
+      "pdf/0012-tension.pdf"
+    ],
+    "png": [
+      "png/0012-relaxation.png",
+      "png/0012-tension.png"
+    ]
+  },
+  {
+    "uuid": "6C214811-961A-408A-8ABA-365F4F35A7FD",
+    "id": 17,
+    "name": "unoszenie-reki-bokiem-na-wyciagu-w-opadzie-tulowia",
+    "title": "Unoszenie ręki bokiem na wyciągu w opadzie tułowia",
+    "alias": [
+      "Wznosy bokiem na wyciągu w opadzie"
+    ],
+    "primer": "Ćwiczenie wzmacniające barki, mięśnie czworoboczne i środkową część pleców.",
+    "type": "isolation",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [
+      "trapezius",
+      "latissimus dorsi"
+    ],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Chwyć prawą dłonią uchwyt dolnego wyciągu.",
+      "Pochyl tułów w biodrach niemal równolegle do podłogi. Lekko ugnij kolana i oprzyj lewą dłoń na lewym udzie. Prawa ręka swobodnie zwisa przed Tobą, z lekko ugiętym łokciem. To pozycja wyjściowa.",
+      "Unieś prawą rękę, utrzymując lekkie ugięcie łokcia.",
+      "Kontynuuj ruch, aż ręka znajdzie się równolegle do podłogi, na linii prawego ucha.",
+      "Powoli opuść ciężar do pozycji wyjściowej.",
+      "Wykonaj ćwiczenie lewą ręką, a następnie powtórz."
+    ],
+    "tips": [
+      "Zacznij od mniejszego ciężaru, aby opanować technikę.",
+      "Przez całe ćwiczenie utrzymuj proste plecy, aby zapobiec urazom."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0017-relaxation.pdf",
+      "pdf/0017-tension.pdf"
+    ],
+    "png": [
+      "png/0017-relaxation.png",
+      "png/0017-tension.png"
+    ]
+  },
+  {
+    "uuid": "92D5B230-A226-45DD-8AA1-D3271EC24AF8",
+    "id": 18,
+    "name": "unoszenie-hantli-bokiem",
+    "title": "Unoszenie hantli bokiem",
+    "alias": [
+      "Wznosy hantli bokiem"
+    ],
+    "primer": "Ćwiczenie wzmacniające boczne części mięśni naramiennych, barki i przedramiona.",
+    "type": "isolation",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [
+      "forearm"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Chwyć po hantlu w każdej dłoni, z wnętrzami dłoni skierowanymi do tułowia i hantlami po bokach.",
+      "Stań ze stopami na szerokość barków, napnij brzuch i lekko ugnij kolana.",
+      "Nie poruszając tułowiem, unieś ręce na boki, trzymając je prosto z lekkim ugięciem łokci.",
+      "Unieś ręce do linii barków, kierując wnętrza dłoni w dół.",
+      "Zatrzymaj się na chwilę, a następnie kontrolowanym ruchem opuść ręce do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [
+      "Zachowuj wyprostowaną postawę i nie wyginaj pleców, aby zapobiec urazom."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0018-relaxation.pdf",
+      "pdf/0018-tension.pdf"
+    ],
+    "png": [
+      "png/0018-relaxation.png",
+      "png/0018-tension.png"
+    ]
+  },
+  {
+    "uuid": "19D4F31D-AA33-4013-83DF-342DD6305AD5",
+    "id": 20,
+    "name": "odwrotne-rozpietki-na-wyciagu",
+    "title": "Odwrotne rozpiętki na wyciągu",
+    "alias": [
+      "Rozpiętki na tył barków na wyciągu"
+    ],
+    "primer": "Ćwiczenie wzmacniające barki, środkową część pleców i mięśnie trójgłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [
+      "triceps brachii",
+      "latissimus dorsi"
+    ],
+    "equipment": [
+      "exercise band"
+    ],
+    "steps": [
+      "Owiń gumę oporową wokół słupka lub maszyny na wysokości środka klatki piersiowej.",
+      "Stań ze stopami na szerokość barków, napiętym brzuchem i lekko ugiętymi kolanami.",
+      "Odsuń się od słupka, aby napiąć gumę. Chwyć ją z rękami wyciągniętymi przed siebie i lekko ugiętymi łokciami; to pozycja wyjściowa.",
+      "Kontrolowanym ruchem odwiedź ręce do tyłu, aż znajdą się po bokach na linii barków.",
+      "Powoli wróć rękami do pozycji wyjściowej przed klatką piersiową.",
+      "Powtórz."
+    ],
+    "tips": [
+      "Przez całe ćwiczenie zachowuj wyprostowaną postawę i nie wyginaj pleców."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0020-relaxation.pdf",
+      "pdf/0020-tension.pdf"
+    ],
+    "png": [
+      "png/0020-relaxation.png",
+      "png/0020-tension.png"
+    ]
+  },
+  {
+    "uuid": "09F6FB3A-A7E9-4E08-8BA2-5F1CE7FDE93F",
+    "id": 21,
+    "name": "unoszenie-nog-w-lezeniu",
+    "title": "Unoszenie nóg w leżeniu",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające dolną część mięśni brzucha.",
+    "type": "isolation",
+    "primary": [
+      "abdominals"
+    ],
+    "secondary": [],
+    "equipment": [
+      "body"
+    ],
+    "steps": [
+      "Połóż się na podłodze i włóż dłonie pod biodra, aby podeprzeć plecy.",
+      "Nogi nie powinny spoczywać na podłodze.",
+      "Trzymając nogi prosto z lekko ugiętymi kolanami, unieś je tak, aby tworzyły z tułowiem kąt nieco mniejszy niż 90°.",
+      "Zatrzymaj się na górze, a następnie powoli i kontrolowanie opuść nogi do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [
+      "Jeśli jesteś w ciąży, skonsultuj się z lekarzem przed wykonaniem ćwiczenia.",
+      "Przez całe ćwiczenie utrzymuj plecy w kontakcie z ławką."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0021-relaxation.pdf",
+      "pdf/0021-tension.pdf"
+    ],
+    "png": [
+      "png/0021-relaxation.png",
+      "png/0021-tension.png"
+    ]
+  },
+  {
+    "uuid": "0926F2D0-B09A-4D74-9EDF-3654D79A4CDF",
+    "id": 22,
+    "name": "wioslowanie-na-tyl-barkow-na-maszynie-smitha",
+    "title": "Wiosłowanie na tył barków na maszynie Smitha",
+    "alias": [],
+    "primer": "Ćwiczenie na tylną część mięśni naramiennych.",
+    "type": "isolation",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [
+      "biceps brachii"
+    ],
+    "equipment": [
+      "smith machine"
+    ],
+    "steps": [
+      "Ćwiczenie wzmacnia tylną część mięśni naramiennych, barki, mięśnie dwugłowe ramion i plecy.",
+      "Ustaw gryf w najniższym położeniu.",
+      "Rozstaw stopy na szerokość barków i lekko ugnij kolana.",
+      "Pochyl się w biodrach, utrzymując proste plecy i klatkę piersiową równolegle do podłogi.",
+      "Chwyć gryf nachwytem nieco szerzej niż barki, z rękami prostymi i lekko ugiętymi łokciami.",
+      "Kontrolowanym ruchem podciągnij gryf do dolnej części klatki piersiowej, zginając i unosząc łokcie.",
+      "Zatrzymaj się na chwilę, po czym opuść gryf do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [
+      "Przez całe ćwiczenie utrzymuj proste plecy i prawidłową postawę."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0022-relaxation.pdf",
+      "pdf/0022-tension.pdf"
+    ],
+    "png": [
+      "png/0022-relaxation.png",
+      "png/0022-tension.png"
+    ]
+  },
+  {
+    "uuid": "E905CE43-2692-44C4-8E98-6657CAEAA3D4",
+    "id": 23,
+    "name": "unoszenie-hantli-na-tyl-barkow-w-lezeniu",
+    "title": "Unoszenie hantli na tył barków w leżeniu",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające barki.",
+    "type": "isolation",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [],
+    "equipment": [
+      "flat bench",
+      "dumbbell"
+    ],
+    "steps": [
+      "Połóż hantle przy przednim końcu ławki.",
+      "Połóż się na brzuchu na ławce podniesionej na tyle, aby ręce mogły swobodnie poruszać się pod nią.",
+      "Oprzyj palce stóp na podłodze, aby ustabilizować ciało.",
+      "Chwyć hantle i ugnij łokcie pod kątem 30°; to pozycja wyjściowa.",
+      "Kontrolowanym ruchem unieś ręce na wysokość barków.",
+      "Wróć do pozycji wyjściowej i powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0023-relaxation.pdf",
+      "pdf/0023-tension.pdf"
+    ],
+    "png": [
+      "png/0023-relaxation.png",
+      "png/0023-tension.png"
+    ]
+  },
+  {
+    "uuid": "1C18115B-4985-4CAE-BA7E-FBD86827C6FF",
+    "id": 24,
+    "name": "wioslowanie-hantlem-jednoracz",
+    "title": "Wiosłowanie hantlem jednorącz",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające mięśnie naramienne, dwugłowe ramion i czworoboczne.",
+    "type": "isolation",
+    "primary": [
+      "latissimus dorsi"
+    ],
+    "secondary": [
+      "biceps brachii",
+      "deltoid"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Postaw prawą stopę na podłodze, a lewe kolano i lewą dłoń oprzyj na ławce płaskiej.",
+      "Pochyl się, opierając ciężar ciała na lewej ręce i lewym kolanie.",
+      "Utrzymując proste plecy, sięgnij w dół i chwyć hantel prawą dłonią.",
+      "Przyciągnij prawą rękę jak najbliżej klatki piersiowej, zginając łokieć i prowadząc go możliwie daleko w tył.",
+      "Zatrzymaj się na chwilę na górze, a następnie kontrolowanie opuść hantel do pozycji wyjściowej.",
+      "Zmień rękę, ustawiając ciało po przeciwnej stronie.",
+      "Powtórz."
+    ],
+    "tips": [
+      "Przez całe ćwiczenie utrzymuj prawidłową postawę."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0024-relaxation.pdf",
+      "pdf/0024-tension.pdf"
+    ],
+    "png": [
+      "png/0024-relaxation.png",
+      "png/0024-tension.png"
+    ]
+  },
+  {
+    "uuid": "C30BC020-CD01-4DC6-BACD-BAB8C88D208F",
+    "id": 25,
+    "name": "wioslowanie-na-wyciagu-siedzac",
+    "title": "Wiosłowanie na wyciągu siedząc",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające środkową i dolną część pleców oraz mięśnie dwugłowe ramion.",
+    "type": "compound",
+    "primary": [
+      "latissimus dorsi"
+    ],
+    "secondary": [
+      "biceps brachii",
+      "erector spinae"
+    ],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Usiądź przy dolnym wyciągu, oprzyj stopy na podpórkach i lekko ugnij kolana.",
+      "Napnij brzuch, wyprostuj plecy i pochyl się lekko, aby chwycić uchwyty nachwytem, wnętrzami dłoni w dół.",
+      "Powoli przyciągnij uchwyty w stronę brzucha, prostując tułów i prowadząc łokcie blisko klatki piersiowej.",
+      "Zatrzymaj się na chwilę, a następnie powoli wróć uchwytami do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [
+      "Cały czas utrzymuj proste plecy i nie blokuj kolan podczas przyciągania."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0025-relaxation.pdf",
+      "pdf/0025-tension.pdf"
+    ],
+    "png": [
+      "png/0025-relaxation.png",
+      "png/0025-tension.png"
+    ]
+  },
+  {
+    "uuid": "794F1BDB-9F8C-487E-866D-D6E54E28A522",
+    "id": 26,
+    "name": "wioslowanie-sztanga-podchwytem-w-opadzie",
+    "title": "Wiosłowanie sztangą podchwytem w opadzie",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające środkową część pleców i mięśnie dwugłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "latissimus dorsi"
+    ],
+    "secondary": [
+      "biceps brachii"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Pochyl się nad sztangą, lekko uginając kolana i utrzymując proste plecy.",
+      "Chwyć gryf podchwytem, wnętrzami dłoni w górę, i powoli przyciągnij sztangę do brzucha, prowadząc łokcie blisko tułowia.",
+      "Zatrzymaj się na chwilę na górze.",
+      "Opuść sztangę do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [
+      "Rozłóż ciężar sztangi równomiernie na obie dłonie."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0026-relaxation.pdf",
+      "pdf/0026-tension.pdf"
+    ],
+    "png": [
+      "png/0026-relaxation.png",
+      "png/0026-tension.png"
+    ]
+  },
+  {
+    "uuid": "D39C7398-C0DB-4501-95A3-67E8B27C7921",
+    "id": 28,
+    "name": "wioslowanie-sztanga-na-tyl-barkow",
+    "title": "Wiosłowanie sztangą na tył barków",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające barki i mięśnie dwugłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [
+      "biceps brachii"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Połóż przed sobą na podłodze sztangę z odpowiednim obciążeniem.",
+      "Ugnij kolana, utrzymuj proste plecy i chwyć gryf szerokim nachwytem, wnętrzami dłoni w dół.",
+      "Utrzymuj klatkę piersiową nieruchomo, a ręce prostopadle do niej.",
+      "Przyciągnij gryf jak najwyżej do klatki piersiowej.",
+      "Zatrzymaj się na chwilę, a następnie kontrolowanym ruchem opuść gryf.",
+      "Powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0028-relaxation.pdf",
+      "pdf/0028-tension.pdf"
+    ],
+    "png": [
+      "png/0028-relaxation.png",
+      "png/0028-tension.png"
+    ]
+  },
+  {
+    "uuid": "44694EFA-7D2E-4C7F-AB7D-DC4F66CAFB60",
+    "id": 29,
+    "name": "wioslowanie-na-maszynie-typu-t",
+    "title": "Wiosłowanie na maszynie typu T",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające środkową część pleców, mięśnie dwugłowe ramion i barki.",
+    "type": "isolation",
+    "primary": [
+      "latissimus dorsi"
+    ],
+    "secondary": [
+      "biceps brachii",
+      "deltoid"
+    ],
+    "equipment": [
+      "t-bar machine"
+    ],
+    "steps": [
+      "Ustaw stopy po obu stronach maszyny typu T.",
+      "Lekko ugnij kolana, napnij brzuch i chwyć uchwyty wąskim chwytem.",
+      "Pochyl się w biodrach, ustawiając klatkę piersiową równolegle do podłogi; to pozycja wyjściowa. Powoli przyciągnij drążek jak najwyżej do klatki piersiowej.",
+      "Zatrzymaj się na chwilę na górze, a następnie opuść drążek do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [
+      "Przez całe ćwiczenie utrzymuj proste plecy, aby zapobiec urazom.",
+      "Przez całe ćwiczenie prowadź łokcie blisko tułowia."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0029-relaxation.pdf",
+      "pdf/0029-tension.pdf"
+    ],
+    "png": [
+      "png/0029-relaxation.png",
+      "png/0029-tension.png"
+    ]
+  },
+  {
+    "uuid": "C736BCEB-4699-4FFF-BE53-0D56336BA137",
+    "id": 30,
+    "name": "wzruszanie-ramionami-ze-sztanga",
+    "title": "Wzruszanie ramionami ze sztangą",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające mięśnie czworoboczne.",
+    "type": "isolation",
+    "primary": [
+      "trapezius"
+    ],
+    "secondary": [],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Stań na podłodze z napiętym brzuchem i prostymi plecami.",
+      "Chwyć sztangę nieco szerzej niż barki i trzymaj ją w wyprostowanych rękach.",
+      "Na początek opuść barki jak najniżej.",
+      "Unieś barki jak najwyżej.",
+      "Zatrzymaj się na chwilę na górze, a następnie kontrolowanym ruchem wróć do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [
+      "Nie wyginaj pleców w żadnej fazie ćwiczenia."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0030-relaxation.pdf",
+      "pdf/0030-tension.pdf"
+    ],
+    "png": [
+      "png/0030-relaxation.png",
+      "png/0030-tension.png"
+    ]
+  },
+  {
+    "uuid": "95A2FF8B-332D-427A-9EBD-7CE3151D5F4A",
+    "id": 32,
+    "name": "unoszenie-hantli-na-tyl-barkow-w-opadzie",
+    "title": "Unoszenie hantli na tył barków w opadzie",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające barki.",
+    "type": "isolation",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Oprzyj czoło o ławkę skośną, aby ustabilizować ruch. Pochyl tułów równolegle do podłogi i napnij brzuch.",
+      "Chwyć hantle, trzymając ręce prosto i lekko uginając łokcie, bez ich blokowania.",
+      "Powoli unieś hantle na wysokość barków.",
+      "Zatrzymaj się na chwilę i wróć do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [
+      "Przez całe ćwiczenie utrzymuj plecy prosto i równolegle do podłogi."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0032-relaxation.pdf",
+      "pdf/0032-tension.pdf"
+    ],
+    "png": [
+      "png/0032-relaxation.png",
+      "png/0032-tension.png"
+    ]
+  },
+  {
+    "uuid": "9C3417E1-2B6F-4E2D-9F49-0BF256CCC88D",
+    "id": 33,
+    "name": "unoszenie-hantli-w-przod",
+    "title": "Unoszenie hantli w przód",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające barki.",
+    "type": "isolation",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Stań ze stopami na szerokość barków i napiętym brzuchem, trzymając po hantlu w każdej dłoni nachwytem.",
+      "Trzymając rękę prosto, unieś lewą rękę nieco powyżej wysokości barków.",
+      "Zatrzymaj się na chwilę, następnie kontrolowanie opuść ciężar do pozycji wyjściowej i powtórz prawą ręką."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0033-relaxation.pdf",
+      "pdf/0033-tension.pdf"
+    ],
+    "png": [
+      "png/0033-relaxation.png",
+      "png/0033-tension.png"
+    ]
+  },
+  {
+    "uuid": "B346DE7B-2E5C-4509-83AF-B5E58BA065E1",
+    "id": 34,
+    "name": "rotacja-wewnetrzna-ramienia-na-wyciagu",
+    "title": "Rotacja wewnętrzna ramienia na wyciągu",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające barki i mięśnie dwugłowe ramion.",
+    "type": "compound",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [
+      "biceps brachii"
+    ],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Usiądź na podłodze blisko dolnego wyciągu.",
+      "Chwyć uchwyt lewą dłonią i zegnij łokieć pod kątem 90°.",
+      "Przyciągnij linkę w stronę ciała, obracając ramię do wewnątrz, aż przedramię znajdzie się w poprzek brzucha.",
+      "Wróć do pozycji wyjściowej.",
+      "Powtórz prawą ręką."
+    ],
+    "tips": [
+      "Przez całe ćwiczenie utrzymuj proste plecy."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0034-relaxation.pdf",
+      "pdf/0034-tension.pdf"
+    ],
+    "png": [
+      "png/0034-relaxation.png",
+      "png/0034-tension.png"
+    ]
+  },
+  {
+    "uuid": "9A268413-B96A-4943-94BC-C36FC0C91E07",
+    "id": 41,
+    "name": "wzruszanie-ramionami-na-maszynie-smitha",
+    "title": "Wzruszanie ramionami na maszynie Smitha",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające barki.",
+    "type": "isolation",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [],
+    "equipment": [
+      "smith machine"
+    ],
+    "steps": [
+      "Ustaw gryf na wysokości pasa.",
+      "Stań ze stopami na szerokość barków i napiętym brzuchem.",
+      "Chwyć gryf nachwytem, trzymając ręce wyprostowane.",
+      "Po podniesieniu gryfu pozwól, by ciężar opuścił barki, a następnie unieś je i cofnij.",
+      "Zatrzymaj się na chwilę i wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0041-relaxation.pdf",
+      "pdf/0041-tension.pdf"
+    ],
+    "png": [
+      "png/0041-relaxation.png",
+      "png/0041-tension.png"
+    ]
+  },
+  {
+    "uuid": "C0D3C3CD-9F1F-4A89-B845-DAB5923B22A7",
+    "id": 42,
+    "name": "wyciskanie-sztangi-na-lawce-plaskiej",
+    "title": "Wyciskanie sztangi na ławce płaskiej",
+    "alias": [],
+    "primer": "Jedno z najlepszych ćwiczeń na klatkę piersiową.",
+    "type": "compound",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "triceps brachii",
+      "deltoid"
+    ],
+    "equipment": [
+      "bench",
+      "barbell"
+    ],
+    "steps": [
+      "Połóż się na ławce płaskiej, opierając całe stopy na podłodze.",
+      "Chwyć gryf nieco szerzej niż barki.",
+      "Unieś sztangę nad ciało i ustabilizuj ją nad barkami; to pozycja wyjściowa.",
+      "Opuść gryf tak, aby lekko dotknął dolnej części klatki piersiowej.",
+      "Wypchnij gryf w górę do pełnego wyprostu rąk i zablokowania łokci.",
+      "Wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [
+      "https://youtu.be/4T9UQ4FBVXI"
+    ],
+    "pdf": [
+      "pdf/0042-relaxation.pdf",
+      "pdf/0042-tension.pdf"
+    ],
+    "png": [
+      "png/0042-relaxation.png",
+      "png/0042-tension.png"
+    ]
+  },
+  {
+    "uuid": "D2B09DAE-2E3B-4A7A-95F8-811E5E41B433",
+    "id": 43,
+    "name": "wyciskanie-sztangi-na-lawce-skosnej-glowa-w-gore",
+    "title": "Wyciskanie sztangi na ławce skośnej głową w górę",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające klatkę piersiową i mięśnie trójgłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "triceps brachii"
+    ],
+    "equipment": [
+      "bench: incline",
+      "barbell"
+    ],
+    "steps": [
+      "Połóż się na ławce nachylonej pod kątem 45°, ze stopami rozstawionymi na szerokość barków.",
+      "Chwyć gryf nieco szerzej niż barki.",
+      "Unieś sztangę nad ciało i ustaw ją nad środkiem klatki piersiowej; to pozycja wyjściowa.",
+      "Opuść gryf tak, aby lekko dotknął klatki piersiowej.",
+      "Unieś gryf pionowo do pełnego wyprostu rąk i zablokowania łokci.",
+      "Wróć do pozycji wyjściowej."
+    ],
+    "tips": [
+      "Nie odbijaj sztangi od klatki piersiowej; cały czas kontroluj ruch."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0043-relaxation.pdf",
+      "pdf/0043-tension.pdf"
+    ],
+    "png": [
+      "png/0043-relaxation.png",
+      "png/0043-tension.png"
+    ]
+  },
+  {
+    "uuid": "6C2203F8-7DD8-4B18-A6A0-46B17B44F9E5",
+    "id": 47,
+    "name": "rozpietki-na-maszynie",
+    "title": "Rozpiętki na maszynie",
+    "alias": [
+      "Rozpiętki na maszynie typu peck deck",
+      "Maszyna do rozpiętek typu butterfly",
+      "Rozpiętki na klatkę piersiową na maszynie"
+    ],
+    "primer": "Ćwiczenie wzmacniające klatkę piersiową.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [],
+    "equipment": [
+      "machine: butterfly"
+    ],
+    "steps": [
+      "Wyreguluj maszynę tak, aby poduszki znajdowały się na wysokości klatki piersiowej w siadzie.",
+      "Usiądź na maszynie z prostymi plecami.",
+      "Oprzyj przedramiona na poduszkach równolegle do podłogi; to pozycja wyjściowa.",
+      "Powoli zbliż poduszki, naciskając przedramionami i napinając klatkę piersiową.",
+      "Kontrolowanym ruchem odwiedź ręce do rozciągniętej pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0047-relaxation.pdf",
+      "pdf/0047-tension.pdf"
+    ],
+    "png": [
+      "png/0047-relaxation.png",
+      "png/0047-tension.png"
+    ]
+  },
+  {
+    "uuid": "CAEA1591-7DA3-4607-915A-04CFADA7E461",
+    "id": 48,
+    "name": "rozpietki-na-wyciagu",
+    "title": "Rozpiętki na wyciągu",
+    "alias": [
+      "Krzyżowanie linek wyciągu",
+      "Rozpiętki na klatkę piersiową na wyciągu"
+    ],
+    "primer": "Ćwiczenie wzmacniające klatkę piersiową i barki.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "deltoid"
+    ],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Ustaw bloczki wyciągu na wysokości barków.",
+      "Chwyć uchwyty obiema dłońmi i stań około 30 cm przed stosami obciążeń, z jedną stopą lekko wysuniętą przed drugą.",
+      "Z lekko ugiętymi łokciami zbliż dłonie przed klatką piersiową, prowadząc je lekko w dół.",
+      "Gdy dłonie spotkają się przed środkiem klatki piersiowej, zatrzymaj się na chwilę.",
+      "Powolnym, kontrolowanym ruchem wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0048-relaxation.pdf",
+      "pdf/0048-tension.pdf"
+    ],
+    "png": [
+      "png/0048-relaxation.png",
+      "png/0048-tension.png"
+    ]
+  },
+  {
+    "uuid": "7F521D26-66F9-40F5-B50A-044AAC0803FE",
+    "id": 49,
+    "name": "wyciskanie-sztangi-waskim-chwytem",
+    "title": "Wyciskanie sztangi wąskim chwytem",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające klatkę piersiową, mięśnie trójgłowe ramion i barki.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "triceps brachii",
+      "deltoid"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Połóż się na ławce płaskiej z całymi stopami na podłodze i plecami przylegającymi do ławki.",
+      "Chwyć gryf wąsko, z dłońmi oddalonymi o około 36 cm.",
+      "Unieś sztangę nad ciało i ustaw ją nad środkiem klatki piersiowej; to pozycja wyjściowa.",
+      "Opuść gryf tak, aby lekko dotknął klatki piersiowej.",
+      "Unieś gryf do pełnego wyprostu rąk i zablokowania łokci.",
+      "Wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0049-relaxation.pdf",
+      "pdf/0049-tension.pdf"
+    ],
+    "png": [
+      "png/0049-relaxation.png",
+      "png/0049-tension.png"
+    ]
+  },
+  {
+    "uuid": "A7AF0DB8-C0B1-44BA-ADB2-6C08E03CB2CC",
+    "id": 51,
+    "name": "wyciskanie-sztangi-na-lawce-skosnej-glowa-w-dol",
+    "title": "Wyciskanie sztangi na ławce skośnej głową w dół",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające klatkę piersiową, mięśnie trójgłowe ramion i barki.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "triceps brachii",
+      "deltoid"
+    ],
+    "equipment": [
+      "bench: decline",
+      "barbell"
+    ],
+    "steps": [
+      "Połóż się na ławce skośnej z głową niżej niż stopy.",
+      "Chwyć gryf o 8–15 cm szerzej niż barki.",
+      "Unieś gryf nad klatkę piersiową, trzymając łokcie blisko tułowia.",
+      "Powoli i kontrolowanie opuść gryf pionowo do dolnej części klatki piersiowej.",
+      "Unieś gryf do pozycji wyjściowej tuż nad klatką piersiową.",
+      "Powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0051-relaxation.pdf",
+      "pdf/0051-tension.pdf"
+    ],
+    "png": [
+      "png/0051-relaxation.png",
+      "png/0051-tension.png"
+    ]
+  },
+  {
+    "uuid": "A541E362-0EAD-42DA-B109-D452312BA2CA",
+    "id": 52,
+    "name": "wyciskanie-hantli-na-lawce-skosnej-glowa-w-dol",
+    "title": "Wyciskanie hantli na ławce skośnej głową w dół",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające klatkę piersiową, barki i mięśnie trójgłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "triceps brachii",
+      "deltoid"
+    ],
+    "equipment": [
+      "dumbbell",
+      "bench: decline"
+    ],
+    "steps": [
+      "Chwyć hantle i połóż się na ławce skośnej z głową niżej niż stopy.",
+      "Unieś hantle nad klatkę piersiową, trzymając łokcie blisko tułowia; to pozycja wyjściowa.",
+      "Powoli i kontrolowanie opuść hantle po obu stronach dolnej części klatki piersiowej.",
+      "Unieś hantle do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0052-relaxation.pdf",
+      "pdf/0052-tension.pdf"
+    ],
+    "png": [
+      "png/0052-relaxation.png",
+      "png/0052-tension.png"
+    ]
+  },
+  {
+    "uuid": "0DB5A1D0-91D7-4A7E-8537-8F1199B3FC0A",
+    "id": 53,
+    "name": "rozpietki-z-hantlami-glowa-w-dol",
+    "title": "Rozpiętki z hantlami głową w dół",
+    "alias": [
+      "Rozpiętki na klatkę piersiową z hantlami głową w dół"
+    ],
+    "primer": "Ćwiczenie wzmacniające klatkę piersiową i barki.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "deltoid"
+    ],
+    "equipment": [
+      "dumbbell",
+      "bench: decline"
+    ],
+    "steps": [
+      "Połóż się na ławce skośnej z głową niżej niż tułów i stopami mocno opartymi na podłodze.",
+      "Złącz hantle nad barkami i wyciągnij ręce w górę; to pozycja wyjściowa.",
+      "Trzymając ręce prosto z lekkim ugięciem łokci, opuszczaj hantle łukiem w stronę podłogi do poziomu tuż nad barkami.",
+      "Powolnym, kontrolowanym ruchem wróć do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0053-relaxation.pdf",
+      "pdf/0053-tension.pdf"
+    ],
+    "png": [
+      "png/0053-relaxation.png",
+      "png/0053-tension.png"
+    ]
+  },
+  {
+    "uuid": "AC43FDDC-D3C7-438D-A925-D4EF0F3CE290",
+    "id": 54,
+    "name": "pompki-na-poreczach-na-klatke-piersiowa",
+    "title": "Pompki na poręczach na klatkę piersiową",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające klatkę piersiową, mięśnie trójgłowe ramion i barki.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "triceps brachii",
+      "deltoid"
+    ],
+    "equipment": [
+      "body",
+      "parallel bars"
+    ],
+    "steps": [
+      "Stań między poręczami.",
+      "Chwyć poręcze i wypchnij ciało do góry, przyjmując pozycję wyjściową z wyprostowanymi rękami.",
+      "Trzymając łokcie blisko ciała i biodra prosto, ugnij łokcie i opuść ciało z pochyleniem do przodu, prowadząc ruch klatką piersiową.",
+      "Unieś ciało do pozycji wyjściowej i powtórz.",
+      "Powtórz."
+    ],
+    "tips": [
+      "Nie blokuj łokci po uniesieniu ciała."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0054-relaxation.pdf",
+      "pdf/0054-tension.pdf"
+    ],
+    "png": [
+      "png/0054-relaxation.png",
+      "png/0054-tension.png"
+    ]
+  },
+  {
+    "uuid": "6B09E781-80C2-4116-AB82-C9FC31D49E43",
+    "id": 55,
+    "name": "wyciskanie-hantli-na-lawce-plaskiej",
+    "title": "Wyciskanie hantli na ławce płaskiej",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające klatkę piersiową, mięśnie trójgłowe ramion i barki.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "deltoid",
+      "triceps brachii"
+    ],
+    "equipment": [
+      "dumbbell",
+      "flat bench"
+    ],
+    "steps": [
+      "Ćwiczenie wzmacnia klatkę piersiową, mięśnie trójgłowe ramion i barki.",
+      "Chwyć po hantlu w każdej dłoni i połóż się na ławce płaskiej, mocno opierając stopy na podłodze.",
+      "Wyciągnij ręce nad klatkę piersiową, kierując wnętrza dłoni do przodu.",
+      "Wyciśnij hantle nad klatkę piersiową do pełnego wyprostu rąk; to pozycja wyjściowa.",
+      "Zegnij łokcie pod kątem 90°, ustawiając ramiona równolegle do podłogi.",
+      "Powoli opuść hantle wzdłuż klatki piersiowej tak nisko, jak pozwala komfortowy zakres ruchu.",
+      "Kontrolowanym ruchem wróć do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0055-relaxation.pdf",
+      "pdf/0055-tension.pdf"
+    ],
+    "png": [
+      "png/0055-relaxation.png",
+      "png/0055-tension.png"
+    ]
+  },
+  {
+    "uuid": "C28FA94C-D311-450F-B208-6366A2992837",
+    "id": 56,
+    "name": "rozpietki-z-hantlami-na-lawce-plaskiej",
+    "title": "Rozpiętki z hantlami na ławce płaskiej",
+    "alias": [
+      "Rozpiętki na klatkę piersiową z hantlami"
+    ],
+    "primer": "Ćwiczenie wzmacniające klatkę piersiową, mięśnie trójgłowe ramion i barki.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "deltoid",
+      "triceps brachii"
+    ],
+    "equipment": [
+      "flat bench",
+      "dumbbell"
+    ],
+    "steps": [
+      "Połóż się na ławce płaskiej z hantlem w każdej dłoni i stopami mocno opartymi na podłodze.",
+      "Unieś hantle nad klatkę piersiową, prostując ręce z lekkim ugięciem łokci; to pozycja wyjściowa.",
+      "Utrzymując lekkie ugięcie łokci, opuszczaj hantle łukiem w stronę podłogi.",
+      "Powoli i kontrolowanie unieś hantle nad klatkę piersiową do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [
+      "Przez całe ćwiczenie utrzymuj plecy i biodra w kontakcie z ławką."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0056-relaxation.pdf",
+      "pdf/0056-tension.pdf"
+    ],
+    "png": [
+      "png/0056-relaxation.png",
+      "png/0056-tension.png"
+    ]
+  },
+  {
+    "uuid": "61C900C2-8920-47BC-91E4-DC249F5C6127",
+    "id": 57,
+    "name": "rozpietki-na-wyciagu-w-lezeniu",
+    "title": "Rozpiętki na wyciągu w leżeniu",
+    "alias": [
+      "Rozpiętki na klatkę piersiową na wyciągu w leżeniu"
+    ],
+    "primer": "Ćwiczenie wzmacniające klatkę piersiową i barki.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "deltoid"
+    ],
+    "equipment": [
+      "flat bench",
+      "cable"
+    ],
+    "steps": [
+      "Połóż się na ławce płaskiej między dwiema kolumnami wyciągu, mocno opierając stopy na podłodze.",
+      "Chwyć po uchwycie w każdej dłoni, kierując wnętrza dłoni w górę.",
+      "Z lekko ugiętymi łokciami napnij klatkę piersiową i zbliż linki tak, aby dłonie spotkały się nad jej środkiem.",
+      "Zatrzymaj się na chwilę, a następnie powoli opuść dłonie do pozycji wyjściowej na wysokości ławki.",
+      "Wskazówka: przez całe ćwiczenie utrzymuj plecy i biodra w kontakcie z ławką."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0057-relaxation.pdf",
+      "pdf/0057-tension.pdf"
+    ],
+    "png": [
+      "png/0057-relaxation.png",
+      "png/0057-tension.png"
+    ]
+  },
+  {
+    "uuid": "670F794D-3D03-4DC9-AC69-68D06CB784D4",
+    "id": 58,
+    "name": "unoszenie-sztangi-w-przod-z-przenoszeniem-za-glowe",
+    "title": "Unoszenie sztangi w przód z przenoszeniem za głowę",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające klatkę piersiową, mięśnie trójgłowe ramion i barki.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "triceps brachii",
+      "deltoid"
+    ],
+    "equipment": [
+      "barbell",
+      "flat bench"
+    ],
+    "steps": [
+      "Połóż się na ławce płaskiej i chwyć sztangę średnim chwytem, z dłońmi oddalonymi o około 38 cm.",
+      "Oprzyj sztangę na górnej części ud i trzymaj ręce prosto, z lekkim ugięciem łokci.",
+      "Napnij brzuch i utrzymując plecy przy ławce, unieś ręce łukiem nad głowę i za nią, jak przy odwróconym przenoszeniu sztangi.",
+      "Powoli wróć sztangą do pozycji wyjściowej na udach."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0058-relaxation.pdf",
+      "pdf/0058-tension.pdf"
+    ],
+    "png": [
+      "png/0058-relaxation.png",
+      "png/0058-tension.png"
+    ]
+  },
+  {
+    "uuid": "5999199F-0BC8-414A-96FD-FA3377AFA5EF",
+    "id": 59,
+    "name": "wyciskanie-hantli-chwytem-mlotkowym-glowa-w-gore",
+    "title": "Wyciskanie hantli chwytem młotkowym głową w górę",
+    "alias": [],
+    "primer": "Zaawansowane ćwiczenie wzmacniające klatkę piersiową, mięśnie trójgłowe ramion i barki.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "deltoid",
+      "triceps brachii"
+    ],
+    "equipment": [
+      "dumbbell",
+      "bench: incline"
+    ],
+    "steps": [
+      "Chwyć po hantlu w każdej dłoni i połóż się na ławce skośnej ustawionej pod kątem 45°.",
+      "Przez cały czas utrzymuj całe stopy na podłodze, a plecy przy oparciu.",
+      "Chwytem młotkowym, z wnętrzami dłoni skierowanymi do siebie, unieś ciężary na wysokość barków po obu stronach klatki piersiowej.",
+      "Wyprostuj całkowicie ręce, wyciskając hantle w górę.",
+      "Powoli opuść hantle do pozycji wyjściowej po bokach klatki piersiowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0059-relaxation.pdf",
+      "pdf/0059-tension.pdf"
+    ],
+    "png": [
+      "png/0059-relaxation.png",
+      "png/0059-tension.png"
+    ]
+  },
+  {
+    "uuid": "721F71AE-879A-4F6A-87DB-09C7A6906D60",
+    "id": 60,
+    "name": "rozpietki-na-wyciagu-glowa-w-gore",
+    "title": "Rozpiętki na wyciągu głową w górę",
+    "alias": [
+      "Rozpiętki na klatkę piersiową na wyciągu głową w górę"
+    ],
+    "primer": "Ćwiczenie jest alternatywą dla maszyny typu butterfly lub peck deck i kształtuje mięśnie klatki piersiowej. Ustaw ławkę skośną pod kątem 45° między dwiema kolumnami wyciągu.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "biceps brachii",
+      "triceps brachii",
+      "forearm"
+    ],
+    "equipment": [
+      "bench: incline",
+      "cable"
+    ],
+    "steps": [
+      "Ustaw ławkę skośną pod kątem 45° między dwiema kolumnami wyciągu.",
+      "Chwyć po uchwycie w każdej dłoni, kierując wnętrza dłoni w górę.",
+      "Z lekko ugiętymi łokciami napnij klatkę piersiową i przyciągnij linki łukiem, aż dłonie spotkają się nad jej środkiem.",
+      "Zatrzymaj się na chwilę, a następnie powoli opuść dłonie tym samym łukiem do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0060-relaxation.pdf",
+      "pdf/0060-tension.pdf"
+    ],
+    "png": [
+      "png/0060-relaxation.png",
+      "png/0060-tension.png"
+    ]
+  },
+  {
+    "uuid": "C04B1262-EF69-449E-963F-282D34A0AA8D",
+    "id": 31,
+    "name": "wyciskanie-hantli-na-lawce-skosnej-glowa-w-gore",
+    "title": "Wyciskanie hantli na ławce skośnej głową w górę",
+    "alias": [],
+    "primer": "Zaawansowane ćwiczenie rozwijające i kształtujące klatkę piersiową, a także mięśnie trójgłowe ramion i barki.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "triceps brachii",
+      "deltoid"
+    ],
+    "equipment": [
+      "dumbbell",
+      "bench: incline"
+    ],
+    "steps": [
+      "Połóż się na ławce skośnej ustawionej pod kątem 45°.",
+      "Rozpocznij z hantlami na wysokości barków, szeroko rozstawionymi rękami i łokciami skierowanymi ku podłodze.",
+      "Trzymaj hantle tak, aby wnętrza dłoni były skierowane do siebie.",
+      "Unieś ręce nad klatkę piersiową, zbliżając hantle do siebie jak przy klaskaniu.",
+      "Powoli opuść hantle do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0031-relaxation.pdf",
+      "pdf/0031-tension.pdf"
+    ],
+    "png": [
+      "png/0031-relaxation.png",
+      "png/0031-tension.png"
+    ]
+  },
+  {
+    "uuid": "635746F0-1E44-4DAA-B2FA-81D1933F3EB3",
+    "id": 62,
+    "name": "rozpietki-z-hantlami-glowa-w-gore",
+    "title": "Rozpiętki z hantlami głową w górę",
+    "alias": [
+      "Rozpiętki na klatkę piersiową z hantlami głową w górę"
+    ],
+    "primer": "Ćwiczenie kształtujące i wzmacniające klatkę piersiową.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "deltoid"
+    ],
+    "equipment": [
+      "bench: incline",
+      "dumbbell"
+    ],
+    "steps": [
+      "Połóż się na ławce skośnej ustawionej pod kątem 45°, z hantlem w każdej dłoni i stopami mocno opartymi na podłodze.",
+      "Unieś hantle nad klatkę piersiową, prostując ręce i kierując wnętrza dłoni do siebie.",
+      "Utrzymując lekkie ugięcie łokci, opuszczaj hantle łukiem w stronę podłogi.",
+      "Powoli wróć do pozycji wyjściowej."
+    ],
+    "tips": [
+      "Przez całe ćwiczenie utrzymuj biodra i plecy w kontakcie z ławką."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0062-relaxation.pdf",
+      "pdf/0062-tension.pdf"
+    ],
+    "png": [
+      "png/0062-relaxation.png",
+      "png/0062-tension.png"
+    ]
+  },
+  {
+    "uuid": "74D42B22-1842-4B9F-B6A7-83B90472CB43",
+    "id": 66,
+    "name": "wyciskanie-na-maszynie-na-klatke-piersiowa",
+    "title": "Wyciskanie na maszynie na klatkę piersiową",
+    "alias": [
+      "Wyciskanie na klatkę piersiową"
+    ],
+    "primer": "Ćwiczenie wzmacniające klatkę piersiową, mięśnie dwugłowe ramion i barki.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "triceps brachii",
+      "deltoid"
+    ],
+    "equipment": [
+      "machine: bench press"
+    ],
+    "steps": [
+      "Wyreguluj maszynę tak, aby w pozycji siedzącej uchwyty znajdowały się na wysokości klatki piersiowej.",
+      "Połóż dłonie na uchwytach, a stopy na podpórce.",
+      "Równomiernym ruchem wypchnij uchwyty, prostując ręce tak daleko, jak to możliwe.",
+      "Zatrzymaj się na chwilę, a następnie powoli wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0066-relaxation.pdf",
+      "pdf/0066-tension.pdf"
+    ],
+    "png": [
+      "png/0066-relaxation.png",
+      "png/0066-tension.png"
+    ]
+  },
+  {
+    "uuid": "3B32B927-5C1D-4518-8CA0-C33921837F5A",
+    "id": 75,
+    "name": "pompki-z-nogami-na-podwyzszeniu",
+    "title": "Pompki z nogami na podwyższeniu",
+    "alias": [],
+    "primer": "Ruch jest podobny do zwykłej pompki, ale uniesione stopy pozwalają na większy zakres ruchu i inaczej angażują mięśnie piersiowe.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major",
+      "deltoid"
+    ],
+    "secondary": [
+      "triceps brachii"
+    ],
+    "equipment": [
+      "body",
+      "bench"
+    ],
+    "steps": [
+      "Oprzyj stopy na ławce na wysokości co najmniej 46 cm nad podłogą.",
+      "Upewnij się, że grzbiety stóp płasko przylegają do ławki.",
+      "Oprzyj dłonie na podłodze nieco szerzej niż barki.",
+      "Trzymając dłonie bezpośrednio pod barkami, odepchnij się od podłogi. Utrzymuj plecy i szyję w jednej linii, patrząc przed siebie przez całe ćwiczenie.",
+      "Po pełnym wyprostowaniu rąk zatrzymaj się, a następnie powoli i kontrolowanie opuść ciało w stronę podłogi."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0075-relaxation.pdf",
+      "pdf/0075-tension.pdf"
+    ],
+    "png": [
+      "png/0075-relaxation.png",
+      "png/0075-tension.png"
+    ]
+  },
+  {
+    "uuid": "77C531EB-3CAD-4773-9F18-1A230B1FF7E5",
+    "id": 77,
+    "name": "pompki",
+    "title": "Pompki",
+    "alias": [],
+    "primer": "Podstawowe ćwiczenie wzmacniające klatkę piersiową, mięśnie dwugłowe i trójgłowe ramion oraz mięśnie tułowia.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "triceps brachii",
+      "deltoid"
+    ],
+    "equipment": [
+      "body"
+    ],
+    "steps": [
+      "Przyjmij pozycję do zwykłej pompki: połóż się na brzuchu na podłodze lub macie, złącz stopy i podwiń palce, aby oprzeć się na przodostopiu.",
+      "Ustaw dłonie na szerokość barków po obu stronach klatki piersiowej.",
+      "Napnij brzuch.",
+      "Wykonaj wdech, unosząc ciało do wyprostowania rąk.",
+      "Utrzymuj głowę i szyję w jednej linii z ciałem, nie patrz w górę ani w dół i nie unoś ani nie opuszczaj pleców.",
+      "Wykonaj wydech, opuszczając ciało do podłogi.",
+      "Powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0077-relaxation.pdf",
+      "pdf/0077-tension.pdf"
+    ],
+    "png": [
+      "png/0077-relaxation.png",
+      "png/0077-tension.png"
+    ]
+  },
+  {
+    "uuid": "AA58E724-D2BC-43BC-9AF5-BED923FF67D9",
+    "id": 78,
+    "name": "wyciskanie-na-lawce-plaskiej-na-maszynie-smitha",
+    "title": "Wyciskanie na ławce płaskiej na maszynie Smitha",
+    "alias": [],
+    "primer": "Ćwiczenie na maszynie Smitha wzmacniające klatkę piersiową, barki i mięśnie trójgłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "deltoid",
+      "triceps brachii"
+    ],
+    "equipment": [
+      "flat bench",
+      "smith machine"
+    ],
+    "steps": [
+      "Ustaw ławkę płaską pośrodku maszyny Smitha tak, aby gryf znajdował się na linii środka klatki piersiowej.",
+      "Połóż się na ławce i chwyć gryf na szerokość barków.",
+      "Odblokuj gryf i powoli opuść go do klatki piersiowej.",
+      "Wyprostuj całkowicie ręce, unosząc gryf do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [
+      "Przez całe ćwiczenie utrzymuj biodra i plecy w kontakcie z ławką."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0078-relaxation.pdf",
+      "pdf/0078-tension.pdf"
+    ],
+    "png": [
+      "png/0078-relaxation.png",
+      "png/0078-tension.png"
+    ]
+  },
+  {
+    "uuid": "A367C0FE-49B8-484A-B296-6D5EB723E0B2",
+    "id": 81,
+    "name": "wyciskanie-glowa-w-gore-na-maszynie-smitha",
+    "title": "Wyciskanie głową w górę na maszynie Smitha",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające klatkę piersiową, barki i mięśnie trójgłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "deltoid",
+      "triceps brachii"
+    ],
+    "equipment": [
+      "smith machine",
+      "bench: incline"
+    ],
+    "steps": [
+      "Ustaw ławkę skośną pod kątem 45° pośrodku maszyny Smitha.",
+      "Ustaw ławkę tak, aby gryf przebiegał nad górną częścią klatki piersiowej.",
+      "Chwyć gryf na szerokość barków.",
+      "Odblokuj gryf i powoli opuść ciężar do klatki piersiowej, nie odbijając go od niej.",
+      "Powolnym, kontrolowanym ruchem unieś gryf do pozycji wyjściowej."
+    ],
+    "tips": [
+      "Przy pierwszym wykonywaniu ćwiczenia zacznij od mniejszego ciężaru, aby opanować technikę."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0081-relaxation.pdf",
+      "pdf/0081-tension.pdf"
+    ],
+    "png": [
+      "png/0081-relaxation.png",
+      "png/0081-tension.png"
+    ]
+  },
+  {
+    "uuid": "039D6D33-98FD-4CC7-A7AD-C96FAA0135AE",
+    "id": 82,
+    "name": "wyciskanie-sztangi-szerokim-chwytem",
+    "title": "Wyciskanie sztangi szerokim chwytem",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające klatkę piersiową, mięśnie trójgłowe ramion i barki.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "triceps brachii",
+      "deltoid"
+    ],
+    "equipment": [
+      "flat bench",
+      "barbell"
+    ],
+    "steps": [
+      "Połóż się płasko na ławce, opierając całe stopy na podłodze.",
+      "Chwyć gryf szerzej niż barki i zdejmij go ze stojaka; to pozycja wyjściowa.",
+      "Przenieś gryf nad klatkę piersiową i opuść go tuż nad ciało.",
+      "Wyprostuj ręce, unosząc gryf pionowo w górę.",
+      "Zatrzymaj się na chwilę, a następnie powolnym, kontrolowanym ruchem wróć gryfem do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [
+      "Przez całe ćwiczenie utrzymuj biodra i plecy w kontakcie z ławką."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0082-relaxation.pdf",
+      "pdf/0082-tension.pdf"
+    ],
+    "png": [
+      "png/0082-relaxation.png",
+      "png/0082-tension.png"
+    ]
+  },
+  {
+    "uuid": "0E2E4708-35DC-4128-8B32-718FF68B5491",
+    "id": 83,
+    "name": "wyciskanie-sztangi-szerokim-chwytem-glowa-w-dol",
+    "title": "Wyciskanie sztangi szerokim chwytem głową w dół",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające klatkę piersiową, mięśnie trójgłowe ramion i barki.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "triceps brachii",
+      "deltoid"
+    ],
+    "equipment": [
+      "barbell",
+      "bench: decline"
+    ],
+    "steps": [
+      "Połóż się na ławce skośnej z głową niżej niż stopy.",
+      "Chwyć gryf szerzej niż barki i zdejmij go ze stojaka.",
+      "Przenieś gryf nad klatkę piersiową i opuść go tuż nad jej dolną część; to pozycja wyjściowa.",
+      "Wyprostuj ręce, unosząc gryf pionowo w górę.",
+      "Zatrzymaj się na chwilę, a następnie opuść gryf do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0083-relaxation.pdf",
+      "pdf/0083-tension.pdf"
+    ],
+    "png": [
+      "png/0083-relaxation.png",
+      "png/0083-tension.png"
+    ]
+  },
+  {
+    "uuid": "98D2649B-4616-455B-A0FA-481ECD780035",
+    "id": 84,
+    "name": "wyciskanie-na-maszynie-na-gorna-czesc-klatki-piersiowej",
+    "title": "Wyciskanie na maszynie na górną część klatki piersiowej",
+    "alias": [
+      "Wyciskanie na górną część klatki piersiowej na maszynie"
+    ],
+    "primer": "Ćwiczenie wzmacniające górną część klatki piersiowej, chętnie wybierane przez początkujących dzięki podparciu i kontroli ruchu.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "triceps brachii",
+      "deltoid"
+    ],
+    "equipment": [
+      "chest machine"
+    ],
+    "steps": [
+      "Wyreguluj siedzisko maszyny tak, aby uchwyty znajdowały się przy górnej części klatki piersiowej.",
+      "Powoli wypchnij uchwyty do przodu do pełnego wyprostu rąk, bez blokowania łokci.",
+      "Zatrzymaj się na chwilę, a następnie kontrolowanym ruchem cofnij ręce do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0084-relaxation.pdf",
+      "pdf/0084-tension.pdf"
+    ],
+    "png": [
+      "png/0084-relaxation.png",
+      "png/0084-tension.png"
+    ]
+  },
+  {
+    "uuid": "41CA09C9-E88C-42DF-997E-7D6FEA4A765E",
+    "id": 85,
+    "name": "wyciskanie-na-maszynie-na-dolna-czesc-klatki-piersiowej",
+    "title": "Wyciskanie na maszynie na dolną część klatki piersiowej",
+    "alias": [
+      "Wyciskanie na dolną część klatki piersiowej na maszynie"
+    ],
+    "primer": "Ćwiczenie wzmacniające dolną część mięśni piersiowych, chętnie wybierane przez początkujących dzięki podparciu i stabilności.",
+    "type": "isolation",
+    "primary": [
+      "pectoralis major"
+    ],
+    "secondary": [
+      "deltoid",
+      "triceps brachii"
+    ],
+    "equipment": [
+      "machine: chest"
+    ],
+    "steps": [
+      "Wyreguluj siedzisko maszyny tak, aby uchwyty znajdowały się przy dolnej części klatki piersiowej.",
+      "Powoli wypchnij uchwyty do przodu do pełnego wyprostu rąk, bez blokowania łokci.",
+      "Zatrzymaj się na chwilę, a następnie kontrolowanym ruchem cofnij ręce do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0085-relaxation.pdf",
+      "pdf/0085-tension.pdf"
+    ],
+    "png": [
+      "png/0085-relaxation.png",
+      "png/0085-tension.png"
+    ]
+  },
+  {
+    "uuid": "7E117B7F-114F-415E-A646-780D9C744ED2",
+    "id": 86,
+    "name": "podciaganie-australijskie",
+    "title": "Podciąganie australijskie",
+    "alias": [
+      "Podciąganie poziome pod sztangą"
+    ],
+    "primer": "Wszechstronne ćwiczenie wzmacniające klatkę piersiową, mięśnie tułowia i plecy.",
+    "type": "compound",
+    "primary": [
+      "latissimus dorsi"
+    ],
+    "secondary": [
+      "biceps brachii",
+      "pectoralis major"
+    ],
+    "equipment": [
+      "bar"
+    ],
+    "steps": [
+      "Połóż się pod gryfem tak, aby znajdował się na wysokości środka klatki piersiowej, a stopy mocno opierały się na podłodze.",
+      "Napnij brzuch i utrzymuj proste plecy.",
+      "Przyciągnij ciało do gryfu ruchem wiosłowania.",
+      "Zatrzymaj się na chwilę, a następnie powoli i kontrolowanie opuść ciało do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0086-relaxation.pdf",
+      "pdf/0086-tension.pdf"
+    ],
+    "png": [
+      "png/0086-relaxation.png",
+      "png/0086-tension.png"
+    ]
+  },
+  {
+    "uuid": "59185216-6167-4427-AC10-38A3FDA17572",
+    "id": 87,
+    "name": "podciaganie-na-drazku-nachwytem",
+    "title": "Podciąganie na drążku nachwytem",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające mięśnie najszersze grzbietu, dwugłowe ramion i środkową część pleców.",
+    "type": "isolation",
+    "primary": [
+      "latissimus dorsi"
+    ],
+    "secondary": [
+      "biceps brachii"
+    ],
+    "equipment": [
+      "bar"
+    ],
+    "steps": [
+      "Chwyć drążek nachwytem, kierując wnętrza dłoni do przodu i stosując zaleconą szerokość chwytu.",
+      "Zawiśnij na wyprostowanych rękach z wybraną szerokością chwytu. Odchyl tułów do tyłu o około 30°, lekko wygnij dolną część pleców i wypnij klatkę piersiową. To pozycja wyjściowa.",
+      "Przyciągnij tułów w górę, aż drążek dotknie górnej części klatki piersiowej, ściągając barki i ramiona w dół i w tył. W tej fazie wykonaj wydech.",
+      "Po sekundzie w pozycji napięcia zacznij wykonywać wdech i powoli opuść tułów do pozycji wyjściowej, aż ręce całkowicie się wyprostują, a mięśnie najszersze grzbietu rozciągną.",
+      "Powtórz ruch.",
+      "Wskazówka: w górnej pozycji skup się na napięciu mięśni pleców. Tułów powinien zachować stałe ustawienie podczas przemieszczania ciała; poruszają się tylko ręce. Przedramiona mają jedynie utrzymywać chwyt drążka."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0087-relaxation.pdf",
+      "pdf/0087-tension.pdf"
+    ],
+    "png": [
+      "png/0087-relaxation.png",
+      "png/0087-tension.png"
+    ]
+  },
+  {
+    "uuid": "CF8EA748-48F2-4170-AE64-E206069D8836",
+    "id": 89,
+    "name": "podciaganie-na-drazku-podchwytem",
+    "title": "Podciąganie na drążku podchwytem",
+    "alias": [],
+    "primer": "Bardzo skuteczne ćwiczenie wzmacniające ramiona i środkową część pleców.",
+    "type": "isolation",
+    "primary": [
+      "latissimus dorsi",
+      "biceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "body",
+      "bar"
+    ],
+    "steps": [
+      "Chwyć drążek podchwytem, z przedramionami odwróconymi na zewnątrz.",
+      "Zawiśnij na drążku z wyprostowanymi rękami.",
+      "Powoli podciągnij się, aż broda znajdzie się powyżej drążka.",
+      "Kontrolowanym ruchem opuść ciało do pozycji wyjściowej."
+    ],
+    "tips": [
+      "Przez całe ćwiczenie napinaj mięśnie pleców i tułowia, aby zapobiec urazom i zwiększyć skuteczność ruchu."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0089-relaxation.pdf",
+      "pdf/0089-tension.pdf"
+    ],
+    "png": [
+      "png/0089-relaxation.png",
+      "png/0089-tension.png"
+    ]
+  },
+  {
+    "uuid": "3B1EE73B-7ADA-40EA-96E7-2228883D9FD8",
+    "id": 90,
+    "name": "podciaganie-waskim-chwytem-neutralnym",
+    "title": "Podciąganie wąskim chwytem neutralnym",
+    "alias": [],
+    "primer": "Ćwiczenie podobne do zwykłego podciągania podchwytem, ale bardziej skupione na wzmacnianiu barków.",
+    "type": "isolation",
+    "primary": [
+      "latissimus dorsi",
+      "biceps brachii"
+    ],
+    "secondary": [
+      "deltoid"
+    ],
+    "equipment": [
+      "bar",
+      "body"
+    ],
+    "steps": [
+      "Chwyć równoległe uchwyty tak, aby wnętrza dłoni były skierowane do siebie.",
+      "Zawiśnij na drążku z wyprostowanymi rękami.",
+      "Powoli podciągnij się, aż broda znajdzie się powyżej drążka.",
+      "Kontrolowanym ruchem opuść ciało do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [
+      "Przez całe ćwiczenie utrzymuj ciało w jednej linii."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0090-relaxation.pdf",
+      "pdf/0090-tension.pdf"
+    ],
+    "png": [
+      "png/0090-relaxation.png",
+      "png/0090-tension.png"
+    ]
+  },
+  {
+    "uuid": "6346EEFD-83B0-4E7D-83A3-7BA003637AA8",
+    "id": 92,
+    "name": "sciaganie-drazka-wyciagu-prostymi-rekami",
+    "title": "Ściąganie drążka wyciągu prostymi rękami",
+    "alias": [
+      "Prostowanie rąk w dół na wyciągu",
+      "Przenoszenie na wyciągu"
+    ],
+    "primer": "Ćwiczenie wzmacniające mięśnie najszersze grzbietu, angażujące także mięśnie trójgłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "latissimus dorsi"
+    ],
+    "secondary": [
+      "triceps brachii"
+    ],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Chwyć szeroki drążek wyciągu szerokim chwytem za jego zagięte w dół końce.",
+      "Stań prosto i napnij brzuch.",
+      "Z lekko ugiętymi łokciami i nieruchomymi nadgarstkami ściągnij drążek z pozycji wyjściowej do górnej części ud.",
+      "Kontrolowanym ruchem unieś drążek do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0092-relaxation.pdf",
+      "pdf/0092-tension.pdf"
+    ],
+    "png": [
+      "png/0092-relaxation.png",
+      "png/0092-tension.png"
+    ]
+  },
+  {
+    "uuid": "A7E6CAE5-2000-4E57-8704-D6B867A57439",
+    "id": 93,
+    "name": "sciaganie-drazka-wyciagu-podchwytem",
+    "title": "Ściąganie drążka wyciągu podchwytem",
+    "alias": [
+      "Ściąganie drążka do klatki piersiowej podchwytem"
+    ],
+    "primer": "Ćwiczenie wzmacniające mięśnie najszersze grzbietu i dwugłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "latissimus dorsi"
+    ],
+    "secondary": [
+      "biceps brachii"
+    ],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Usiądź prosto z napiętym brzuchem i chwyć drążek wyciągu podchwytem na szerokość barków.",
+      "Ściągnij drążek do górnej części klatki piersiowej, prowadząc łokcie blisko tułowia.",
+      "Powoli wróć drążkiem do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0093-relaxation.pdf",
+      "pdf/0093-tension.pdf"
+    ],
+    "png": [
+      "png/0093-relaxation.png",
+      "png/0093-tension.png"
+    ]
+  },
+  {
+    "uuid": "BBD6B085-D50C-4BA5-88FA-AAD4A3737F0B",
+    "id": 95,
+    "name": "sciaganie-drazka-wyciagu-nachwytem",
+    "title": "Ściąganie drążka wyciągu nachwytem",
+    "alias": [
+      "Ściąganie drążka do klatki piersiowej nachwytem"
+    ],
+    "primer": "Ćwiczenie wzmacniające mięśnie najszersze grzbietu i dwugłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "latissimus dorsi"
+    ],
+    "secondary": [
+      "biceps brachii"
+    ],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Usiądź prosto z napiętym brzuchem i chwyć drążek wyciągu nachwytem na szerokość barków.",
+      "Ściągnij drążek do górnej części klatki piersiowej, prowadząc łokcie blisko tułowia.",
+      "Powoli wróć drążkiem do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0095-relaxation.pdf",
+      "pdf/0095-tension.pdf"
+    ],
+    "png": [
+      "png/0095-relaxation.png",
+      "png/0095-tension.png"
+    ]
+  },
+  {
+    "uuid": "FD99103C-B691-4DD3-A40A-8CCEF23FBEC5",
+    "id": 96,
+    "name": "sciaganie-uchwytu-v-wyciagu",
+    "title": "Ściąganie uchwytu V wyciągu",
+    "alias": [
+      "Ściąganie uchwytu V do klatki piersiowej"
+    ],
+    "primer": "Ćwiczenie wzmacniające mięśnie najszersze grzbietu, dwugłowe ramion i środkową część pleców.",
+    "type": "isolation",
+    "primary": [
+      "latissimus dorsi"
+    ],
+    "secondary": [
+      "biceps brachii"
+    ],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Zamocuj uchwyt V do górnego wyciągu.",
+      "Usiądź prosto z napiętym brzuchem i chwyć uchwyt z wnętrzami dłoni skierowanymi do siebie.",
+      "Ściągnij uchwyt pionowo do górnej części klatki piersiowej.",
+      "Po dotknięciu klatki piersiowej zatrzymaj się na chwilę, a następnie powoli wróć do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0096-relaxation.pdf",
+      "pdf/0096-tension.pdf"
+    ],
+    "png": [
+      "png/0096-relaxation.png",
+      "png/0096-tension.png"
+    ]
+  },
+  {
+    "uuid": "91F466BA-1D91-459A-8C5B-81E0B46C54AC",
+    "id": 97,
+    "name": "sciaganie-drazka-wyciagu-szerokim-chwytem",
+    "title": "Ściąganie drążka wyciągu szerokim chwytem",
+    "alias": [
+      "Ściąganie drążka do klatki piersiowej szerokim chwytem"
+    ],
+    "primer": "Ćwiczenie wzmacniające mięśnie najszersze grzbietu, dwugłowe ramion i środkową część pleców.",
+    "type": "isolation",
+    "primary": [
+      "latissimus dorsi"
+    ],
+    "secondary": [
+      "biceps brachii",
+      "latissimus dorsi"
+    ],
+    "equipment": [
+      "cable",
+      "wide bar"
+    ],
+    "steps": [
+      "Usiądź przy wyciągu z szerokim drążkiem.",
+      "Chwyć drążek szerokim nachwytem, kierując wnętrza dłoni do przodu.",
+      "Napnij brzuch i utrzymując proste plecy, ściągnij drążek do górnej części klatki piersiowej.",
+      "Zatrzymaj się na chwilę, a następnie wróć drążkiem do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [
+      "Przez całe ćwiczenie utrzymuj proste plecy."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0097-relaxation.pdf",
+      "pdf/0097-tension.pdf"
+    ],
+    "png": [
+      "png/0097-relaxation.png",
+      "png/0097-tension.png"
+    ]
+  },
+  {
+    "uuid": "E301F9A9-9516-47E3-9E77-D2C7E50B4D7A",
+    "id": 99,
+    "name": "martwy-ciag-ze-sztanga",
+    "title": "Martwy ciąg ze sztangą",
+    "alias": [],
+    "primer": "Technika jest taka sama jak w martwym ciągu na maszynie Smitha, ale to ćwiczenie zapewnia mniejsze podparcie.",
+    "type": "isolation",
+    "primary": [
+      "erector spinae"
+    ],
+    "secondary": [
+      "ischiocrural muscles",
+      "gastrocnemius",
+      "soleus"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Stań ze stopami na szerokość barków, ustawiając je pod gryfem.",
+      "Utrzymując proste plecy, pochyl się w biodrach i lekko ugnij kolana.",
+      "Chwyć gryf nachwytem, rozstawiając dłonie na około 41 cm.",
+      "Wyprostuj tułów, trzymając gryf w wyprostowanych rękach.",
+      "Ponownie się pochyl, opuszczając gryf tuż nad podłogę."
+    ],
+    "tips": [
+      "To ćwiczenie zaawansowane; najpierw opanuj jego technikę na maszynie Smitha."
+    ],
+    "references": [
+      "https://youtu.be/4AObAU-EcYE"
+    ],
+    "pdf": [
+      "pdf/0099-relaxation.pdf",
+      "pdf/0099-tension.pdf"
+    ],
+    "png": [
+      "png/0099-relaxation.png",
+      "png/0099-tension.png"
+    ]
+  },
+  {
+    "uuid": "734F6CD7-9787-45BF-91B2-EB61A9C05575",
+    "id": 100,
+    "name": "martwy-ciag-na-maszynie-smitha",
+    "title": "Martwy ciąg na maszynie Smitha",
+    "alias": [],
+    "primer": "Odmiana martwego ciągu, w której maszyna Smitha pozwala lepiej kontrolować ciężar.",
+    "type": "isolation",
+    "primary": [
+      "erector spinae"
+    ],
+    "secondary": [
+      "ischiocrural muscles",
+      "gastrocnemius",
+      "soleus"
+    ],
+    "equipment": [
+      "smith machine"
+    ],
+    "steps": [
+      "Stań ze stopami na szerokość barków, ustawiając je pod gryfem.",
+      "Utrzymując proste plecy, pochyl się w biodrach i lekko ugnij kolana.",
+      "Chwyć gryf nachwytem, rozstawiając dłonie na około 41 cm.",
+      "Wyprostuj tułów, trzymając gryf w wyprostowanych rękach.",
+      "Ponownie się pochyl, opuszczając gryf tuż nad podłogę."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0100-relaxation.pdf",
+      "pdf/0100-tension.pdf"
+    ],
+    "png": [
+      "png/0100-relaxation.png",
+      "png/0100-tension.png"
+    ]
+  },
+  {
+    "uuid": "3391381C-A3C2-4105-B9A9-9610FFF1912D",
+    "id": 101,
+    "name": "sklony-dzien-dobry-ze-sztanga",
+    "title": "Skłony dzień dobry ze sztangą",
+    "alias": [],
+    "primer": "Jedno z najstarszych ćwiczeń kulturystycznych, nadal należące do najlepszych ćwiczeń na dolną część pleców.",
+    "type": "isolation",
+    "primary": [
+      "erector spinae"
+    ],
+    "secondary": [
+      "ischiocrural muscles"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Ułóż sztangę w poprzek barków.",
+      "Trzymając głowę uniesioną i plecy całkowicie proste, pochyl się w biodrach, aż plecy znajdą się równolegle do podłogi.",
+      "Wróć do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0101-relaxation.pdf",
+      "pdf/0101-tension.pdf"
+    ],
+    "png": [
+      "png/0101-relaxation.png",
+      "png/0101-tension.png"
+    ]
+  },
+  {
+    "uuid": "2F3CB755-027C-4E47-9C6D-DFD4ACB52B77",
+    "id": 102,
+    "name": "sklony-dzien-dobry-na-maszynie-smitha",
+    "title": "Skłony dzień dobry na maszynie Smitha",
+    "alias": [],
+    "primer": "Technika jest taka sama jak w klasycznych skłonach dzień dobry, ale maszyna Smitha zapewnia większą stabilność.",
+    "type": "isolation",
+    "primary": [
+      "erector spinae"
+    ],
+    "secondary": [
+      "ischiocrural muscles"
+    ],
+    "equipment": [
+      "smith machine"
+    ],
+    "steps": [
+      "Ułóż gryf w poprzek barków.",
+      "Trzymając głowę uniesioną i plecy całkowicie proste, pochyl się w biodrach, aż plecy znajdą się równolegle do podłogi.",
+      "Wróć do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0102-relaxation.pdf",
+      "pdf/0102-tension.pdf"
+    ],
+    "png": [
+      "png/0102-relaxation.png",
+      "png/0102-tension.png"
+    ]
+  },
+  {
+    "uuid": "DEB57677-680C-442E-AA95-7162C6126B18",
+    "id": 103,
+    "name": "prostowanie-tulowia-na-lawce",
+    "title": "Prostowanie tułowia na ławce",
+    "alias": [
+      "Wyprosty grzbietu"
+    ],
+    "primer": "Ćwiczenie zwiększające siłę i elastyczność pleców oraz mięśni tułowia.",
+    "type": "isolation",
+    "primary": [
+      "erector spinae"
+    ],
+    "secondary": [
+      "ischiocrural muscles",
+      "core"
+    ],
+    "equipment": [
+      "bench: hyperextension"
+    ],
+    "steps": [
+      "Wyreguluj ławkę do prostowania tułowia tak, aby kostki znajdowały się pod wałkami, a uda spoczywały płasko na górnej poduszce.",
+      "Skrzyżuj ręce na klatce piersiowej i utrzymując proste plecy, powoli pochyl się w biodrach w stronę podłogi.",
+      "Powoli wróć do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0103-relaxation.pdf",
+      "pdf/0103-tension.pdf"
+    ],
+    "png": [
+      "png/0103-relaxation.png",
+      "png/0103-tension.png"
+    ]
+  },
+  {
+    "uuid": "B3FB3BC4-AC56-4D09-BC26-A0F1F98BA00C",
+    "id": 105,
+    "name": "superman",
+    "title": "Superman",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające i rozciągające dolną część pleców oraz mięśnie tułowia.",
+    "type": "isolation",
+    "primary": [
+      "erector spinae"
+    ],
+    "secondary": [
+      "core"
+    ],
+    "equipment": [
+      "body"
+    ],
+    "steps": [
+      "Połóż się płasko na brzuchu z rękami wyciągniętymi przed siebie.",
+      "Unieś ręce i nogi nad podłogę i utrzymaj pozycję przez 2 sekundy.",
+      "Wróć do pozycji wyjściowej na podłodze.",
+      "Powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0105-relaxation.pdf",
+      "pdf/0105-tension.pdf"
+    ],
+    "png": [
+      "png/0105-relaxation.png",
+      "png/0105-tension.png"
+    ]
+  },
+  {
+    "uuid": "7B27C3C2-B4C0-423E-8472-90DAFA53B5FB",
+    "id": 107,
+    "name": "martwy-ciag-z-hantlami",
+    "title": "Martwy ciąg z hantlami",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające dolną część pleców, mięśnie kulszowo-goleniowe i łydki.",
+    "type": "isolation",
+    "primary": [
+      "erector spinae"
+    ],
+    "secondary": [
+      "gastrocnemius",
+      "soleus",
+      "ischiocrural muscles"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Chwyć dwa hantle i stań ze stopami na szerokość barków.",
+      "Utrzymując proste plecy, pochyl się w biodrach i lekko ugnij kolana.",
+      "Trzymaj po hantlu w każdej dłoni nachwytem.",
+      "Wyprostuj tułów, trzymając hantle w wyprostowanych rękach.",
+      "Ponownie się pochyl, opuszczając hantle tuż nad podłogę.",
+      "Wróć do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [
+      "Nie zwiększaj ciężaru, dopóki nie opanujesz prawidłowej techniki."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0107-relaxation.pdf",
+      "pdf/0107-tension.pdf"
+    ],
+    "png": [
+      "png/0107-relaxation.png",
+      "png/0107-tension.png"
+    ]
+  },
+  {
+    "uuid": "82008701-4189-4693-9B68-00E32C78AB92",
+    "id": 108,
+    "name": "deska",
+    "title": "Deska",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające mięśnie tułowia.",
+    "type": "compound",
+    "primary": [
+      "obliques"
+    ],
+    "secondary": [],
+    "equipment": [
+      "body"
+    ],
+    "steps": [
+      "Oprzyj dłonie i kolana na podłodze.",
+      "Podeprzyj ciało na stopach i przedramionach.",
+      "Utrzymaj pozycję, a następnie powoli wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0108-tension.pdf"
+    ],
+    "png": [
+      "png/0108-tension.png"
+    ]
+  },
+  {
+    "uuid": "B6223C8A-502E-4AA8-B9C5-AEB8CB301759",
+    "id": 109,
+    "name": "unoszenie-bioder-w-lezeniu",
+    "title": "Unoszenie bioder w leżeniu",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające mięśnie tułowia i pomagające utrzymać ich sprawność.",
+    "type": "isolation",
+    "primary": [
+      "glutaeus maximus"
+    ],
+    "secondary": [
+      "core"
+    ],
+    "equipment": [
+      "body"
+    ],
+    "steps": [
+      "Połóż się na plecach z ugiętymi kolanami i całymi stopami na podłodze.",
+      "Unieś biodra i pośladki nad podłogę, napinając brzuch i mięśnie pośladkowe.",
+      "Zatrzymaj się na górze na sekundę, a następnie powoli wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0109-relaxation.pdf",
+      "pdf/0109-tension.pdf"
+    ],
+    "png": [
+      "png/0109-relaxation.png",
+      "png/0109-tension.png"
+    ]
+  },
+  {
+    "uuid": "6B849257-F025-473C-BB69-232E58DD7F66",
+    "id": 112,
+    "name": "prostowanie-nogi-w-tyl-na-wyciagu",
+    "title": "Prostowanie nogi w tył na wyciągu",
+    "alias": [
+      "Wyprost biodra na wyciągu"
+    ],
+    "primer": "Ćwiczenie wzmacniające pośladki i mięśnie kulszowo-goleniowe.",
+    "type": "isolation",
+    "primary": [
+      "glutaeus maximus"
+    ],
+    "secondary": [
+      "ischiocrural muscles"
+    ],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Stań przy kolumnie wyciągu i przymocuj opaskę na kostkę do dolnej linki.",
+      "Ustaw się przodem do stosu obciążeń, lekko ugnij kolana i napnij brzuch.",
+      "Powoli odprowadź nogę łukiem w tył i w górę tak wysoko, jak potrafisz.",
+      "Wróć do pozycji wyjściowej i zmień nogę."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0112-relaxation.pdf",
+      "pdf/0112-tension.pdf"
+    ],
+    "png": [
+      "png/0112-relaxation.png",
+      "png/0112-tension.png"
+    ]
+  },
+  {
+    "uuid": "E76C6B6E-758D-43A1-A04D-618DC7D5D2C7",
+    "id": 113,
+    "name": "deska-bokiem",
+    "title": "Deska bokiem",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające mięśnie tułowia.",
+    "type": "isolation",
+    "primary": [
+      "obliques"
+    ],
+    "secondary": [],
+    "equipment": [
+      "body"
+    ],
+    "steps": [
+      "Połóż się na boku z prostymi nogami i przedramieniem ustawionym przed sobą prostopadle do ciała.",
+      "Napnij brzuch i powoli unieś ciało, opierając ciężar na stopach i przedramieniu.",
+      "Utrzymaj pozycję, a następnie powoli wróć do pozycji wyjściowej.",
+      "Powtórz na drugim boku."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0113-tension.pdf"
+    ],
+    "png": [
+      "png/0113-tension.png"
+    ]
+  },
+  {
+    "uuid": "D645140E-5761-4096-AD31-8E66A8D6A562",
+    "id": 114,
+    "name": "wykroki-ze-sztanga",
+    "title": "Wykroki ze sztangą",
+    "alias": [],
+    "primer": "Klasyczne ćwiczenie wzmacniające mięśnie kulszowo-goleniowe, czworogłowe ud, łydki i pośladki.",
+    "type": "isolation",
+    "primary": [
+      "ischiocrural muscles"
+    ],
+    "secondary": [
+      "glutaeus maximus",
+      "quadriceps",
+      "gastrocnemius",
+      "soleus"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Ułóż sztangę na górnej części pleców i chwyć ją nieco szerzej niż barki.",
+      "Stań ze stopami oddalonymi o około 20 cm, kierując palce do przodu.",
+      "Zrób krok do przodu na 60–90 cm, utrzymując napięty brzuch i wyprostowany tułów.",
+      "Powoli opuść jedno kolano jak do klęku, utrzymując drugie zgięte pod kątem 90°. Nie dotykaj kolanem podłogi.",
+      "Opuść ciało, aż tylne kolano znajdzie się tuż nad podłogą, zatrzymaj się na chwilę i wróć do pozycji wyjściowej.",
+      "Powtórz na drugą stronę."
+    ],
+    "tips": [
+      "Przednie kolano nie powinno wysuwać się poza palce stopy i powinno pozostać zgięte pod kątem 90°, aby zapobiec urazom kolana."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0114-relaxation.pdf",
+      "pdf/0114-tension.pdf"
+    ],
+    "png": [
+      "png/0114-relaxation.png",
+      "png/0114-tension.png"
+    ]
+  },
+  {
+    "uuid": "D3BE22C1-9276-4EF9-9888-2E98D76DC618",
+    "id": 115,
+    "name": "wykroki-z-hantlami",
+    "title": "Wykroki z hantlami",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające całe nogi, zwłaszcza mięśnie kulszowo-goleniowe.",
+    "type": "isolation",
+    "primary": [
+      "ischiocrural muscles"
+    ],
+    "secondary": [
+      "glutaeus maximus",
+      "quadriceps",
+      "gastrocnemius",
+      "soleus"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Chwyć po hantlu w każdej dłoni.",
+      "Stań ze stopami oddalonymi o około 20 cm, kierując palce do przodu.",
+      "Zrób krok do przodu na 60–90 cm, utrzymując napięty brzuch i wyprostowany tułów.",
+      "Powoli opuść jedno kolano jak do klęku, utrzymując drugie zgięte pod kątem 90°. Nie dotykaj kolanem podłogi.",
+      "Opuść ciało, aż tylne kolano znajdzie się tuż nad podłogą, zatrzymaj się na chwilę i wróć do pozycji wyjściowej.",
+      "Powtórz na drugą stronę."
+    ],
+    "tips": [
+      "Utrzymuj przednie kolano zgięte pod kątem 90°, aby zapobiec urazom kolana."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0115-relaxation.pdf",
+      "pdf/0115-tension.pdf"
+    ],
+    "png": [
+      "png/0115-relaxation.png",
+      "png/0115-tension.png"
+    ]
+  },
+  {
+    "uuid": "62B9751E-0E1B-4F91-926F-A0A599096DDE",
+    "id": 116,
+    "name": "naprzemienne-unoszenie-nog-w-lezeniu-na-brzuchu",
+    "title": "Naprzemienne unoszenie nóg w leżeniu na brzuchu",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające mięśnie czworogłowe ud i kulszowo-goleniowe.",
+    "type": "isolation",
+    "primary": [
+      "ischiocrural muscles"
+    ],
+    "secondary": [
+      "quadriceps"
+    ],
+    "equipment": [
+      "flat bench"
+    ],
+    "steps": [
+      "Połóż się na brzuchu na ławce, z biodrami przy jej krawędzi, i przytrzymaj ławkę dłońmi.",
+      "Pozwól nogom i palcom stóp swobodnie zwisać.",
+      "Napnij brzuch, pośladki i mięśnie tylnej części ud.",
+      "Unoś nogę w tył i w górę, utrzymując biodra na ławce.",
+      "Unoś nogi naprzemiennie."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0116-relaxation.pdf",
+      "pdf/0116-tension.pdf"
+    ],
+    "png": [
+      "png/0116-relaxation.png",
+      "png/0116-tension.png"
+    ]
+  },
+  {
+    "uuid": "25B6655E-895A-41CB-835A-247A3A7B2E0F",
+    "id": 117,
+    "name": "uginanie-nog-na-maszynie-lezac",
+    "title": "Uginanie nóg na maszynie leżąc",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające mięśnie kulszowo-goleniowe.",
+    "type": "isolation",
+    "primary": [
+      "ischiocrural muscles"
+    ],
+    "secondary": [],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Połóż się na brzuchu na maszynie do uginania nóg i umieść pięty pod wałkiem.",
+      "Chwyć uchwyty dla stabilności i powoli przyciągnij pięty w stronę pleców.",
+      "Zatrzymaj się na chwilę, a następnie wróć do pozycji wyjściowej.",
+      "Powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0117-relaxation.pdf",
+      "pdf/0117-tension.pdf"
+    ],
+    "png": [
+      "png/0117-relaxation.png",
+      "png/0117-tension.png"
+    ]
+  },
+  {
+    "uuid": "37DF9EB1-8E5F-404E-91B2-36210D356F95",
+    "id": 118,
+    "name": "rumunski-martwy-ciag",
+    "title": "Rumuński martwy ciąg",
+    "alias": [],
+    "primer": "Ćwiczenie podobne do klasycznego martwego ciągu, wzmacniające mięśnie kulszowo-goleniowe, łydki, mięśnie czworogłowe ud i pośladki.",
+    "type": "isolation",
+    "primary": [
+      "ischiocrural muscles"
+    ],
+    "secondary": [
+      "gastrocnemius",
+      "soleus",
+      "quadriceps",
+      "glutaeus maximus"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Połóż sztangę na podłodze przed stopami.",
+      "Chwyć sztangę nieco szerzej niż barki.",
+      "Lekko ugnij kolana, utrzymując biodra i plecy w prostym ustawieniu.",
+      "Unieś sztangę pionowo, skupiając się na pracy bioder podczas wstawania.",
+      "Stań prosto ze sztangą opartą o uda.",
+      "Opuść sztangę na podłogę z lekko ugiętymi kolanami, cofając biodra dla zachowania stabilności."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0118-relaxation.pdf",
+      "pdf/0118-tension.pdf"
+    ],
+    "png": [
+      "png/0118-relaxation.png",
+      "png/0118-tension.png"
+    ]
+  },
+  {
+    "uuid": "8CD1F963-7570-467A-A15E-FAAFFEBF2546",
+    "id": 119,
+    "name": "uginanie-nog-na-maszynie-siedzac",
+    "title": "Uginanie nóg na maszynie siedząc",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające mięśnie kulszowo-goleniowe, podobne do uginania nóg w leżeniu.",
+    "type": "isolation",
+    "primary": [
+      "ischiocrural muscles"
+    ],
+    "secondary": [],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Wyreguluj maszynę tak, aby wałek znajdował się tuż nad piętami.",
+      "Usiądź prosto z napiętym brzuchem i nogami przed sobą.",
+      "Powoli ugnij nogi, przyciągając je do siebie, i zatrzymaj się na chwilę.",
+      "Kontrolowanym ruchem wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0119-relaxation.pdf",
+      "pdf/0119-tension.pdf"
+    ],
+    "png": [
+      "png/0119-relaxation.png",
+      "png/0119-tension.png"
+    ]
+  },
+  {
+    "uuid": "C6B9548C-B1ED-4A85-A200-331D1E08BE33",
+    "id": 120,
+    "name": "uginanie-nogi-na-maszynie-stojac",
+    "title": "Uginanie nogi na maszynie stojąc",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające mięśnie kulszowo-goleniowe.",
+    "type": "isolation",
+    "primary": [
+      "ischiocrural muscles"
+    ],
+    "secondary": [],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Stań przy maszynie do uginania nóg i wyreguluj tylny wałek tak, aby znajdował się tuż nad kostką.",
+      "Chwyć uchwyty maszyny dla stabilności i napnij brzuch.",
+      "Powoli unieś stopę w stronę pleców.",
+      "Wróć do pozycji wyjściowej i zmień nogę."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0120-relaxation.pdf",
+      "pdf/0120-tension.pdf"
+    ],
+    "png": [
+      "png/0120-relaxation.png",
+      "png/0120-tension.png"
+    ]
+  },
+  {
+    "uuid": "E8763784-DDCF-4A7B-9321-189C1E93A1B7",
+    "id": 121,
+    "name": "wykroki-chodzone-z-hantlami",
+    "title": "Wykroki chodzone z hantlami",
+    "alias": [],
+    "primer": "Wykroki chodzone dają korzyści zwykłych wykroków, a ciągły ruch dodatkowo angażuje mięśnie tułowia.",
+    "type": "isolation",
+    "primary": [
+      "ischiocrural muscles"
+    ],
+    "secondary": [
+      "quadriceps",
+      "glutaeus maximus",
+      "gastrocnemius",
+      "soleus"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Chwyć po hantlu w każdej dłoni.",
+      "Stań ze stopami oddalonymi o około 20 cm, kierując palce do przodu.",
+      "Zrób wykrok do przodu, utrzymując napięty brzuch i wyprostowany tułów.",
+      "Powoli opuść jedno kolano jak do klęku, utrzymując drugie zgięte pod kątem 90°. Nie dotykaj kolanem podłogi.",
+      "Opuść ciało tuż nad podłogę, zatrzymaj się na chwilę, a następnie odepchnij się tylną stopą.",
+      "Przejdź do kolejnego kroku i powtórz ćwiczenie drugą nogą."
+    ],
+    "tips": [
+      "Ćwicz wykroki chodzone bez obciążenia, dopóki ruch nie stanie się swobodny."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0121-relaxation1.pdf",
+      "pdf/0121-tension1.pdf",
+      "pdf/0121-relaxation2.pdf",
+      "pdf/0121-tension2.pdf"
+    ],
+    "png": [
+      "png/0121-relaxation1.png",
+      "png/0121-tension1.png",
+      "png/0121-relaxation2.png",
+      "png/0121-tension2.png"
+    ]
+  },
+  {
+    "uuid": "2339F5BD-2E8C-4446-B1A5-6156B1192229",
+    "id": 122,
+    "name": "przysiad-ze-sztanga",
+    "title": "Przysiad ze sztangą",
+    "alias": [],
+    "primer": "Najważniejsze ćwiczenie rozwijające ogólną siłę.",
+    "type": "compound",
+    "primary": [
+      "quadriceps"
+    ],
+    "secondary": [
+      "ischiocrural muscles"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Zdejmij sztangę ze stojaka i ułóż ją na barkach.",
+      "Rozstaw stopy nieco szerzej niż barki, kierując kolana i palce lekko na zewnątrz.",
+      "Napnij brzuch i powoli zejdź w dół, zginając kolana i biodra jak przy siadaniu.",
+      "Opuść się tak nisko, jak potrafisz kontrolować ruch, nie przenosząc ciężaru ciała na palce, co grozi utratą równowagi.",
+      "Wstań do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [
+      "https://youtu.be/nhoikoUEI8U"
+    ],
+    "pdf": [
+      "pdf/0122-relaxation.pdf",
+      "pdf/0122-tension.pdf"
+    ],
+    "png": [
+      "png/0122-relaxation.png",
+      "png/0122-tension.png"
+    ]
+  },
+  {
+    "uuid": "60790477-29FD-4139-B89E-FE583BBFF658",
+    "id": 123,
+    "name": "przysiad-na-maszynie-hacka",
+    "title": "Przysiad na maszynie Hacka",
+    "alias": [],
+    "primer": "Odmiana przysiadu wykonywana na maszynie.",
+    "type": "compound",
+    "primary": [
+      "quadriceps"
+    ],
+    "secondary": [
+      "ischiocrural muscles",
+      "gastrocnemius",
+      "soleus"
+    ],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Odmiana przysiadu wykonywana na maszynie, która może być wygodniejsza dla początkujących.",
+      "Połóż się na plecach na maszynie Hacka, opierając barki o poduszki.",
+      "Ustaw stopy nieco węziej niż barki, kierując je do przodu z palcami lekko na zewnątrz.",
+      "Zwolnij dźwignie blokujące i połóż dłonie na uchwytach.",
+      "Napnij brzuch i wyprostuj ciało do pozycji stojącej.",
+      "Opuść ciało do przysiadu, zginając kolana jak przy siadaniu.",
+      "Wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0123-relaxation.pdf",
+      "pdf/0123-tension.pdf"
+    ],
+    "png": [
+      "png/0123-relaxation.png",
+      "png/0123-tension.png"
+    ]
+  },
+  {
+    "uuid": "9D96C412-5D6C-4FDD-9781-1B89AF31EE3D",
+    "id": 124,
+    "name": "przysiad-na-maszynie-smitha",
+    "title": "Przysiad na maszynie Smitha",
+    "alias": [],
+    "primer": "Odmiana przysiadu wykonywana na maszynie Smitha.",
+    "type": "compound",
+    "primary": [
+      "quadriceps"
+    ],
+    "secondary": [
+      "gastrocnemius",
+      "soleus",
+      "glutaeus maximus",
+      "ischiocrural muscles"
+    ],
+    "equipment": [
+      "smith machine"
+    ],
+    "steps": [
+      "Ćwiczenie na maszynie Smitha angażuje mięśnie czworogłowe ud, kulszowo-goleniowe, łydki i pośladki, wszechstronnie wzmacniając dolną część ciała. Spośród wielu odmian przysiadu ta wykorzystuje maszynę Smitha dla płynniejszego ruchu.",
+      "Ustaw gryf na wysokości barków.",
+      "Rozstaw stopy nieco szerzej niż barki, kierując kolana i palce lekko na zewnątrz.",
+      "Napnij brzuch i powoli zejdź w dół, zginając kolana i biodra jak przy siadaniu.",
+      "Opuść się tak nisko, jak potrafisz kontrolować ruch, nie przenosząc ciężaru ciała na palce, co grozi utratą równowagi.",
+      "Zatrzymaj się w przysiadzie, a następnie powoli wyprostuj ciało do pozycji wyjściowej.",
+      "W razie potrzeby osłona gryfu lub ręcznik na barkach mogą poprawić chwyt i zmniejszyć dyskomfort nacisku gryfu na plecy. Najpierw ćwicz przysiad bez obciążenia, aby oswoić się z ruchem."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0124-relaxation.pdf",
+      "pdf/0124-tension.pdf"
+    ],
+    "png": [
+      "png/0124-relaxation.png",
+      "png/0124-tension.png"
+    ]
+  },
+  {
+    "uuid": "7DE5B1E4-9748-459E-9B79-DB02A72B89EF",
+    "id": 125,
+    "name": "przysiad-hacka-ze-sztanga",
+    "title": "Przysiad Hacka ze sztangą",
+    "alias": [],
+    "primer": "Odmiana przysiadu skupiająca się przede wszystkim na mięśniach czworogłowych ud.",
+    "type": "compound",
+    "primary": [
+      "quadriceps"
+    ],
+    "secondary": [
+      "ischiocrural muscles"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Odmiana podstawowego przysiadu skupiająca się przede wszystkim na mięśniach czworogłowych ud.",
+      "Połóż sztangę na podłodze tuż za nogami i stań ze stopami na szerokość barków, kierując palce do przodu.",
+      "Mocno opierając stopy na podłodze, sięgnij w dół i chwyć sztangę za sobą nachwytem.",
+      "Unieś sztangę, prostując biodra i kolana, ale nie blokując kolan.",
+      "Zejdź do przysiadu, aż uda znajdą się równolegle do podłogi.",
+      "Powoli wstań do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0125-relaxation.pdf",
+      "pdf/0125-tension.pdf"
+    ],
+    "png": [
+      "png/0125-relaxation.png",
+      "png/0125-tension.png"
+    ]
+  },
+  {
+    "uuid": "4C200AB4-2298-4879-A059-46BB1536DF4D",
+    "id": 126,
+    "name": "przysiad-hacka-na-maszynie-smitha",
+    "title": "Przysiad Hacka na maszynie Smitha",
+    "alias": [],
+    "primer": "Odmiana przysiadu na maszynie Smitha skupiająca się przede wszystkim na mięśniach czworogłowych ud.",
+    "type": "compound",
+    "primary": [
+      "quadriceps"
+    ],
+    "secondary": [
+      "ischiocrural muscles",
+      "glutaeus maximus"
+    ],
+    "equipment": [
+      "smith machine"
+    ],
+    "steps": [
+      "Odmiana podstawowego przysiadu na maszynie Smitha skupiająca się przede wszystkim na mięśniach czworogłowych ud.",
+      "Ustaw gryf nisko, tuż nad kostkami.",
+      "Stań z gryfem przy podłodze tuż za nogami, ze stopami na szerokość barków i palcami skierowanymi do przodu.",
+      "Mocno opierając stopy na podłodze, sięgnij w dół i chwyć gryf za sobą nachwytem.",
+      "Unieś gryf, prostując biodra i kolana, ale nie blokując kolan.",
+      "Zejdź do przysiadu, aż uda znajdą się równolegle do podłogi.",
+      "Powoli wstań do pozycji wyjściowej.",
+      "Uwaga: kolana powinny poruszać się w tym samym kierunku co stopy."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0126-relaxation.pdf",
+      "pdf/0126-tension.pdf"
+    ],
+    "png": [
+      "png/0126-relaxation.png",
+      "png/0126-tension.png"
+    ]
+  },
+  {
+    "uuid": "8B3DE466-1552-4978-A378-55F64E8CA66B",
+    "id": 127,
+    "name": "wypychanie-nog-na-suwnicy",
+    "title": "Wypychanie nóg na suwnicy",
+    "alias": [],
+    "primer": "Kluczowe ćwiczenie rozwijające i wzmacniające nogi.",
+    "type": "compound",
+    "primary": [
+      "quadriceps"
+    ],
+    "secondary": [
+      "gastrocnemius",
+      "soleus",
+      "ischiocrural muscles"
+    ],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Obok przysiadu jest to kluczowe ćwiczenie rozwijające i wzmacniające nogi.",
+      "Wyreguluj siedzisko tak, aby stopy wygodnie dosięgały platformy przy lekko ugiętych kolanach.",
+      "Na początek wypchnij platformę stopami rozstawionymi na szerokość barków i zwolnij blokady bezpieczeństwa.",
+      "Powoli opuść ciężar w stronę ciała, napinając brzuch i prowadząc kolana w kierunku stóp do zgięcia pod kątem 90°.",
+      "Nie blokuj kolan ani nie odbijaj ciężaru."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0127-relaxation.pdf",
+      "pdf/0127-tension.pdf"
+    ],
+    "png": [
+      "png/0127-relaxation.png",
+      "png/0127-tension.png"
+    ]
+  },
+  {
+    "uuid": "B7ACD3EA-57FE-437F-9286-A03A3C58AAD7",
+    "id": 130,
+    "name": "przysiad-z-hantlami",
+    "title": "Przysiad z hantlami",
+    "alias": [],
+    "primer": "Wszechstronne ćwiczenie dolnej części ciała z użyciem hantli.",
+    "type": "compound",
+    "primary": [
+      "quadriceps"
+    ],
+    "secondary": [
+      "ischiocrural muscles",
+      "gastrocnemius",
+      "soleus"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Wszechstronne ćwiczenie dolnej części ciała, w którym zamiast sztangi używa się hantli. Początkującym ta wersja może sprawiać mniej trudności.",
+      "Chwyć po hantlu w każdej dłoni.",
+      "Stań ze stopami nieco szerzej niż barki, kierując kolana i palce lekko na zewnątrz.",
+      "Napnij brzuch i powoli zejdź w dół, zginając kolana i biodra jak przy siadaniu.",
+      "Opuść się tak nisko, jak potrafisz kontrolować ruch, nie przenosząc ciężaru ciała na palce, co grozi utratą równowagi.",
+      "Zatrzymaj się na dole, a następnie powoli wstań do pozycji wyjściowej.",
+      "Uwaga: ćwiczenie przysiadu bez obciążenia pozwala oswoić się z ruchem."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0130-relaxation.pdf",
+      "pdf/0130-tension.pdf"
+    ],
+    "png": [
+      "png/0130-relaxation.png",
+      "png/0130-tension.png"
+    ]
+  },
+  {
+    "uuid": "52977031-70A7-4E08-98A1-4871B614B9FB",
+    "id": 135,
+    "name": "przywodzenie-nogi-na-wyciagu",
+    "title": "Przywodzenie nogi na wyciągu",
+    "alias": [],
+    "primer": "Ćwiczenie wzmacniające zginacze biodra i mięśnie ud.",
+    "type": "isolation",
+    "primary": [
+      "quadriceps"
+    ],
+    "secondary": [
+      "hip adductors"
+    ],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Stań bokiem do stosu obciążeń wyciągu i połącz linkę z opaską na kostce.",
+      "Odsuń się od stosu, przytrzymując go dla stabilności.",
+      "Stań mocno na nodze bez linki i powoli przywiedź nogę z opaską, prowadząc ją przed nogą podporową.",
+      "Powtórz i zmień nogę."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0135-relaxation.pdf",
+      "pdf/0135-tension.pdf"
+    ],
+    "png": [
+      "png/0135-relaxation.png",
+      "png/0135-tension.png"
+    ]
+  },
+  {
+    "uuid": "0EE3033B-5E17-4F16-B8C4-85569F0C1C14",
+    "id": 138,
+    "name": "przysiad-przedni-ze-sztanga",
+    "title": "Przysiad przedni ze sztangą",
+    "alias": [],
+    "primer": "Przysiad przedni angażuje te same mięśnie co przysiad ze sztangą z tyłu, bez umieszczania gryfu na tylnej części barków.",
+    "type": "compound",
+    "primary": [
+      "quadriceps"
+    ],
+    "secondary": [
+      "ischiocrural muscles",
+      "gastrocnemius",
+      "soleus"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Przysiad przedni angażuje te same mięśnie co przysiad ze sztangą z tyłu, bez umieszczania gryfu na tylnej części barków. Może być zamiennikiem dla osób z urazami pleców i szyi.",
+      "Ułóż sztangę na górnej części klatki piersiowej, opierając ją na przednich częściach mięśni naramiennych i stabilnie przytrzymując skrzyżowanymi rękami.",
+      "Utrzymuj głowę i plecy prosto, napnij brzuch i skieruj palce stóp lekko na zewnątrz.",
+      "Powoli zejdź do przysiadu, aż uda znajdą się równolegle do podłogi.",
+      "Powoli wróć do pozycji wyjściowej.",
+      "Uwaga: ćwicz przysiad bez obciążenia, aby oswoić się z ruchem."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0138-relaxation.pdf",
+      "pdf/0138-tension.pdf"
+    ],
+    "png": [
+      "png/0138-relaxation.png",
+      "png/0138-tension.png"
+    ]
+  },
+  {
+    "uuid": "62ABB8D5-C8AC-49C8-B870-1A38F731B4CF",
+    "id": 142,
+    "name": "prostowanie-nog-na-maszynie",
+    "title": "Prostowanie nóg na maszynie",
+    "alias": [],
+    "primer": "Podstawowe ćwiczenie rozwijające silne nogi.",
+    "type": "isolation",
+    "primary": [
+      "quadriceps"
+    ],
+    "secondary": [],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Wyreguluj siedzisko tak, aby kolana miały pełny zakres ruchu, a wałek opierał się na nogach tuż nad kostkami.",
+      "Chwyć uchwyty dla stabilności, utrzymując biodra i plecy przy siedzisku i oparciu.",
+      "Powoli wyprostuj nogi w kolanach, ale nie blokuj kolan.",
+      "Zatrzymaj się na chwilę, a następnie kontrolowanym ruchem wróć do pozycji wyjściowej.",
+      "Uwaga: kontroluj ruch i nie unoś ciężaru zamachem."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0142-relaxation.pdf",
+      "pdf/0142-tension.pdf"
+    ],
+    "png": [
+      "png/0142-relaxation.png",
+      "png/0142-tension.png"
+    ]
+  },
+  {
+    "uuid": "5DC1047E-AFF0-4717-B9BD-6225B1D39AF5",
+    "id": 143,
+    "name": "wypychanie-nog-na-suwnicy-z-waskim-ustawieniem-stop",
+    "title": "Wypychanie nóg na suwnicy z wąskim ustawieniem stóp",
+    "alias": [],
+    "primer": "Odmiana wypychania nóg mocniej angażująca zewnętrzne partie mięśni nóg.",
+    "type": "compound",
+    "primary": [
+      "quadriceps"
+    ],
+    "secondary": [
+      "gastrocnemius",
+      "soleus",
+      "ischiocrural muscles"
+    ],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Odmiana wypychania nóg, w której zbliżenie stóp mocniej angażuje zewnętrzne partie mięśni nóg.",
+      "Usiądź na suwnicy i oprzyj stopy na platformie w rozstawie około 15 cm, kierując palce lekko na zewnątrz.",
+      "Chwyć uchwyty po bokach maszyny i zwolnij blokady.",
+      "Napnij brzuch, zegnij kolana i przybliż ciężar do klatki piersiowej tak daleko, jak potrafisz.",
+      "Zatrzymaj się na chwilę, a następnie powoli wróć ciężarem do pozycji wyjściowej.",
+      "Uwaga: nie blokuj kolan w górnej pozycji."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0143-relaxation.pdf",
+      "pdf/0143-tension.pdf"
+    ],
+    "png": [
+      "png/0143-relaxation.png",
+      "png/0143-tension.png"
+    ]
+  },
+  {
+    "uuid": "2C0880E2-B58A-4178-B6E3-0B4E1455726C",
+    "id": 145,
+    "name": "przysiad-na-maszynie-hacka-z-waskim-ustawieniem-stop",
+    "title": "Przysiad na maszynie Hacka z wąskim ustawieniem stóp",
+    "alias": [],
+    "primer": "Podobnie jak zwykły przysiad Hacka ćwiczenie angażuje mięśnie nóg.",
+    "type": "compound",
+    "primary": [
+      "quadriceps"
+    ],
+    "secondary": [
+      "ischiocrural muscles",
+      "gastrocnemius",
+      "soleus"
+    ],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Podobnie jak zwykły przysiad Hacka ćwiczenie angażuje mięśnie nóg. Wąskie ustawienie stóp skuteczniej angażuje ich zewnętrzne partie.",
+      "Połóż się na plecach na maszynie Hacka, opierając barki o poduszki.",
+      "Ustaw stopy do przodu w rozstawie około 15 cm, z palcami lekko na zewnątrz.",
+      "Zwolnij dźwignie blokujące i połóż dłonie na uchwytach.",
+      "Napnij brzuch i wyprostuj ciało do pozycji stojącej.",
+      "Opuść ciało do przysiadu, zginając kolana jak przy siadaniu.",
+      "Wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0145-relaxation.pdf",
+      "pdf/0145-tension.pdf"
+    ],
+    "png": [
+      "png/0145-relaxation.png",
+      "png/0145-tension.png"
+    ]
+  },
+  {
+    "uuid": "9ED2222B-7AF0-493F-ABAE-181DEB8A167A",
+    "id": 146,
+    "name": "przysiad-ze-sztanga-z-waskim-ustawieniem-stop",
+    "title": "Przysiad ze sztangą z wąskim ustawieniem stóp",
+    "alias": [],
+    "primer": "Odmiana przysiadu angażująca i kształtująca przede wszystkim zewnętrzne partie mięśni nóg.",
+    "type": "compound",
+    "primary": [
+      "quadriceps"
+    ],
+    "secondary": [
+      "glutaeus maximus",
+      "gastrocnemius",
+      "soleus",
+      "ischiocrural muscles"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Wszechstronne ćwiczenie dolnej części ciała. Ta odmiana przysiadu angażuje i kształtuje przede wszystkim zewnętrzne partie mięśni nóg.",
+      "Zdejmij sztangę ze stojaka i ułóż ją na barkach.",
+      "Rozstaw stopy na około 15 cm, kierując kolana i palce lekko na zewnątrz.",
+      "Napnij brzuch i powoli zejdź w dół, zginając kolana i biodra jak przy siadaniu.",
+      "Opuść się tak nisko, jak potrafisz kontrolować ruch, nie przenosząc ciężaru ciała na palce, co grozi utratą równowagi.",
+      "Zatrzymaj się na dole, a następnie powoli wstań do pozycji wyjściowej.",
+      "Uwagi: osłona gryfu lub ręcznik na barkach mogą poprawić chwyt i zmniejszyć dyskomfort nacisku gryfu na plecy. Ćwicz przysiad bez obciążenia, aby oswoić się z ruchem."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0146-relaxation.pdf",
+      "pdf/0146-tension.pdf"
+    ],
+    "png": [
+      "png/0146-relaxation.png",
+      "png/0146-tension.png"
+    ]
+  },
+  {
+    "uuid": "3DBA09C5-B563-412D-B5DA-ECF33C131986",
+    "id": 156,
+    "name": "odwodzenie-ud-na-maszynie",
+    "title": "Odwodzenie ud na maszynie",
+    "alias": [],
+    "primer": "Ćwiczenie angażujące mięśnie zewnętrznej części ud.",
+    "type": "isolation",
+    "primary": [
+      "quadriceps"
+    ],
+    "secondary": [
+      "ischiocrural muscles"
+    ],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Usiądź na maszynie i oprzyj kolana o poduszki.",
+      "Napnij brzuch i odwiedź uda, rozsuwając je przeciw oporowi poduszek.",
+      "Powoli wróć do pozycji wyjściowej i powtórz.",
+      "Uwaga: dla najlepszych rezultatów utrzymuj stały opór przez całe ćwiczenie."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0156-relaxation.pdf",
+      "pdf/0156-tension.pdf"
+    ],
+    "png": [
+      "png/0156-relaxation.png",
+      "png/0156-tension.png"
+    ]
+  },
+  {
+    "uuid": "989BDD5D-1186-4634-A95E-E9BD3DE6C01A",
+    "id": 157,
+    "name": "przywodzenie-ud-na-maszynie",
+    "title": "Przywodzenie ud na maszynie",
+    "alias": [],
+    "primer": "Ćwiczenie angażujące mięśnie wewnętrznej części ud.",
+    "type": "isolation",
+    "primary": [
+      "quadriceps"
+    ],
+    "secondary": [
+      "ischiocrural muscles"
+    ],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Usiądź na maszynie i oprzyj kolana o poduszki.",
+      "Napnij brzuch i przywiedź uda, zbliżając je do siebie.",
+      "Powoli wróć do pozycji wyjściowej i powtórz.",
+      "Uwaga: dla najlepszych rezultatów utrzymuj stały opór przez całe ćwiczenie."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0157-relaxation.pdf",
+      "pdf/0157-tension.pdf"
+    ],
+    "png": [
+      "png/0157-relaxation.png",
+      "png/0157-tension.png"
+    ]
+  },
+  {
+    "uuid": "3B587709-4111-495D-BC4C-0658BCEE4145",
+    "id": 160,
+    "name": "przysiad-ze-sztanga-z-szerokim-ustawieniem-stop",
+    "title": "Przysiad ze sztangą z szerokim ustawieniem stóp",
+    "alias": [],
+    "primer": "Odmiana przysiadu wykorzystująca szerokie ustawienie stóp do izolowania wewnętrznej części ud.",
+    "type": "compound",
+    "primary": [
+      "quadriceps"
+    ],
+    "secondary": [
+      "gastrocnemius",
+      "soleus",
+      "ischiocrural muscles"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Zdejmij sztangę ze stojaka i ułóż ją na barkach.",
+      "Stań ze stopami szerzej niż barki, w rozstawie około 76 cm, i skieruj palce na zewnątrz.",
+      "Napnij brzuch i powoli zejdź w dół, zginając kolana i biodra jak przy siadaniu.",
+      "Opuść się tak nisko, jak potrafisz kontrolować ruch, nie przenosząc ciężaru ciała na palce, co grozi utratą równowagi.",
+      "Zatrzymaj się na dole, a następnie powoli wstań do pozycji wyjściowej.",
+      "Uwaga: osłona gryfu lub ręcznik na barkach mogą poprawić chwyt i zmniejszyć dyskomfort nacisku gryfu na plecy. Ćwicz przysiad bez obciążenia, aby oswoić się z ruchem."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0160-relaxation.pdf",
+      "pdf/0160-tension.pdf"
+    ],
+    "png": [
+      "png/0160-relaxation.png",
+      "png/0160-tension.png"
+    ]
+  },
+  {
+    "uuid": "FB545B25-89D7-4806-ACF0-B3399DFDE3A9",
+    "id": 162,
+    "name": "pompki-odwrotne-na-lawkach",
+    "title": "Pompki odwrotne na ławkach",
+    "alias": [],
+    "primer": "Jedno z podstawowych i nadal najlepszych ćwiczeń rozwijających mięśnie trójgłowe ramion.",
+    "type": "compound",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [
+      "pectoralis major"
+    ],
+    "equipment": [
+      "body"
+    ],
+    "steps": [
+      "Jedno z podstawowych i nadal najlepszych ćwiczeń rozwijających mięśnie trójgłowe, znajdujące się z tyłu ramion.",
+      "Ustaw dwie ławki równolegle w odległości około 90–120 cm.",
+      "Usiądź na jednej ławce i oprzyj stopy na krawędzi drugiej tak, aby nogi znajdowały się między ławkami.",
+      "Skrzyżuj stopy dla stabilności.",
+      "Podeprzyj się dłońmi o ławkę i powoli opuść ciało w stronę podłogi, zginając łokcie.",
+      "Zatrzymaj się i wróć do pozycji wyjściowej.",
+      "Uwaga: nie zginaj łokci poniżej kąta 90°, ponieważ może to obciążać barki."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0162-relaxation.pdf",
+      "pdf/0162-tension.pdf"
+    ],
+    "png": [
+      "png/0162-relaxation.png",
+      "png/0162-tension.png"
+    ]
+  },
+  {
+    "uuid": "6F15D017-C423-4BC0-8E39-DD276D34D66B",
+    "id": 163,
+    "name": "sciaganie-drazka-prostymi-rekami-na-lawce-skosnej",
+    "title": "Ściąganie drążka prostymi rękami na ławce skośnej",
+    "alias": [
+      "Prostowanie rąk w dół na ławce skośnej",
+      "Przenoszenie na wyciągu na ławce skośnej"
+    ],
+    "primer": "Ćwiczenie z linkami wyciągu izolujące i angażujące mięśnie trójgłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "latissimus dorsi"
+    ],
+    "secondary": [
+      "triceps brachii"
+    ],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Ćwiczenie z linkami wyciągu izoluje i angażuje mięśnie trójgłowe, znajdujące się z tyłu ramion.",
+      "Ustaw ławkę skośną tyłem do wyciągu.",
+      "Zamocuj krótki prosty drążek i wyreguluj wysokość wyciągu tak, aby umożliwiała pełne wyprostowanie rąk.",
+      "Połóż się na plecach na ławce i chwyć drążek wąskim nachwytem.",
+      "Trzymając ręce prosto, powoli ściągnij drążek w stronę stóp.",
+      "Zatrzymaj się na dole i wróć do pozycji wyjściowej.",
+      "Uwaga: przez całe ćwiczenie utrzymuj łokcie nieruchomo."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0163-relaxation.pdf",
+      "pdf/0163-tension.pdf"
+    ],
+    "png": [
+      "png/0163-relaxation.png",
+      "png/0163-tension.png"
+    ]
+  },
+  {
+    "uuid": "CA532615-1A4D-4895-AFFF-2CAAF90C2ECD",
+    "id": 164,
+    "name": "prostowanie-ramion-na-wyciagu-na-lawce-skosnej",
+    "title": "Prostowanie ramion na wyciągu na ławce skośnej",
+    "alias": [],
+    "primer": "Ćwiczenie z linkami wyciągu izolujące i angażujące mięśnie trójgłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Ćwiczenie z linkami wyciągu izoluje i angażuje mięśnie trójgłowe, znajdujące się z tyłu ramion.",
+      "Ustaw ławkę skośną tyłem do wyciągu.",
+      "Zamocuj krótki prosty drążek i wyreguluj wysokość wyciągu tak, aby umożliwiała pełne wyprostowanie rąk.",
+      "Połóż się na plecach na ławce i chwyć drążek wąskim nachwytem.",
+      "Zacznij z łokciami ugiętymi nad głową i powoli opuść drążek w stronę stóp.",
+      "Zatrzymaj się na dole i wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0164-relaxation.pdf",
+      "pdf/0164-tension.pdf"
+    ],
+    "png": [
+      "png/0164-relaxation.png",
+      "png/0164-tension.png"
+    ]
+  },
+  {
+    "uuid": "741A75F7-F59A-46D7-9673-89C3A7BD7975",
+    "id": 165,
+    "name": "prostowanie-ramion-na-wyciagu-w-lezeniu",
+    "title": "Prostowanie ramion na wyciągu w leżeniu",
+    "alias": [],
+    "primer": "Ćwiczenie z linkami wyciągu izolujące i angażujące mięśnie trójgłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Ćwiczenie z linkami wyciągu izoluje i angażuje mięśnie trójgłowe, znajdujące się z tyłu ramion.",
+      "Ustaw ławkę płaską końcem w stronę stosu obciążeń.",
+      "Zamocuj krótki prosty drążek i ustaw bloczek przy dole stosu.",
+      "Połóż się na plecach na ławce i chwyć drążek wąskim nachwytem.",
+      "Zaczynając z wyprostowanymi rękami, opuść drążek w stronę stosu, zginając łokcie.",
+      "Powoli wyprostuj ręce w górę i wróć do pozycji wyjściowej.",
+      "Uwaga: przez całe ćwiczenie utrzymuj łokcie na tej samej wysokości."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0165-relaxation.pdf",
+      "pdf/0165-tension.pdf"
+    ],
+    "png": [
+      "png/0165-relaxation.png",
+      "png/0165-tension.png"
+    ]
+  },
+  {
+    "uuid": "1B9ACD34-B41B-48C1-A28E-F576484D8944",
+    "id": 168,
+    "name": "wyciskanie-francuskie-waskim-chwytem-glowa-w-dol",
+    "title": "Wyciskanie francuskie wąskim chwytem głową w dół",
+    "alias": [
+      "Wyciskanie francuskie głową w dół wąskim chwytem",
+      "Prostowanie ramion z gryfem łamanym w leżeniu głową w dół wąskim chwytem"
+    ],
+    "primer": "Ćwiczenie łączące wyciskanie na ławce wąskim chwytem z prostowaniem ramion na triceps.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [
+      "pectoralis major"
+    ],
+    "equipment": [
+      "ez-curl-bar"
+    ],
+    "steps": [
+      "Połóż się na plecach na ławce płaskiej.",
+      "Chwyć sztangę wąsko, w rozstawie 20–30 cm.",
+      "Trzymając ręce blisko tułowia, opuść gryf do klatki piersiowej około 2,5 cm poniżej brodawek sutkowych.",
+      "Powoli wróć do pozycji wyjściowej, skupiając się na mięśniach trójgłowych ramion.",
+      "W górnej fazie ćwiczenia zegnij ręce, opuszczając ciężar w stronę głowy.",
+      "Unieś gryf z powrotem nad klatkę piersiową i powtórz."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0168-relaxation.pdf",
+      "pdf/0168-tension.pdf"
+    ],
+    "png": [
+      "png/0168-relaxation.png",
+      "png/0168-tension.png"
+    ]
+  },
+  {
+    "uuid": "4DF42F35-1A7C-4B3B-BCC5-6503231F540B",
+    "id": 169,
+    "name": "prostowanie-ramion-z-hantlami-glowa-w-dol",
+    "title": "Prostowanie ramion z hantlami głową w dół",
+    "alias": [],
+    "primer": "Ćwiczenie angażujące mięśnie trójgłowe ramion z użyciem hantli i ławki skośnej głową w dół.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Połóż się na plecach na ławce skośnej głową w dół, z hantlem w każdej dłoni.",
+      "Wyprostuj ręce prostopadle do klatki piersiowej, a następnie utrzymując łokcie w jednym miejscu, opuść dłonie tak, aby hantle znalazły się przy głowie.",
+      "Powoli wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0169-relaxation.pdf",
+      "pdf/0169-tension.pdf"
+    ],
+    "png": [
+      "png/0169-relaxation.png",
+      "png/0169-tension.png"
+    ]
+  },
+  {
+    "uuid": "5222009B-95E5-4A40-BB40-004B24E89BAE",
+    "id": 170,
+    "name": "prostowanie-ramion-z-gryfem-lamanym-glowa-w-dol",
+    "title": "Prostowanie ramion z gryfem łamanym głową w dół",
+    "alias": [],
+    "primer": "Ćwiczenie wykorzystujące ławkę skośną głową w dół i gryf łamany do skuteczniejszej pracy mięśni trójgłowych ramion.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Połóż się na plecach na ławce skośnej głową w dół i chwyć gryf łamany.",
+      "Wyprostuj ręce prostopadle do klatki piersiowej, a następnie utrzymując łokcie w jednym miejscu, opuść gryf w stronę głowy.",
+      "Powoli wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0170-relaxation.pdf",
+      "pdf/0170-tension.pdf"
+    ],
+    "png": [
+      "png/0170-relaxation.png",
+      "png/0170-tension.png"
+    ]
+  },
+  {
+    "uuid": "51C45857-F388-4538-A542-7703EDD5D7A4",
+    "id": 171,
+    "name": "pompki-na-maszynie-siedzac",
+    "title": "Pompki na maszynie siedząc",
+    "alias": [],
+    "primer": "Ćwiczenie angażujące mięśnie trójgłowe ramion na maszynie w pozycji siedzącej.",
+    "type": "compound",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [
+      "deltoid"
+    ],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Wyreguluj siedzisko tak, aby uchwyty znajdowały się na wysokości łokci.",
+      "Chwyć uchwyty i naciskając równomiernie, wypchnij je w dół do pełnego wyprostu rąk.",
+      "Zatrzymaj się i wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0171-relaxation.pdf",
+      "pdf/0171-tension.pdf"
+    ],
+    "png": [
+      "png/0171-relaxation.png",
+      "png/0171-tension.png"
+    ]
+  },
+  {
+    "uuid": "971C7298-186F-4D2E-A79C-E4E3CC30277F",
+    "id": 172,
+    "name": "pompki-na-poreczach-na-triceps",
+    "title": "Pompki na poręczach na triceps",
+    "alias": [],
+    "primer": "Klasyczne ćwiczenie angażujące mięśnie trójgłowe ramion z wykorzystaniem masy własnego ciała.",
+    "type": "compound",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [
+      "deltoid",
+      "pectoralis major"
+    ],
+    "equipment": [
+      "body"
+    ],
+    "steps": [
+      "Chwyć poręcze i wypchnij ciało w górę do pozycji wyjściowej.",
+      "Prowadząc łokcie blisko tułowia, opuść ciało, aż ramiona znajdą się równolegle do podłogi.",
+      "Powoli unieś ciało do pozycji wyjściowej.",
+      "Uwaga: przez całe ćwiczenie utrzymuj napięty brzuch i proste ciało."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0172-relaxation.pdf",
+      "pdf/0172-tension.pdf"
+    ],
+    "png": [
+      "png/0172-relaxation.png",
+      "png/0172-tension.png"
+    ]
+  },
+  {
+    "uuid": "D31D04AB-ED62-4F03-9D77-16DBF09CB662",
+    "id": 173,
+    "name": "prostowanie-ramienia-z-hantlem-jednoracz",
+    "title": "Prostowanie ramienia z hantlem jednorącz",
+    "alias": [],
+    "primer": "Ćwiczenie z hantlem angażujące każdą rękę osobno.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Usiądź na ławce z prostymi plecami i napiętym brzuchem.",
+      "Chwyć hantel jedną dłonią i umieść go za karkiem, zginając łokieć.",
+      "Powoli wyprostuj rękę pionowo nad głowę, a następnie powoli wróć do pozycji wyjściowej.",
+      "Uwaga: połóż wolną rękę w poprzek klatki piersiowej, aby ustabilizować ciało."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0173-relaxation.pdf",
+      "pdf/0173-tension.pdf"
+    ],
+    "png": [
+      "png/0173-relaxation.png",
+      "png/0173-tension.png"
+    ]
+  },
+  {
+    "uuid": "B0D44296-A4D5-49D9-8494-99A3F76543E4",
+    "id": 174,
+    "name": "prostowanie-ramion-z-gryfem-lamanym-glowa-w-gore",
+    "title": "Prostowanie ramion z gryfem łamanym głową w górę",
+    "alias": [],
+    "primer": "Odmiana prostowania ramion wykorzystująca grawitację do zwiększenia oporu.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Chwyć sztangę wąsko, w rozstawie 10–15 cm.",
+      "Połóż się na ławce skośnej głową w górę i trzymaj gryf nad głową.",
+      "Opuść przedramiona lekkim łukiem, aż zetkną się z mięśniami dwugłowymi ramion.",
+      "Powoli wróć do pozycji wyjściowej z gryfem nad głową."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0174-relaxation.pdf",
+      "pdf/0174-tension.pdf"
+    ],
+    "png": [
+      "png/0174-relaxation.png",
+      "png/0174-tension.png"
+    ]
+  },
+  {
+    "uuid": "B118B527-D740-4A0A-B914-E29DA4835C41",
+    "id": 177,
+    "name": "prostowanie-ramion-na-wyciagu-w-kleku",
+    "title": "Prostowanie ramion na wyciągu w klęku",
+    "alias": [],
+    "primer": "Pozycja klęcząca pozwala skuteczniej izolować mięśnie trójgłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Ustaw ławkę w poprzek przed górnym wyciągiem.",
+      "Chwyć prosty drążek nachwytem.",
+      "Uklęknij na podłodze przed ławką, utrzymując proste plecy i opuszczoną głowę.",
+      "Z łokciami i przedramionami nad głową wypchnij drążek łukiem w dół, aż przedramiona dotkną ławki.",
+      "Uwaga: podczas ćwiczenia utrzymuj napięty brzuch i proste plecy."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0177-relaxation.pdf",
+      "pdf/0177-tension.pdf"
+    ],
+    "png": [
+      "png/0177-relaxation.png",
+      "png/0177-tension.png"
+    ]
+  },
+  {
+    "uuid": "43DA125B-379C-4471-A0CC-2C23DA882E12",
+    "id": 178,
+    "name": "prostowanie-ramion-z-lina-dolnego-wyciagu-w-lezeniu",
+    "title": "Prostowanie ramion z liną dolnego wyciągu w leżeniu",
+    "alias": [],
+    "primer": "Ćwiczenie wykonywane w leżeniu na stanowisku do wiosłowania siedząc.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Zamocuj linę do wyciągu stanowiska do wiosłowania siedząc.",
+      "Połóż się na plecach na ławce, z głową w stronę stosu obciążeń.",
+      "Chwyć linę z wnętrzami dłoni skierowanymi do siebie i unieś ręce nad klatkę piersiową. Ustaw przedramiona równolegle do podłogi, z łokciami zgiętymi pod kątem 90°.",
+      "Powoli wyprostuj ręce w górę, napinając mięśnie trójgłowe ramion.",
+      "Wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0178-relaxation.pdf",
+      "pdf/0178-tension.pdf"
+    ],
+    "png": [
+      "png/0178-relaxation.png",
+      "png/0178-tension.png"
+    ]
+  },
+  {
+    "uuid": "B0958E4A-4C6E-405D-B89A-31528ED773E0",
+    "id": 179,
+    "name": "prostowanie-ramion-z-gryfem-lamanym-za-glowa-w-lezeniu-waskim-chwytem",
+    "title": "Prostowanie ramion z gryfem łamanym za głową w leżeniu wąskim chwytem",
+    "alias": [],
+    "primer": "Możesz użyć sztangi prostej lub gryfu łamanego, aby mocniej skupić pracę na mięśniach trójgłowych ramion.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Możesz użyć sztangi prostej lub gryfu łamanego, aby mocniej skupić pracę na mięśniach trójgłowych ramion.",
+      "Połóż się płasko na plecach na ławce.",
+      "Chwyć gryf w rozstawie około 20 cm i opuść go za głowę.",
+      "Utrzymując gryf równolegle do podłogi, zegnij ręce łukiem tak, aby gryf przemieszczał się poniżej głowy.",
+      "Powoli wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0179-relaxation.pdf",
+      "pdf/0179-tension.pdf"
+    ],
+    "png": [
+      "png/0179-relaxation.png",
+      "png/0179-tension.png"
+    ]
+  },
+  {
+    "uuid": "599F78F6-12A3-40D9-8E64-DB407FA47F11",
+    "id": 180,
+    "name": "wyciskanie-francuskie-waskim-chwytem",
+    "title": "Wyciskanie francuskie wąskim chwytem",
+    "alias": [
+      "Francuskie wyciskanie wąskim chwytem",
+      "Prostowanie ramion z gryfem łamanym w leżeniu wąskim chwytem"
+    ],
+    "primer": "Klasyczne ćwiczenie rozwijające mięśnie trójgłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "ez-curl-bar"
+    ],
+    "steps": [
+      "Połóż się na plecach na ławce płaskiej, z głową przy jej końcu.",
+      "Chwyć gryf wąsko, w rozstawie około 15 cm.",
+      "Unieś gryf pionowo nad barki, trzymając łokcie blisko siebie.",
+      "Powoli opuść gryf łukiem nad głową.",
+      "Wróć gryfem do pozycji wyjściowej.",
+      "Uwaga: utrzymuj ramiona nieruchomo, wykonując ruch tylko w łokciach."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0180-relaxation.pdf",
+      "pdf/0180-tension.pdf"
+    ],
+    "png": [
+      "png/0180-relaxation.png",
+      "png/0180-tension.png"
+    ]
+  },
+  {
+    "uuid": "2EBDAA0F-620B-4774-BAD8-E6F3FDE75AA9",
+    "id": 181,
+    "name": "prostowanie-ramion-z-hantlem-w-lezeniu",
+    "title": "Prostowanie ramion z hantlem w leżeniu",
+    "alias": [],
+    "primer": "Ćwiczenie wykorzystujące grawitację do zwiększenia oporu ciężaru.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Połóż się na ławce płaskiej z głową przy jej końcu i stopami mocno opartymi na podłodze.",
+      "Chwyć hantel obiema dłońmi, kierując ich wnętrza w górę.",
+      "Unieś hantel nad ciało, kierując ręce ku sufitowi.",
+      "Trzymając ramiona i łokcie nieruchomo, opuść hantel łukiem za głowę.",
+      "Powoli unieś hantel do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0181-relaxation.pdf",
+      "pdf/0181-tension.pdf"
+    ],
+    "png": [
+      "png/0181-relaxation.png",
+      "png/0181-tension.png"
+    ]
+  },
+  {
+    "uuid": "7210F17F-91F7-401F-89CF-271332113319",
+    "id": 183,
+    "name": "wyciskanie-francuskie-w-lezeniu",
+    "title": "Wyciskanie francuskie w leżeniu",
+    "alias": [
+      "Francuskie wyciskanie",
+      "Prostowanie ramion z gryfem łamanym w leżeniu"
+    ],
+    "primer": "Kolejne klasyczne ćwiczenie rozwijające mięśnie trójgłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [
+      "pectoralis major"
+    ],
+    "equipment": [
+      "ez-curl-bar"
+    ],
+    "steps": [
+      "Połóż się na plecach na ławce płaskiej, z głową przy jej końcu.",
+      "Chwyć gryf łamany nachwytem.",
+      "Unieś gryf pionowo nad barki, trzymając łokcie blisko siebie.",
+      "Powoli opuść gryf łukiem nad głową.",
+      "Wróć gryfem do pozycji wyjściowej.",
+      "Uwaga: utrzymuj ramiona nieruchomo, wykonując ruch tylko w łokciach."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0183-relaxation.pdf",
+      "pdf/0183-tension.pdf"
+    ],
+    "png": [
+      "png/0183-relaxation.png",
+      "png/0183-tension.png"
+    ]
+  },
+  {
+    "uuid": "2BBF9DB2-8BD8-456E-A0CB-749D19E5FA26",
+    "id": 188,
+    "name": "pompki-z-waskim-ustawieniem-dloni",
+    "title": "Pompki z wąskim ustawieniem dłoni",
+    "alias": [],
+    "primer": "Odmiana pompki izolująca mięśnie trójgłowe ramion.",
+    "type": "compound",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [
+      "pectoralis major"
+    ],
+    "equipment": [
+      "body"
+    ],
+    "steps": [
+      "Odmiana pompki izolująca mięśnie trójgłowe, znajdujące się z tyłu ramion.",
+      "Uklęknij na podłodze lub macie, ustaw dłonie ze złączonymi kciukami i unieś ciało, opierając się na palcach stóp.",
+      "Napnij brzuch i utrzymuj plecy oraz szyję w jednej linii.",
+      "Powoli opuść ciało w stronę podłogi, zginając ręce, aż niemal dotkniesz podłoża.",
+      "Kontrolowanym ruchem unieś ciało do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0188-relaxation.pdf",
+      "pdf/0188-tension.pdf"
+    ],
+    "png": [
+      "png/0188-relaxation.png",
+      "png/0188-tension.png"
+    ]
+  },
+  {
+    "uuid": "CDD01DA1-B5EF-44BD-BAE4-9A76EAC19078",
+    "id": 189,
+    "name": "prostowanie-ramion-na-wyciagu-podchwytem",
+    "title": "Prostowanie ramion na wyciągu podchwytem",
+    "alias": [],
+    "primer": "Odmiana prostowania ramion na wyciągu wykonywana odwróconym chwytem.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Stań przed wyciągiem i zamocuj drążek do górnej linki.",
+      "Chwyć uchwyt z wnętrzami dłoni skierowanymi w górę.",
+      "Trzymając łokcie przy tułowiu, ściągnij uchwyt w dół w stronę ud.",
+      "Zatrzymaj się na chwilę i wróć do pozycji wyjściowej.",
+      "Uwaga: wysunięcie jednej stopy przed drugą może poprawić stabilność pozycji."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0189-relaxation.pdf",
+      "pdf/0189-tension.pdf"
+    ],
+    "png": [
+      "png/0189-relaxation.png",
+      "png/0189-tension.png"
+    ]
+  },
+  {
+    "uuid": "8F2612C6-DC64-482C-A024-8EB103E8DF51",
+    "id": 190,
+    "name": "wyciskanie-sztangi-podchwytem-na-triceps",
+    "title": "Wyciskanie sztangi podchwytem na triceps",
+    "alias": [],
+    "primer": "Odmiana wyciskania na ławce skupiająca się na izolowaniu mięśni trójgłowych ramion.",
+    "type": "compound",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [
+      "pectoralis major"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Połóż się na ławce płaskiej z głową przy jej końcu i stopami mocno opartymi na podłodze.",
+      "Chwyć sztangę w rozstawie około 41 cm, kierując wnętrza dłoni w stronę głowy.",
+      "Przenieś gryf nad klatkę piersiową, około 2,5 cm poniżej brodawek sutkowych.",
+      "Wyprostuj całkowicie ręce, unosząc gryf, a następnie opuść go do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0190-relaxation.pdf",
+      "pdf/0190-tension.pdf"
+    ],
+    "png": [
+      "png/0190-relaxation.png",
+      "png/0190-tension.png"
+    ]
+  },
+  {
+    "uuid": "C199BB33-F9DC-4F85-A05F-3BAA740AC4AE",
+    "id": 193,
+    "name": "prostowanie-ramion-z-gryfem-lamanym-nad-glowa-siedzac",
+    "title": "Prostowanie ramion z gryfem łamanym nad głową siedząc",
+    "alias": [],
+    "primer": "Ćwiczenie ze sztangą za karkiem skutecznie izolujące mięśnie trójgłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Usiądź na krześle z krótkim prostym oparciem, utrzymując proste plecy i mocno opierając stopy na podłodze.",
+      "Chwyć gryf łamany lub sztangę w rozstawie około 15 cm.",
+      "Unieś gryf nad głowę do wyprostu rąk, a następnie opuść go łukiem za głowę w stronę podłogi.",
+      "Wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0193-relaxation.pdf",
+      "pdf/0193-tension.pdf"
+    ],
+    "png": [
+      "png/0193-relaxation.png",
+      "png/0193-tension.png"
+    ]
+  },
+  {
+    "uuid": "E420336A-82DA-4EB8-B821-9F29BB1A8D28",
+    "id": 195,
+    "name": "wyciskanie-waskim-chwytem-na-maszynie-smitha",
+    "title": "Wyciskanie wąskim chwytem na maszynie Smitha",
+    "alias": [],
+    "primer": "Odmiana wyciskania na ławce, w której wąski chwyt izoluje mięśnie trójgłowe ramion i angażuje klatkę piersiową.",
+    "type": "compound",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [
+      "pectoralis major"
+    ],
+    "equipment": [
+      "smith machine"
+    ],
+    "steps": [
+      "Ustaw ławkę płaską pośrodku maszyny Smitha.",
+      "Chwyć gryf wąsko, w rozstawie około 15 cm, odblokuj go i opuść w stronę klatki piersiowej.",
+      "Zatrzymaj gryf tuż nad klatką piersiową i wyprostuj ręce, unosząc go do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0195-relaxation.pdf",
+      "pdf/0195-tension.pdf"
+    ],
+    "png": [
+      "png/0195-relaxation.png",
+      "png/0195-tension.png"
+    ]
+  },
+  {
+    "uuid": "8861DB5C-A9F3-463E-9396-DB5FA6FC25F2",
+    "id": 198,
+    "name": "prostowanie-ramion-z-hantlem-stojac",
+    "title": "Prostowanie ramion z hantlem stojąc",
+    "alias": [],
+    "primer": "Ćwiczenie angażujące mięśnie trójgłowe ramion przez opuszczanie ciężaru za kark.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Stań ze stopami na szerokość barków, prostymi plecami i napiętym brzuchem.",
+      "Trzymaj hantel obiema dłońmi, z wnętrzami dłoni skierowanymi w górę.",
+      "Unieś hantel nad głowę, a następnie powoli opuść go łukiem za głowę.",
+      "Powoli unieś hantel do pozycji wyjściowej."
+    ],
+    "tips": [
+      "Podczas ćwiczenia trzymaj łokcie blisko głowy."
+    ],
+    "references": [],
+    "pdf": [
+      "pdf/0198-relaxation.pdf",
+      "pdf/0198-tension.pdf"
+    ],
+    "png": [
+      "png/0198-relaxation.png",
+      "png/0198-tension.png"
+    ]
+  },
+  {
+    "uuid": "408857B5-7B7D-4284-9602-8C8D546849BD",
+    "id": 199,
+    "name": "prostowanie-ramienia-jednoracz-na-dolnym-wyciagu",
+    "title": "Prostowanie ramienia jednorącz na dolnym wyciągu",
+    "alias": [],
+    "primer": "Ćwiczenie na wyciągu izolujące mięśnie trójgłowe ramion.",
+    "type": "compound",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Zamocuj uchwyt do dolnego wyciągu.",
+      "Stań tyłem do stosu obciążeń, ze stopami na szerokość barków.",
+      "Sięgnij lewą ręką za siebie i chwyć uchwyt.",
+      "Podeprzyj lewy łokieć prawą dłonią.",
+      "Wyprostuj lewą rękę pionowo w stronę sufitu, a następnie opuść ją do pozycji wyjściowej.",
+      "Powtórz i zmień rękę."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0199-relaxation.pdf",
+      "pdf/0199-tension.pdf"
+    ],
+    "png": [
+      "png/0199-relaxation.png",
+      "png/0199-tension.png"
+    ]
+  },
+  {
+    "uuid": "215417E8-F482-48A6-83AB-C0EB1E428217",
+    "id": 200,
+    "name": "prostowanie-ramienia-z-hantlem-jednoracz-stojac",
+    "title": "Prostowanie ramienia z hantlem jednorącz stojąc",
+    "alias": [],
+    "primer": "Jednorącz wykonywana odmiana ćwiczenia na mięsień trójgłowy ramienia z ciężarem za karkiem.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Stań ze stopami na szerokość barków, prostymi plecami i napiętym brzuchem.",
+      "Trzymaj hantel w prawej dłoni, kierując jej wnętrze w górę.",
+      "Unieś hantel nad głowę, a następnie powoli opuść go łukiem za głowę, na linii kręgosłupa.",
+      "Powoli unieś hantel do pozycji wyjściowej.",
+      "Zmień rękę i powtórz.",
+      "Uwaga: podczas ćwiczenia trzymaj łokcie blisko głowy."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0200-relaxation.pdf",
+      "pdf/0200-tension.pdf"
+    ],
+    "png": [
+      "png/0200-relaxation.png",
+      "png/0200-tension.png"
+    ]
+  },
+  {
+    "uuid": "40070A2D-E1D4-4B16-967F-C0739F9DF0BC",
+    "id": 201,
+    "name": "prostowanie-ramion-z-gryfem-lamanym-nad-glowa-stojac",
+    "title": "Prostowanie ramion z gryfem łamanym nad głową stojąc",
+    "alias": [],
+    "primer": "Oburącz wykonywana odmiana ćwiczenia na mięśnie trójgłowe ramion ze sztangą za karkiem.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "ez-curl-bar"
+    ],
+    "steps": [
+      "Stań ze stopami na szerokość barków, prostymi plecami i napiętym brzuchem.",
+      "Chwyć sztangę lub gryf łamany w rozstawie 15–20 cm, z wnętrzami dłoni skierowanymi w górę.",
+      "Unieś gryf nad głowę, a następnie powoli opuść go łukiem za głowę w stronę pleców.",
+      "Powoli unieś gryf do pozycji wyjściowej.",
+      "Uwaga: podczas ćwiczenia trzymaj łokcie blisko głowy."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0201-relaxation.pdf",
+      "pdf/0201-tension.pdf"
+    ],
+    "png": [
+      "png/0201-relaxation.png",
+      "png/0201-tension.png"
+    ]
+  },
+  {
+    "uuid": "8E9F7A47-5A01-4043-B055-D80F1954B1A7",
+    "id": 204,
+    "name": "prostowanie-ramienia-z-hantlem-w-opadzie",
+    "title": "Prostowanie ramienia z hantlem w opadzie",
+    "alias": [],
+    "primer": "Obok prostowania ramion na wyciągu jedno z najskuteczniejszych ćwiczeń na ramiona.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Stań obok ławki płaskiej, zegnij lewe kolano i oprzyj je na ławce.",
+      "Oprzyj lewą dłoń na ławce dla stabilności i ustaw plecy pod kątem 45°.",
+      "Trzymaj hantel w prawej dłoni, a prawą stopę oprzyj na podłodze.",
+      "Zegnij prawą rękę i unieś ją do wysokości barku, a następnie kontrolowanym ruchem wyprostuj ją całkowicie do tyłu.",
+      "Zmień rękę i powtórz.",
+      "Uwaga: podczas ćwiczenia trzymaj łokieć blisko tułowia."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0204-relaxation.pdf",
+      "pdf/0204-tension.pdf"
+    ],
+    "png": [
+      "png/0204-relaxation.png",
+      "png/0204-tension.png"
+    ]
+  },
+  {
+    "uuid": "7A74EBE7-512E-4846-BEF1-C5C4794B53F3",
+    "id": 205,
+    "name": "prostowanie-ramion-na-wyciagu-z-drazkiem",
+    "title": "Prostowanie ramion na wyciągu z drążkiem",
+    "alias": [],
+    "primer": "Podstawowa odmiana prostowania ramion na wyciągu.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Stań przed wyciągiem i zamocuj krótki drążek do górnej linki.",
+      "Chwyć uchwyt z wnętrzami dłoni skierowanymi w dół.",
+      "Napnij brzuch i utrzymuj proste plecy.",
+      "Trzymając łokcie przy tułowiu, wypchnij uchwyt w dół w stronę ud.",
+      "Zatrzymaj się na chwilę i wróć do pozycji wyjściowej.",
+      "Uwaga: wysunięcie jednej stopy przed drugą może poprawić stabilność pozycji."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0205-relaxation.pdf",
+      "pdf/0205-tension.pdf"
+    ],
+    "png": [
+      "png/0205-relaxation.png",
+      "png/0205-tension.png"
+    ]
+  },
+  {
+    "uuid": "FDEC211B-2157-4232-8E25-F796F067D37D",
+    "id": 206,
+    "name": "prostowanie-ramion-na-wyciagu-z-lina",
+    "title": "Prostowanie ramion na wyciągu z liną",
+    "alias": [],
+    "primer": "Odmiana prostowania ramion na wyciągu wykorzystująca linę do lepszego kształtowania mięśni.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Stań przed wyciągiem i zamocuj linę do górnej linki.",
+      "Chwyć linę z wnętrzami dłoni skierowanymi w dół.",
+      "Napnij brzuch i utrzymuj proste plecy.",
+      "Trzymając łokcie przy tułowiu, wypchnij linę w dół w stronę ud. Jeśli możesz, rozsuń jej końce w dolnej fazie ruchu.",
+      "Zatrzymaj się na chwilę i wróć do pozycji wyjściowej.",
+      "Uwaga: wysunięcie jednej stopy przed drugą może poprawić stabilność pozycji."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0206-relaxation.pdf",
+      "pdf/0206-tension.pdf"
+    ],
+    "png": [
+      "png/0206-relaxation.png",
+      "png/0206-tension.png"
+    ]
+  },
+  {
+    "uuid": "5FF607FC-1A9D-48D5-AC1A-F813249C0D1A",
+    "id": 207,
+    "name": "prostowanie-ramion-na-wyciagu-z-uchwytem-v",
+    "title": "Prostowanie ramion na wyciągu z uchwytem V",
+    "alias": [],
+    "primer": "Odmiana prostowania ramion na wyciągu z drążkiem w kształcie litery V.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "cable",
+      "v-bar"
+    ],
+    "steps": [
+      "Odmiana prostowania ramion na wyciągu z drążkiem w kształcie litery V. Wiele osób uważa tę wersję za łagodniejszą dla łokci.",
+      "Wykonanie ćwiczenia.",
+      "Stań przed wyciągiem i zamocuj uchwyt V do górnej linki.",
+      "Chwyć drążek z wnętrzami dłoni skierowanymi w dół.",
+      "Napnij brzuch i utrzymuj proste plecy.",
+      "Trzymając łokcie przy tułowiu, wypchnij drążek w dół w stronę ud.",
+      "Zatrzymaj się na chwilę i wróć do pozycji wyjściowej.",
+      "Uwaga: wysunięcie jednej stopy przed drugą może poprawić stabilność pozycji."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0207-relaxation.pdf",
+      "pdf/0207-tension.pdf"
+    ],
+    "png": [
+      "png/0207-relaxation.png",
+      "png/0207-tension.png"
+    ]
+  },
+  {
+    "uuid": "36E7BDFE-64BB-4A9B-BEA2-A80B3144F0B5",
+    "id": 209,
+    "name": "prostowanie-ramion-z-hantlami-glowa-w-gore",
+    "title": "Prostowanie ramion z hantlami głową w górę",
+    "alias": [],
+    "primer": "Odmiana prostowania ramion wykonywana na ławce skośnej głową w górę.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [
+      "deltoid"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Chwyć po hantlu w każdej dłoni i połóż się na plecach na ławce skośnej, mocno opierając stopy na podłodze.",
+      "Wyprostuj ręce nad barkami, kierując wnętrza dłoni do siebie.",
+      "Powoli opuść hantle za głowę, zginając łokcie.",
+      "Kontrolowanym ruchem unieś ręce do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0209-relaxation.pdf",
+      "pdf/0209-tension.pdf"
+    ],
+    "png": [
+      "png/0209-relaxation.png",
+      "png/0209-tension.png"
+    ]
+  },
+  {
+    "uuid": "AA02F3FC-AE87-4C44-BAF6-E6AD2FB46015",
+    "id": 210,
+    "name": "prostowanie-ramion-na-maszynie",
+    "title": "Prostowanie ramion na maszynie",
+    "alias": [],
+    "primer": "Ćwiczenie na maszynie zapewniającej prawidłowy zakres ruchu podczas prostowania ramion.",
+    "type": "isolation",
+    "primary": [
+      "triceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Opis: maszyna zapewnia prawidłowy zakres ruchu. To dobre ćwiczenie dla początkujących i osób wracających do sprawności po urazie.",
+      "Wyreguluj wysokość siedziska tak, aby ramiona i łokcie spoczywały płasko na poduszce. Napnij brzuch i usiądź prosto z wyprostowanymi plecami. Chwyć uchwyty z całkowicie wyprostowanymi rękami i przyciągnij je do ciała. Zatrzymaj się na chwilę, a następnie powoli wróć do pozycji wyjściowej.",
+      "Uwaga: przez całe ćwiczenie pozostań w siadzie i mocno opieraj stopy na podłodze."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0210-relaxation.pdf",
+      "pdf/0210-tension.pdf"
+    ],
+    "png": [
+      "png/0210-relaxation.png",
+      "png/0210-tension.png"
+    ]
+  },
+  {
+    "uuid": "405E1A53-1383-4DF9-9368-86E3CCF38012",
+    "id": 218,
+    "name": "uginanie-ramion-z-gryfem-lamanym",
+    "title": "Uginanie ramion z gryfem łamanym",
+    "alias": [],
+    "primer": "Podstawowe ćwiczenie na mięśnie dwugłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [
+      "deltoid",
+      "forearm"
+    ],
+    "equipment": [
+      "ez-curl-bar"
+    ],
+    "steps": [
+      "Stań ze stopami na szerokość barków, lekko ugiętymi kolanami i napiętym brzuchem.",
+      "Chwyć gryf łamany z wnętrzami dłoni skierowanymi w górę, w rozstawie zbliżonym do szerokości barków.",
+      "Opuść wyprostowane ręce nad uda, a następnie zginając tylko łokcie, unieś gryf do górnej części klatki piersiowej.",
+      "Zatrzymaj się na chwilę i wróć do pozycji wyjściowej.",
+      "Uwaga: nie kołysz biodrami ani plecami podczas ćwiczenia."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0218-relaxation.pdf",
+      "pdf/0218-tension.pdf"
+    ],
+    "png": [
+      "png/0218-relaxation.png",
+      "png/0218-tension.png"
+    ]
+  },
+  {
+    "uuid": "EEBD10DB-1C6D-44CE-BB9A-EBC981CF95EB",
+    "id": 212,
+    "name": "uginanie-ramion-na-wyciagu",
+    "title": "Uginanie ramion na wyciągu",
+    "alias": [],
+    "primer": "Odmiana uginania ramion, w której linka wyciągu zastępuje sztangę.",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [
+      "forearm",
+      "deltoid"
+    ],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Zamocuj krótki drążek do dolnej linki wyciągu przy podstawie stosu obciążeń.",
+      "Stań ze stopami na szerokość barków, lekko ugiętymi kolanami i napiętym brzuchem.",
+      "Chwyć drążek z wnętrzami dłoni skierowanymi w górę, trzymając dłonie dość blisko siebie.",
+      "Opuść wyprostowane ręce nad uda, a następnie zginając tylko łokcie, unieś drążek do górnej części klatki piersiowej.",
+      "Zatrzymaj się na chwilę i wróć do pozycji wyjściowej.",
+      "Uwaga: nie kołysz biodrami ani plecami podczas ćwiczenia."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0212-relaxation.pdf",
+      "pdf/0212-tension.pdf"
+    ],
+    "png": [
+      "png/0212-relaxation.png",
+      "png/0212-tension.png"
+    ]
+  },
+  {
+    "uuid": "C0A5BF3D-3D68-4000-BC0F-9E44E2AF8862",
+    "id": 216,
+    "name": "uginanie-ramion-z-lina-wyciagu",
+    "title": "Uginanie ramion z liną wyciągu",
+    "alias": [],
+    "primer": "Odmiana uginania młotkowego, w której lina wyciągu pozwala izolować mięśnie dwugłowe ramion.",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Odmiana uginania młotkowego, w której lina wyciągu pozwala izolować mięśnie dwugłowe ramion. To dobre ćwiczenie dla początkujących.",
+      "Zamocuj linę do dolnego wyciągu przy podstawie stosu obciążeń. Stań ze stopami na szerokość barków, lekko ugiętymi kolanami i napiętym brzuchem. Chwyć linę wąskim podchwytem, z wnętrzami dłoni skierowanymi w górę. Opuść wyprostowane ręce nad uda, a następnie zginając tylko łokcie, unieś linę do górnej części klatki piersiowej. Zatrzymaj się na chwilę i wróć do pozycji wyjściowej.",
+      "Uwaga: przez całe ćwiczenie trzymaj łokcie przy tułowiu. Nie kołysz biodrami ani plecami."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0216-relaxation.pdf",
+      "pdf/0216-tension.pdf"
+    ],
+    "png": [
+      "png/0216-relaxation.png",
+      "png/0216-tension.png"
+    ]
+  },
+  {
+    "uuid": "8284C02D-73C8-4040-8F11-52162F3B9D5B",
+    "id": 217,
+    "name": "uginanie-ramion-na-modlitewniku-z-wyciagiem",
+    "title": "Uginanie ramion na modlitewniku z wyciągiem",
+    "alias": [
+      "Uginanie na biceps na modlitewniku z wyciągiem"
+    ],
+    "primer": "Uginanie na modlitewniku wykorzystuje specjalną ławkę do podparcia mięśni trójgłowych i izolowania mięśni dwugłowych ramion.",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [
+      "forearm"
+    ],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Ustaw modlitewnik z miękką podpórką przed wyciągiem.",
+      "Zamocuj krótki drążek do dolnej linki.",
+      "Oprzyj ramiona na podpórce i całkowicie je wyprostuj.",
+      "Chwyć drążek wąsko, w rozstawie około 15 cm, z wnętrzami dłoni w górę, i przyciągnij go w stronę głowy.",
+      "Zatrzymaj się na chwilę, a następnie opuść drążek do pozycji wyjściowej.",
+      "Uwaga: dla najlepszych rezultatów wykonuj ćwiczenie powoli i kontrolowanie."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0217-relaxation.pdf",
+      "pdf/0217-tension.pdf"
+    ],
+    "png": [
+      "png/0217-relaxation.png",
+      "png/0217-tension.png"
+    ]
+  },
+  {
+    "uuid": "1C61F93B-5E6B-4517-9378-2F250EA6D28F",
+    "id": 220,
+    "name": "uginanie-ramienia-z-hantlem-w-oparciu-o-udo",
+    "title": "Uginanie ramienia z hantlem w oparciu o udo",
+    "alias": [
+      "Uginanie na biceps z hantlem w skupieniu"
+    ],
+    "primer": "Ćwiczenia w skupieniu ograniczają zakres ruchu, aby zwiększyć jego skuteczność.",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [
+      "forearm"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Usiądź na końcu ławki płaskiej, oprzyj całe stopy na podłodze i rozstaw nogi.",
+      "Chwyć hantel jedną dłonią, kierując jej wnętrze w górę.",
+      "Oprzyj łokieć o wewnętrzną stronę uda i unieś hantel w stronę klatki piersiowej.",
+      "Powoli wróć do pozycji wyjściowej.",
+      "Powtórz i zmień rękę.",
+      "Uwaga: utrzymuj całe ciało nieruchomo poza ćwiczoną ręką."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0220-relaxation.pdf",
+      "pdf/0220-tension.pdf"
+    ],
+    "png": [
+      "png/0220-relaxation.png",
+      "png/0220-tension.png"
+    ]
+  },
+  {
+    "uuid": "5AE0607D-88F0-4EF5-BB7B-878322FCBA9B",
+    "id": 222,
+    "name": "uginanie-ramion-z-gryfem-lamanym-wzdluz-tulowia",
+    "title": "Uginanie ramion z gryfem łamanym wzdłuż tułowia",
+    "alias": [],
+    "primer": "Ćwiczenie angażujące mięśnie dwugłowe ramion i przedramiona.",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [
+      "forearm"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Autorstwo ćwiczenia przypisuje się nieżyjącemu Vince’owi Girondzie, zwanemu Żelaznym Guru. Intensywnie angażuje ono mięśnie dwugłowe ramion oraz przedramiona.",
+      "Stań ze stopami na szerokość barków, lekko ugiętymi kolanami i napiętym brzuchem.",
+      "Chwyć gryf na szerokość barków, kierując wnętrza dłoni w dół.",
+      "Wyprostuj całkowicie ręce i oprzyj je przy udach.",
+      "Powoli unieś ręce z wnętrzami dłoni w dół, aż gryf dotknie klatki piersiowej.",
+      "Uwaga: nie poruszaj łokciami ani barkami podczas ćwiczenia."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0222-relaxation.pdf",
+      "pdf/0222-tension.pdf"
+    ],
+    "png": [
+      "png/0222-relaxation.png",
+      "png/0222-tension.png"
+    ]
+  },
+  {
+    "uuid": "154B1CB5-38B3-426D-B729-FF92A53D22A4",
+    "id": 224,
+    "name": "uginanie-ramion-z-hantlami",
+    "title": "Uginanie ramion z hantlami",
+    "alias": [],
+    "primer": "Odmiana uginania ramion wykonywana obiema rękami jednocześnie.",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [
+      "forearm"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Stań ze stopami na szerokość barków, lekko ugiętymi kolanami i napiętym brzuchem.",
+      "Chwyć po hantlu w każdej dłoni, kierując wnętrza dłoni w górę.",
+      "Wyprostuj ręce wzdłuż boków tułowia.",
+      "Trzymając łokcie w stałym miejscu, unieś dłonie do klatki piersiowej, aż przedramiona dotkną mięśni dwugłowych ramion.",
+      "Powolnym, kontrolowanym ruchem opuść ręce do pozycji wyjściowej.",
+      "Uwaga: nie kołysz ciałem podczas ćwiczenia."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0224-relaxation.pdf",
+      "pdf/0224-tension.pdf"
+    ],
+    "png": [
+      "png/0224-relaxation.png",
+      "png/0224-tension.png"
+    ]
+  },
+  {
+    "uuid": "1A3DFD15-984D-4EDE-BD34-B4DA7129B9B6",
+    "id": 227,
+    "name": "uginanie-ramion-z-hantlami-chwytem-mlotkowym",
+    "title": "Uginanie ramion z hantlami chwytem młotkowym",
+    "alias": [],
+    "primer": "Ćwiczenie izolujące mięśnie dwugłowe ramion poprzez ruch młotkowy.",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Ćwiczenie izoluje mięśnie dwugłowe ramion poprzez ruch młotkowy w górę i w dół.",
+      "Stań ze stopami na szerokość barków, lekko ugiętymi kolanami i napiętym brzuchem.",
+      "Chwyć po hantlu w każdej dłoni tak, aby wnętrza dłoni były skierowane do siebie.",
+      "Wyprostuj ręce wzdłuż boków tułowia.",
+      "Trzymając łokcie w stałym miejscu, unieś dłonie łukiem w stronę barków.",
+      "Opuść ręce równomiernym, kontrolowanym ruchem i powtórz.",
+      "Uwaga: nie obracaj nadgarstków podczas ćwiczenia."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0227-relaxation.pdf",
+      "pdf/0227-tension.pdf"
+    ],
+    "png": [
+      "png/0227-relaxation.png",
+      "png/0227-tension.png"
+    ]
+  },
+  {
+    "uuid": "B93DE2B4-8BB7-48F7-A166-33B5DD363D1B",
+    "id": 228,
+    "name": "uginanie-ramion-z-hantlami-na-lawce-skosnej",
+    "title": "Uginanie ramion z hantlami na ławce skośnej",
+    "alias": [],
+    "primer": "Ćwiczenie opracowane tak, aby utrzymywać obciążenie mięśni dwugłowych ramion.",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Usiądź na ławce skośnej ze stopami mocno opartymi na podłodze przed sobą.",
+      "Chwyć hantle z wnętrzami dłoni skierowanymi w górę.",
+      "Opuść ręce wzdłuż tułowia i utrzymując nadgarstki możliwie prosto, unieś dłonie do barków.",
+      "Skup się na napinaniu mięśni dwugłowych ramion podczas unoszenia rąk."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0228-relaxation.pdf",
+      "pdf/0228-tension.pdf"
+    ],
+    "png": [
+      "png/0228-relaxation.png",
+      "png/0228-tension.png"
+    ]
+  },
+  {
+    "uuid": "0C6E6F9F-B09E-4640-8FE6-4AD1374FA0C7",
+    "id": 236,
+    "name": "uginanie-ramion-na-modlitewniku-na-maszynie",
+    "title": "Uginanie ramion na modlitewniku na maszynie",
+    "alias": [
+      "Uginanie na biceps na modlitewniku na maszynie"
+    ],
+    "primer": "Uginanie na modlitewniku wykorzystuje specjalną ławkę do podparcia mięśni trójgłowych i izolowania mięśni dwugłowych ramion.",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [
+      "forearm"
+    ],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Uginanie na modlitewniku wykorzystuje specjalną ławkę do podparcia mięśni trójgłowych i izolowania mięśni dwugłowych ramion. Ta odmiana jest wykonywana na maszynie i dobrze nadaje się dla początkujących.",
+      "Wyreguluj siedzisko tak, aby ramiona znajdowały się na wysokości górnej krawędzi podpórki. Oprzyj ramiona na podpórce i całkowicie je wyprostuj. Chwyć drążek podchwytem, z wnętrzami dłoni w górę, i przyciągnij go w stronę głowy. Zatrzymaj się na chwilę, a następnie opuść drążek do pozycji wyjściowej.",
+      "Uwaga: dla najlepszych rezultatów wykonuj ćwiczenie powoli i kontrolowanie. Przed rozpoczęciem przeczytaj instrukcję na maszynie."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0236-relaxation.pdf",
+      "pdf/0236-tension.pdf"
+    ],
+    "png": [
+      "png/0236-relaxation.png",
+      "png/0236-tension.png"
+    ]
+  },
+  {
+    "uuid": "C920C06E-AD01-49FC-BEB3-3AA065C001E3",
+    "id": 237,
+    "name": "uginanie-ramienia-z-hantlem-na-modlitewniku-jednoracz",
+    "title": "Uginanie ramienia z hantlem na modlitewniku jednorącz",
+    "alias": [
+      "Uginanie na biceps z hantlem na modlitewniku jednorącz"
+    ],
+    "primer": "",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [
+      "forearm"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Uginanie na modlitewniku wykorzystuje specjalną ławkę do podparcia mięśnia trójgłowego i izolowania mięśnia dwugłowego ramienia. Ta odmiana wykorzystuje hantel i ruch jednorącz dla lepszej kontroli.",
+      "Wyreguluj siedzisko tak, aby ramię znajdowało się na wysokości górnej krawędzi podpórki.",
+      "Chwyć hantel jedną dłonią, kierując jej wnętrze w górę.",
+      "Oprzyj ramię na podpórce i całkowicie wyprostuj rękę w dół.",
+      "Przez cały czas utrzymując ramię na podpórce, unieś hantel w stronę głowy.",
+      "Zatrzymaj się na chwilę, a następnie opuść hantel do pozycji wyjściowej.",
+      "Zmień rękę i powtórz.",
+      "Uwaga: dla najlepszych rezultatów wykonuj ćwiczenie powoli i kontrolowanie."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0237-relaxation.pdf",
+      "pdf/0237-tension.pdf"
+    ],
+    "png": [
+      "png/0237-relaxation.png",
+      "png/0237-tension.png"
+    ]
+  },
+  {
+    "uuid": "42ED76CF-ABF6-42CD-8D2E-B9DDCED4AEC6",
+    "id": 238,
+    "name": "uginanie-ramion-na-gornych-wyciagach",
+    "title": "Uginanie ramion na górnych wyciągach",
+    "alias": [],
+    "primer": "Ćwiczenie wykorzystujące linki wyciągu do izolowania i kształtowania mięśni dwugłowych ramion.",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Ćwiczenie wykorzystuje linki wyciągu do izolowania i kształtowania mięśni dwugłowych ramion.",
+      "Zamocuj pojedynczy uchwyt po każdej stronie górnego wyciągu.",
+      "Chwyć uchwyty z wnętrzami dłoni skierowanymi w górę i stań ze stopami na szerokość barków.",
+      "Wyprostuj całkowicie ręce na boki.",
+      "Utrzymując łokcie nieruchomo, przyciągnij dłonie do boków głowy.",
+      "Napnij mięśnie dwugłowe ramion i zatrzymaj się na chwilę.",
+      "Następnie wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0238-relaxation.pdf",
+      "pdf/0238-tension.pdf"
+    ],
+    "png": [
+      "png/0238-relaxation.png",
+      "png/0238-tension.png"
+    ]
+  },
+  {
+    "uuid": "F2F17343-0B1C-46AA-8DDA-C6D4E14F3280",
+    "id": 239,
+    "name": "uginanie-ramion-z-gryfem-lamanym-na-modlitewniku",
+    "title": "Uginanie ramion z gryfem łamanym na modlitewniku",
+    "alias": [
+      "Uginanie na biceps z gryfem łamanym na modlitewniku"
+    ],
+    "primer": "Uginanie na modlitewniku wykorzystuje specjalną ławkę do podparcia mięśni trójgłowych i izolowania mięśni dwugłowych ramion.",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [
+      "forearm"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "",
+      "Wyreguluj siedzisko tak, aby ramiona znajdowały się na wysokości górnej krawędzi podpórki.",
+      "Chwyć gryf na szerokość barków, kierując wnętrza dłoni w górę.",
+      "Unieś gryf, oprzyj ramiona na podpórce i całkowicie wyprostuj ręce.",
+      "Przez cały czas utrzymując ramiona na podpórce, unieś gryf w stronę głowy.",
+      "Zatrzymaj się na chwilę, a następnie opuść gryf do pozycji wyjściowej.",
+      "Uwaga: dla najlepszych rezultatów wykonuj ćwiczenie powoli i kontrolowanie."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0239-relaxation.pdf",
+      "pdf/0239-tension.pdf"
+    ],
+    "png": [
+      "png/0239-relaxation.png",
+      "png/0239-tension.png"
+    ]
+  },
+  {
+    "uuid": "50EEDCAE-392D-419C-A09A-541D9CEB0B11",
+    "id": 240,
+    "name": "uginanie-ramion-z-hantlami-chwytem-mlotkowym-na-modlitewniku",
+    "title": "Uginanie ramion z hantlami chwytem młotkowym na modlitewniku",
+    "alias": [
+      "Uginanie na biceps z hantlami chwytem młotkowym na modlitewniku"
+    ],
+    "primer": "Ćwiczenie łączące chwyt młotkowy z podparciem na modlitewniku.",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Wyreguluj siedzisko tak, aby ramiona znajdowały się na wysokości górnej krawędzi podpórki.",
+      "Chwyć po hantlu w każdej dłoni na szerokość barków, z wnętrzami dłoni skierowanymi do siebie, i wyprostuj całkowicie ręce wzdłuż podpórki.",
+      "Przez cały czas utrzymując ramiona i łokcie na podpórce, unieś hantle w stronę głowy.",
+      "Zatrzymaj się na chwilę, a następnie opuść ciężar do pozycji wyjściowej.",
+      "Uwaga: dla najlepszych rezultatów wykonuj ćwiczenie powoli i kontrolowanie."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0240-relaxation.pdf",
+      "pdf/0240-tension.pdf"
+    ],
+    "png": [
+      "png/0240-relaxation.png",
+      "png/0240-tension.png"
+    ]
+  },
+  {
+    "uuid": "1E56859E-F4E2-42E0-B09E-767424F71AD0",
+    "id": 249,
+    "name": "uginanie-ramion-z-hantlami-na-modlitewniku-oburacz",
+    "title": "Uginanie ramion z hantlami na modlitewniku oburącz",
+    "alias": [
+      "Uginanie na biceps z hantlami na modlitewniku oburącz"
+    ],
+    "primer": "Odmiana uginania na modlitewniku z użyciem specjalnej ławki i hantli.",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [
+      "forearm"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Uginanie na modlitewniku wykorzystuje specjalną ławkę do podparcia mięśni trójgłowych i izolowania mięśni dwugłowych ramion. W tej odmianie używa się hantli.",
+      "Wyreguluj siedzisko tak, aby ramiona znajdowały się na wysokości górnej krawędzi podpórki.",
+      "Chwyć po hantlu w każdej dłoni, kierując wnętrza dłoni w górę.",
+      "Unieś hantle, oprzyj ramiona na podpórce i całkowicie wyprostuj ręce w stronę podłogi.",
+      "Przez cały czas utrzymując ramiona na podpórce, unieś ciężary w stronę głowy.",
+      "Zatrzymaj się na chwilę, a następnie opuść ciężary do pozycji wyjściowej.",
+      "Uwaga: dla najlepszych rezultatów wykonuj ćwiczenie powoli i kontrolowanie."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0249-relaxation.pdf",
+      "pdf/0249-tension.pdf"
+    ],
+    "png": [
+      "png/0249-relaxation.png",
+      "png/0249-tension.png"
+    ]
+  },
+  {
+    "uuid": "83021373-8846-4BE0-97AD-83371064DA5F",
+    "id": 252,
+    "name": "uginanie-zottmana-z-hantlem-na-modlitewniku",
+    "title": "Uginanie Zottmana z hantlem na modlitewniku",
+    "alias": [
+      "Uginanie na biceps metodą Zottmana na modlitewniku"
+    ],
+    "primer": "Zaawansowane ćwiczenie, w którym unosisz i obracasz hantel na zewnątrz, korzystając z podparcia na modlitewniku.",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [
+      "forearm"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Usiądź przy modlitewniku.",
+      "Chwyć hantel jedną dłonią, kierując jej wnętrze w górę.",
+      "Wyprostuj całkowicie rękę wzdłuż podpórki.",
+      "Ugnij rękę, obracając nadgarstek tak, aby wnętrze dłoni skierowało się w dół, gdy hantel dotrze do klatki piersiowej.",
+      "Zatrzymaj się na chwilę, a następnie wróć do pozycji wyjściowej i zmień rękę."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0252-relaxation.pdf",
+      "pdf/0252-tension.pdf"
+    ],
+    "png": [
+      "png/0252-relaxation.png",
+      "png/0252-tension.png"
+    ]
+  },
+  {
+    "uuid": "3FF4777D-42CE-4B76-B86E-3077165985BA",
+    "id": 253,
+    "name": "uginanie-ramion-na-maszynie",
+    "title": "Uginanie ramion na maszynie",
+    "alias": [],
+    "primer": "Ćwiczenie na maszynie pomagającej zachować prawidłową technikę.",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [
+      "forearm"
+    ],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Wyreguluj siedzisko tak, aby łokcie były ustawione na osi obrotu maszyny.",
+      "Dociśnij ramiona do poduszek i utrzymuj je nieruchomo przez całe ćwiczenie.",
+      "Ugnij przedramiona do pełnego zgięcia rąk.",
+      "Powoli opuść ręce do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0253-relaxation.pdf",
+      "pdf/0253-tension.pdf"
+    ],
+    "png": [
+      "png/0253-relaxation.png",
+      "png/0253-tension.png"
+    ]
+  },
+  {
+    "uuid": "A3A3B3C0-DBD1-4FAD-832A-04BF13B8D723",
+    "id": 257,
+    "name": "uginanie-ramion-z-hantlami-nachwytem",
+    "title": "Uginanie ramion z hantlami nachwytem",
+    "alias": [],
+    "primer": "Odmiana uginania nachwytem angażująca wszystkie mięśnie ramion.",
+    "type": "isolation",
+    "primary": [
+      "biceps brachii"
+    ],
+    "secondary": [
+      "forearm"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Stań ze stopami na szerokość barków, lekko ugiętymi kolanami i napiętym brzuchem.",
+      "Chwyć po hantlu w każdej dłoni, kierując wnętrza dłoni w dół.",
+      "Trzymając ramiona przy tułowiu i łokcie nieruchomo, unieś hantle w stronę barków.",
+      "Zatrzymaj się na chwilę i wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0257-relaxation.pdf",
+      "pdf/0257-tension.pdf"
+    ],
+    "png": [
+      "png/0257-relaxation.png",
+      "png/0257-tension.png"
+    ]
+  },
+  {
+    "uuid": "FD79404B-8BB5-4971-864E-BF28B1E507A2",
+    "id": 273,
+    "name": "wspiecia-na-palce-na-suwnicy",
+    "title": "Wspięcia na palce na suwnicy",
+    "alias": [],
+    "primer": "Ćwiczenie angażujące łydki z wykorzystaniem suwnicy do wypychania nóg.",
+    "type": "isolation",
+    "primary": [
+      "gastrocnemius",
+      "soleus"
+    ],
+    "secondary": [],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Ćwiczenie angażuje łydki na suwnicy do wypychania nóg. Możesz wykonywać je razem z wypychaniem nóg.",
+      "Usiądź na suwnicy i wypchnij platformę jak przy wypychaniu nóg.",
+      "Przesuń stopy w dół tak, aby przodostopia opierały się o krawędź platformy, a pięty swobodnie zwisały.",
+      "Utrzymując uchwyty blokady w położeniu zamkniętym, wypchnij platformę palcami, a następnie powoli przyciągnij palce w stronę ciała.",
+      "Dla najlepszych rezultatów wykonuj ruchy powoli.",
+      "Uwaga: dopóki nie oswoisz się z ruchem, używaj mniejszego ciężaru niż przy wypychaniu nóg."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0273-relaxation.pdf",
+      "pdf/0273-tension.pdf"
+    ],
+    "png": [
+      "png/0273-relaxation.png",
+      "png/0273-tension.png"
+    ]
+  },
+  {
+    "uuid": "E24A1E1E-D71C-40F5-8296-9B85E758337D",
+    "id": 279,
+    "name": "wspiecia-na-palce-na-maszynie-siedzac",
+    "title": "Wspięcia na palce na maszynie siedząc",
+    "alias": [],
+    "primer": "Jedno z najprostszych i najskuteczniejszych ćwiczeń na łydki.",
+    "type": "isolation",
+    "primary": [
+      "gastrocnemius",
+      "soleus"
+    ],
+    "secondary": [],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Usiądź na maszynie do wspięć na palce.",
+      "Oprzyj przodostopia na podpórce.",
+      "Umieść uda pod poduszką, tuż nad kolanami.",
+      "Odblokuj dźwignię i powoli wspinaj się na palce tak wysoko, jak potrafisz.",
+      "Zatrzymaj się na chwilę i wróć do pozycji wyjściowej.",
+      "Uwaga: wykonuj ruchy powoli i precyzyjnie."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0279-relaxation.pdf",
+      "pdf/0279-tension.pdf"
+    ],
+    "png": [
+      "png/0279-relaxation.png",
+      "png/0279-tension.png"
+    ]
+  },
+  {
+    "uuid": "68296D9A-DEAE-4B36-B16B-55F036CE52C0",
+    "id": 281,
+    "name": "wspiecia-na-palce-ze-sztanga",
+    "title": "Wspięcia na palce ze sztangą",
+    "alias": [],
+    "primer": "Odmiana wspięć na palce wykonywana stojąc.",
+    "type": "isolation",
+    "primary": [
+      "gastrocnemius",
+      "soleus"
+    ],
+    "secondary": [],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Połóż na podłodze podest lub dwa talerze obciążeniowe.",
+      "Ułóż sztangę na górnej części pleców i wejdź przodostopiami na podest.",
+      "Powoli unieś pięty, a następnie opuść je w stronę podłogi, uzyskując możliwie duże rozciągnięcie.",
+      "Wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0281-relaxation.pdf",
+      "pdf/0281-tension.pdf"
+    ],
+    "png": [
+      "png/0281-relaxation.png",
+      "png/0281-tension.png"
+    ]
+  },
+  {
+    "uuid": "4A5CE1F5-EF10-436C-8ACB-1D6D5928AEC3",
+    "id": 282,
+    "name": "wspiecia-na-palce-na-maszynie-stojac",
+    "title": "Wspięcia na palce na maszynie stojąc",
+    "alias": [],
+    "primer": "Ćwiczenie na maszynie pomagającej zachować prawidłową technikę.",
+    "type": "isolation",
+    "primary": [
+      "gastrocnemius",
+      "soleus"
+    ],
+    "secondary": [],
+    "equipment": [
+      "machine"
+    ],
+    "steps": [
+      "Ćwiczenie wykorzystuje maszynę pomagającą zachować prawidłową technikę.",
+      "Stań palcami stóp na podpórce maszyny i ustaw barki pod górnymi poduszkami.",
+      "Wspnij się na przodostopia, unosząc pięty nad podpórkę.",
+      "Zatrzymaj się na chwilę i wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0282-relaxation.pdf",
+      "pdf/0282-tension.pdf"
+    ],
+    "png": [
+      "png/0282-relaxation.png",
+      "png/0282-tension.png"
+    ]
+  },
+  {
+    "uuid": "0405BCFA-2660-4984-A3A4-3E79F972573F",
+    "id": 283,
+    "name": "wspiecia-na-palce-z-hantlami",
+    "title": "Wspięcia na palce z hantlami",
+    "alias": [],
+    "primer": "Odmiana wspięć na palce z użyciem hantli.",
+    "type": "isolation",
+    "primary": [
+      "gastrocnemius",
+      "soleus"
+    ],
+    "secondary": [],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Połóż na podłodze podest lub dwa talerze obciążeniowe.",
+      "Chwyć po hantlu w każdej dłoni i wejdź przodostopiami na podest.",
+      "Powoli unieś pięty, a następnie opuść je w stronę podłogi, uzyskując możliwie duże rozciągnięcie.",
+      "Opuść pięty i zegnij stawy skokowe, aby rozciągnąć łydki.",
+      "Wróć do pozycji wyjściowej."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0283-relaxation.pdf"
+    ],
+    "png": [
+      "png/0283-relaxation.png"
+    ]
+  },
+  {
+    "uuid": "CDA8DA22-C98C-49DC-8157-6950AFE53184",
+    "id": 284,
+    "name": "rowerek",
+    "title": "Rowerek",
+    "alias": [],
+    "primer": "Ćwiczenie angażujące brzuch przez zbliżanie rąk do nóg.",
+    "type": "compound",
+    "primary": [
+      "abdominals"
+    ],
+    "secondary": [],
+    "equipment": [
+      "body"
+    ],
+    "steps": [
+      "Ćwiczenie angażuje brzuch przez zbliżanie rąk do nóg. Ruch przypomina jazdę na rowerze.",
+      "Połóż się na plecach na macie.",
+      "Połóż dłonie po bokach głowy, nad uszami.",
+      "Unieś nogi, zginając kolana i utrzymując łydki równolegle do podłogi.",
+      "Zbliż lewy łokieć do prawego kolana, jak podczas jazdy na rowerze.",
+      "Powtórz prawym łokciem i lewym kolanem.",
+      "Kontynuuj naprzemiennie na obie strony.",
+      "Uwaga: prowadź ręce w poprzek klatki piersiowej, napinając brzuch podczas ruchu."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0284-relaxation.pdf",
+      "pdf/0284-tension.pdf"
+    ],
+    "png": [
+      "png/0284-relaxation.png",
+      "png/0284-tension.png"
+    ]
+  },
+  {
+    "uuid": "D56A7119-1885-47C6-99AC-D0501F62944E",
+    "id": 288,
+    "name": "spiecia-brzucha-na-wyciagu",
+    "title": "Spięcia brzucha na wyciągu",
+    "alias": [
+      "Brzuszki na wyciągu"
+    ],
+    "primer": "Ćwiczenie wykorzystujące obciążenie wyciągu podczas spięcia brzucha.",
+    "type": "isolation",
+    "primary": [
+      "abdominals"
+    ],
+    "secondary": [],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Zamocuj linę do górnego wyciągu.",
+      "Ustaw ławkę przed stosem obciążeń.",
+      "Chwyć linę nad barkami i usiądź tyłem do stosu.",
+      "Mocno opierając stopy na podłodze i utrzymując biodra nieruchomo, zegnij tułów, zbliżając łokcie do kolan.",
+      "Wróć do pozycji wyjściowej.",
+      "Uwaga: wykonuj ćwiczenie powoli i kontrolowanie."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0288-relaxation.pdf",
+      "pdf/0288-tension.pdf"
+    ],
+    "png": [
+      "png/0288-relaxation.png",
+      "png/0288-tension.png"
+    ]
+  },
+  {
+    "uuid": "61601FE7-2DBE-4EBA-B909-12EE8F588B88",
+    "id": 289,
+    "name": "spiecia-brzucha-ze-skretem",
+    "title": "Spięcia brzucha ze skrętem",
+    "alias": [
+      "Brzuszki ze skrętem"
+    ],
+    "primer": "Odmiana spięć angażująca zarówno górną, jak i dolną część mięśni brzucha.",
+    "type": "compound",
+    "primary": [
+      "abdominals"
+    ],
+    "secondary": [],
+    "equipment": [
+      "body"
+    ],
+    "steps": [
+      "Połóż się na plecach, zegnij kolana pod kątem 60° i utrzymuj całe stopy na podłodze.",
+      "Połóż dłonie po bokach głowy, nad uszami.",
+      "Unieś tułów, zbliżając prawy łokieć i lewe kolano tak, aby zetknęły się nad klatką piersiową.",
+      "Wróć do pozycji wyjściowej i powtórz przeciwną ręką i nogą.",
+      "Uwaga: napinaj mięśnie brzucha podczas skrętu."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0289-relaxation.pdf",
+      "pdf/0289-tension.pdf"
+    ],
+    "png": [
+      "png/0289-relaxation.png",
+      "png/0289-tension.png"
+    ]
+  },
+  {
+    "uuid": "5E270934-7A46-445D-8399-487A3C7355ED",
+    "id": 291,
+    "name": "spiecia-brzucha",
+    "title": "Spięcia brzucha",
+    "alias": [
+      "Brzuszki"
+    ],
+    "primer": "",
+    "type": "isolation",
+    "primary": [
+      "abdominals"
+    ],
+    "secondary": [],
+    "equipment": [
+      "body"
+    ],
+    "steps": [
+      "To najpopularniejsze ćwiczenie brzucha i być może najczęściej wykonywane nieprawidłowo. Oto poprawny sposób wykonania.",
+      "Połóż się na plecach ze stopami na ławce i kolanami zgiętymi pod kątem 90°.",
+      "Skrzyżuj ręce na klatce piersiowej lub połóż dłonie po bokach głowy, nad uszami.",
+      "Unieś głowę, barki i klatkę piersiową nad podłogę w stronę kolan, napinając mięśnie brzucha.",
+      "Zatrzymaj się na chwilę i opuść ciało do pozycji wyjściowej.",
+      "Uwaga: utrzymuj biodra prosto, a dolną część pleców przy podłodze."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0291-relaxation.pdf",
+      "pdf/0291-tension.pdf"
+    ],
+    "png": [
+      "png/0291-relaxation.png",
+      "png/0291-tension.png"
+    ]
+  },
+  {
+    "uuid": "A06460D0-17BA-4B5D-8241-D94329141399",
+    "id": 292,
+    "name": "spiecia-brzucha-glowa-w-dol",
+    "title": "Spięcia brzucha głową w dół",
+    "alias": [
+      "Brzuszki głową w dół"
+    ],
+    "primer": "Spięcia na ławce skośnej głową w dół pozwalają ustabilizować nogi i izolować wszystkie mięśnie brzucha.",
+    "type": "isolation",
+    "primary": [
+      "abdominals"
+    ],
+    "secondary": [],
+    "equipment": [
+      "body"
+    ],
+    "steps": [
+      "Połóż się na plecach na ławce skośnej głową w dół.",
+      "Stabilnie zahacz stopy pod wałkami.",
+      "Skrzyżuj ręce na klatce piersiowej lub połóż dłonie po bokach głowy, nad uszami.",
+      "Połóż tułów całkowicie na ławce, a następnie powoli go unieś, napinając brzuch.",
+      "Zatrzymaj się na chwilę i wróć do pozycji wyjściowej.",
+      "Uwaga: dla najlepszych rezultatów wykorzystuj pełny zakres ruchu."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0292-relaxation.pdf",
+      "pdf/0292-tension.pdf"
+    ],
+    "png": [
+      "png/0292-relaxation.png",
+      "png/0292-tension.png"
+    ]
+  },
+  {
+    "uuid": "B5D0B023-27D0-4516-AFA1-BE0B735FA600",
+    "id": 294,
+    "name": "sklony-boczne-z-hantlem",
+    "title": "Skłony boczne z hantlem",
+    "alias": [],
+    "primer": "Ćwiczenie angażujące mięśnie skośne po bokach brzucha.",
+    "type": "isolation",
+    "primary": [
+      "abdominals"
+    ],
+    "secondary": [],
+    "equipment": [
+      "dumbbell"
+    ],
+    "steps": [
+      "Stań ze stopami na szerokość barków, lekko ugiętymi kolanami i napiętym brzuchem.",
+      "Chwyć hantel jedną dłonią i z pozycji wyprostowanej wykonaj możliwie głęboki skłon tułowia w bok.",
+      "Powoli wyprostuj się do pozycji wyjściowej.",
+      "Przełóż hantel do drugiej dłoni i powtórz ćwiczenie.",
+      "Uwaga: zginaj tylko tułów w pasie, nie biodra ani kolana."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0294-relaxation.pdf",
+      "pdf/0294-tension.pdf"
+    ],
+    "png": [
+      "png/0294-relaxation.png",
+      "png/0294-tension.png"
+    ]
+  },
+  {
+    "uuid": "6F618906-444F-444C-8AA1-D272623B28D7",
+    "id": 296,
+    "name": "przyciaganie-kolan-na-pilce-gimnastycznej",
+    "title": "Przyciąganie kolan na piłce gimnastycznej",
+    "alias": [],
+    "primer": "Ćwiczenie z piłką izolujące i angażujące dolną część mięśni brzucha.",
+    "type": "compound",
+    "primary": [
+      "abdominals"
+    ],
+    "secondary": [],
+    "equipment": [
+      "body"
+    ],
+    "steps": [
+      "Przyjmij pozycję jak do pompki.",
+      "Oprzyj stopy i golenie na piłce gimnastycznej.",
+      "Utrzymując proste plecy i podpierając ciężar ciała na dłoniach, przyciągnij kolana do klatki piersiowej, przetaczając piłkę do przodu pod kostki.",
+      "Napnij brzuch, a następnie odtocz piłkę do pozycji wyjściowej, prostując nogi.",
+      "Uwaga: podczas ćwiczenia utrzymuj proste plecy."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0296-relaxation.pdf",
+      "pdf/0296-tension.pdf"
+    ],
+    "png": [
+      "png/0296-relaxation.png",
+      "png/0296-tension.png"
+    ]
+  },
+  {
+    "uuid": "6EB5B9C9-C953-459E-AFDE-2D31B1BEFAE0",
+    "id": 298,
+    "name": "wioslowanie-sztanga-w-opadzie",
+    "title": "Wiosłowanie sztangą w opadzie",
+    "alias": [],
+    "primer": "Ćwiczenie skupiające się na środkowej części pleców.",
+    "type": "compound",
+    "primary": [
+      "latissimus dorsi"
+    ],
+    "secondary": [
+      "biceps brachii"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Rozstaw stopy na szerokość barków.",
+      "Pochyl się nad gryfem, utrzymując proste plecy równolegle do podłogi.",
+      "Chwyć gryf nachwytem nieco szerzej niż barki.",
+      "Trzymaj gryf w wyprostowanych rękach; to pozycja wyjściowa.",
+      "Powoli unieś gryf do dolnej części klatki piersiowej.",
+      "Zatrzymaj się na chwilę i wróć do pozycji wyjściowej.",
+      "Uwaga: podczas ćwiczenia trzymaj głowę uniesioną i plecy proste."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/0298-relaxation.pdf",
+      "pdf/0298-tension.pdf"
+    ],
+    "png": [
+      "png/0298-relaxation.png",
+      "png/0298-tension.png"
+    ]
+  },
+  {
+    "uuid": "3D405857-F1A8-4F85-858C-231F0CEF653A",
+    "id": 9001,
+    "name": "wyciskanie-sztangi-nad-glowe-stojac",
+    "title": "Wyciskanie sztangi nad głowę stojąc",
+    "alias": [
+      "Wyciskanie sztangi na barki stojąc",
+      "Wyciskanie żołnierskie sztangi stojąc"
+    ],
+    "primer": "Ćwiczenie wzmacniające barki i mięśnie trójgłowe ramion.",
+    "type": "compound",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [
+      "triceps brachii"
+    ],
+    "equipment": [
+      "barbell"
+    ],
+    "steps": [
+      "Stań ze sztangą na górnej części klatki piersiowej, prostymi plecami i napiętym brzuchem.",
+      "Chwyć gryf na szerokość barków, kierując wnętrza dłoni do przodu.",
+      "Trzymając gryf przed głową, wyciśnij go w górę, prostując ręce bez blokowania łokci.",
+      "Zatrzymaj się na górze, a następnie kontrolowanym ruchem opuść gryf do pozycji wyjściowej."
+    ],
+    "tips": [
+      "Ćwiczenie można też wykonywać ze sztangą ustawioną początkowo za głową."
+    ],
+    "references": [
+      "https://youtu.be/CnBmiBqp-AI"
+    ],
+    "pdf": [
+      "pdf/9001-relaxation.pdf",
+      "pdf/9001-tension.pdf"
+    ],
+    "png": [
+      "png/9001-relaxation.png",
+      "png/9001-tension.png"
+    ]
+  },
+  {
+    "uuid": "C4035736-EAF3-4DAD-8B74-BD1537E6B72D",
+    "id": 9002,
+    "name": "przyciaganie-liny-do-twarzy",
+    "title": "Przyciąganie liny do twarzy",
+    "alias": [],
+    "primer": "Skuteczne ćwiczenie na tylną część barków.",
+    "type": "isolation",
+    "primary": [
+      "deltoid"
+    ],
+    "secondary": [],
+    "equipment": [
+      "cable"
+    ],
+    "steps": [
+      "Stań przed wyciągiem z zamocowaną liną.",
+      "Przyciągnij linę prosto do twarzy, rozsuwając dłonie i utrzymując ramiona równolegle do podłogi."
+    ],
+    "tips": [],
+    "references": [],
+    "pdf": [
+      "pdf/9002-relaxation.pdf",
+      "pdf/9002-tension.pdf"
+    ],
+    "png": [
+      "png/9002-relaxation.png",
+      "png/9002-tension.png"
+    ]
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "originHash" : "7f0270f9d2d8645af10e7e3dcb2ee8e246f1403d458aeba8f71682923d4491d8",
+  "pins" : [
+    {
+      "identity" : "charts",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChartsOrg/Charts",
+      "state" : {
+        "revision" : "afc7c983d2f98c4d81cac28b1169951cc7323bb5"
+      }
+    }
+  ],
+  "version" : 3
+}

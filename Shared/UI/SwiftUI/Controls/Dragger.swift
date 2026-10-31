@@ -178,7 +178,8 @@ struct Dragger : View {
     }
     
     private var valueString: String? {
-        (tmpValueInitialized ? tmpValue : value).map { numberFormatter.string(from: NSNumber(value: $0)) ?? "" }
+        numberFormatter.locale = L10n.locale
+        return (tmpValueInitialized ? tmpValue : value).map { numberFormatter.string(from: NSNumber(value: $0)) ?? "" }
     }
     
     // toggle to wiggle the dragger, the toggling is kind of a hack

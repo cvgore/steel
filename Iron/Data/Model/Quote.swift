@@ -15,6 +15,6 @@ struct Quote: Decodable {
 
 extension Quote {
     var displayText: String {
-        text.enquoted + (person.map { " – \($0)" } ?? "")
+        L10n.string(text).enquoted + (person.map { " – \(L10n.string($0))" } ?? "")
     }
 }

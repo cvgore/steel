@@ -21,6 +21,11 @@ struct UITabView: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: UITabBarController, context: UIViewControllerRepresentableContext<UITabView>) {
         uiViewController.selectedIndex = selection
+        // Keep hosting controllers (and their navigation/draft state) alive.
+        // New descriptions contain the selected language's tab titles only.
+        for (existing, updated) in zip(uiViewController.viewControllers ?? [], viewControllers) {
+            existing.tabBarItem.title = updated.tabBarItem.title
+        }
     }
 }
 
@@ -32,7 +37,7 @@ extension View {
 
 extension UIViewController {
     func tabItem(title: String?, image: UIImage?, tag: Int) -> Self {
-        tabBarItem = .init(title: title, image: image, tag: tag)
+        tabBarItem = .init(title: title.map { L10n.string($0) }, image: image, tag: tag)
         return self
     }
 }

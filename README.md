@@ -17,11 +17,15 @@ A modern and completely free weightlifting workout tracker for iOS, written in S
 
 ## Building
 
-**Xcode 13** or later is required.
+**Xcode 27** or later is required. Deployment targets are **iOS 27.0** and **watchOS 27.0**. Open `Iron.xcodeproj`; the shared schemes are `Iron` (app and unit tests), `IronE2E` (UI tests), and `WatchIron` (Watch app).
 
 - Select the "Iron" project in the Xcode sidebar
 - Under "Targets", select "Iron"
 - Change the "Bundle Identifier", "App Group" and "iCloud Container" to something unique like `com.yourname.Iron`
 - Go to the "Signing & Capabilities" tab and select your development team under "Signing > Team"
 - Repeat the same process for the other targets where applicable
-- Build the `Iron` scheme. (Note that due to a bug in Xcode 14 the scheme for the Iron target might not be autocreated and you'll have to create it manually.)
+- Build the `Iron` scheme.
+
+DGCharts is pinned to an upstream compiler fix in the checked-in SwiftPM lockfile. Resolve the recorded dependency version without editing downloaded package sources.
+
+See [Testing](docs/testing.md) for simulator commands and device checks, and [Localization](docs/localization.md) for language behavior, resources and catalog maintenance.

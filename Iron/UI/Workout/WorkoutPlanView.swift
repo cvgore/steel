@@ -48,7 +48,7 @@ struct WorkoutPlanView: View {
                     }
                 })
             }
-            Section(header: Text("Routines".uppercased())) {
+            Section(header: Text(L10n.string("Routines").uppercased(with: L10n.locale))) {
                 ForEach(workoutRoutines) { workoutRoutine in
                     NavigationLink(destination: WorkoutRoutineView(workoutRoutine: workoutRoutine)) {
                         VStack(alignment: .leading) {

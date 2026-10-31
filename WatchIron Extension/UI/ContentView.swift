@@ -55,7 +55,7 @@ private struct _ContentView: View {
     
     private var errorMessage: String? {
         guard HKHealthStore.isHealthDataAvailable() else {
-            return "HealthKit is not available on this device."
+            return L10n.string("HealthKit is not available on this device.")
         }
         
         switch WorkoutSessionManager.healthStore.authorizationStatus(for: .workoutType()) {
@@ -64,7 +64,7 @@ private struct _ContentView: View {
         case .sharingAuthorized:
             return nil
         case .sharingDenied:
-            return "Not authorized for Apple Health. You can authorize Iron in the settings app."
+            return L10n.string("Not authorized for Apple Health. You can authorize Iron in the settings app.")
         @unknown default:
             return nil
         }

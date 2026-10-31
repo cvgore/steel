@@ -14,10 +14,10 @@ extension Exercise {
     var intentExercise: IntentExercise {
         let intentExercise = IntentExercise(identifier: uuid.uuidString, display: title, pronunciationHint: makeVoiceCompatible(string: title))
         intentExercise.alternativeSpeakableMatches =
-            alias.map { alias in
+            searchNames.map { alias in
                 INSpeakableString(vocabularyIdentifier: alias, spokenPhrase: alias, pronunciationHint: makeVoiceCompatible(string: alias))
             } +
-            alias.map { alias in
+            searchNames.map { alias in
                 INSpeakableString(spokenPhrase: makeVoiceCompatible(string: alias))
             } +
             [ INSpeakableString(spokenPhrase: makeVoiceCompatible(string: title)) ]

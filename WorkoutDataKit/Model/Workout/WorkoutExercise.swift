@@ -110,7 +110,7 @@ public class WorkoutExercise: NSManagedObject, Codable {
         
         if let exercisesKey = CodingUserInfoKey.exercisesKey,
             let exercises = encoder.userInfo[exercisesKey] as? [Exercise] {
-            try container.encodeIfPresent(exercise(in: exercises)?.title, forKey: .exerciseName)
+            try container.encodeIfPresent(exercise(in: exercises)?.canonicalTitle, forKey: .exerciseName)
         }
     }
 }

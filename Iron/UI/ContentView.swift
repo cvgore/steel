@@ -14,11 +14,17 @@ let NAVIGATION_BAR_SPACING: CGFloat = 16
 struct ContentView : View {
     @EnvironmentObject private var sceneState: SceneState
     
+    @State private var languageCode = L10n.languageCode
+
     @State private var restoreResult: IdentifiableHolder<Result<Void, Error>>?
     @State private var restoreBackupData: IdentifiableHolder<Data>?
     
     var body: some View {
         tabView
+            .environment(\.locale, Locale(identifier: languageCode))
+            .onReceive(NotificationCenter.default.publisher(for: .appLanguageChanged)) { _ in
+                languageCode = L10n.languageCode
+            }
             .edgesIgnoringSafeArea([.top, .bottom])
             .onReceive(NotificationCenter.default.publisher(for: Notification.Name.RestoreFromBackup)) { output in
                 guard let backupData = output.userInfo?[restoreFromBackupDataUserInfoKey] as? Data else { return }
@@ -82,39 +88,56 @@ struct ContentView : View {
                 FeedView()
                     .productionEnvironment()
                     .hostingController()
-                    .tabItem(title: "Feed", image: UIImage(systemName: "house"), tag: 0),
+                    .tabItem(title: L10n.string("Feed"), image: UIImage(systemName: "house"), tag: 0),
 
                 HistoryView()
                     .productionEnvironment()
                     .hostingController()
-                    .tabItem(title: "History", image: UIImage(systemName: "clock"), tag: 1),
+                    .tabItem(title: L10n.string("History"), image: UIImage(systemName: "clock"), tag: 1),
 
                 WorkoutTab()
                     .productionEnvironment()
                     .hostingController()
-                    .tabItem(title: "Workout", image: UIImage(systemName: "plus.square"), tag: 2),
+                    .tabItem(title: L10n.string("Workout"), image: UIImage(systemName: "plus.square"), tag: 2),
 
                 ExerciseMuscleGroupsView()
                     .productionEnvironment()
                     .hostingController()
-                    .tabItem(title: "Exercises", image: UIImage(systemName: "tray.full"), tag: 3),
+                    .tabItem(title: L10n.string("Exercises"), image: UIImage(systemName: "tray.full"), tag: 3),
 
                 SettingsView()
                     .productionEnvironment()
                     .hostingController()
-                    .tabItem(title: "Settings", image: UIImage(systemName: "gear"), tag: 4),
+                    .tabItem(title: L10n.string("Settings"), image: UIImage(systemName: "gear"), tag: 4),
             ], selection: sceneState.selectedTabNumber)
+
         }
     }
 }
 
 private extension View {
     func productionEnvironment() -> some View {
-        self
+        LocalizedHostingRoot(content: self
             .environmentObject(SettingsStore.shared)
             .environmentObject(RestTimerStore.shared)
             .environmentObject(ExerciseStore.shared)
-            .environment(\.managedObjectContext, WorkoutDataStorage.shared.persistentContainer.viewContext)
+            .environment(\.managedObjectContext, WorkoutDataStorage.shared.persistentContainer.viewContext))
+    }
+}
+
+// iOS 13 uses one hosting controller per tab. Each root observes locale changes
+// itself, preserving its navigation, sheets and editor state.
+private struct LocalizedHostingRoot<Content: View>: View {
+    let content: Content
+    @State private var languageCode = L10n.languageCode
+
+    var body: some View {
+        content
+            .environment(\.locale, Locale(identifier: languageCode))
+            .onAppear { languageCode = L10n.languageCode }
+            .onReceive(NotificationCenter.default.publisher(for: .appLanguageChanged)) { _ in
+                languageCode = L10n.languageCode
+            }
     }
 }
 

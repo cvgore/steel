@@ -15,7 +15,7 @@ struct GeneralSettingsView: View {
         Section {
             Picker("Weight Unit", selection: $settingsStore.weightUnit) {
                 ForEach(WeightUnit.allCases, id: \.self) { weightUnit in
-                    Text(weightUnit.title).tag(weightUnit)
+                    Text(verbatim: weightUnit.title).tag(weightUnit)
                 }
             }
         }
@@ -68,6 +68,13 @@ struct GeneralSettingsView: View {
     
     var body: some View {
         Form {
+            Section {
+                Picker("Language", selection: $settingsStore.language) {
+                    ForEach(AppLanguage.allCases, id: \.self) { language in
+                        Text(verbatim: language.title).tag(language)
+                    }
+                }
+            }
             weightPickerSection
             restTimerTimesSection
             restTimerSection

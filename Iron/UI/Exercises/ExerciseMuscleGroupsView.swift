@@ -20,10 +20,10 @@ struct ExerciseMuscleGroupsView : View {
         let muscleGroup = exercises.first?.muscleGroup ?? ""
         return NavigationLink(destination:
             ExercisesView(exercises: exercises)
-                .navigationBarTitle(Text(muscleGroup.capitalized), displayMode: .inline)
+                .navigationBarTitle(Text(L10n.string(muscleGroup).capitalized(with: L10n.locale)), displayMode: .inline)
         ) {
             HStack {
-                Text(muscleGroup.capitalized)
+                Text(L10n.string(muscleGroup).capitalized(with: L10n.locale))
                 Spacer()
                 Text("(\(exercises.count))")
                     .foregroundColor(.secondary)

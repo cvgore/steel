@@ -47,6 +47,7 @@ struct ActivityCalendarView: View {
     
     let dateFormatter: DateFormatter = {
         let d = DateFormatter()
+        d.locale = L10n.locale
         d.dateStyle = .short
         d.timeStyle = .short
         return d

@@ -20,7 +20,7 @@ struct AddExercisesSheet: View {
     @State private var exerciseSelectorSelection: Set<Exercise> = Set()
     
     init(exercises: [Exercise], recentExercises: [Exercise], onAdd: @escaping (Set<Exercise>) -> Void) {
-        let recentExercisesGroup = ExerciseGroup(title: "Recent", exercises: recentExercises)
+        let recentExercisesGroup = ExerciseGroup(title: L10n.string("Recent"), exercises: recentExercises)
         let exerciseGroups = ExerciseStore.splitIntoMuscleGroups(exercises: exercises)
         self.filter = ExerciseGroupFilter(exerciseGroups: recentExercisesGroup.exercises.isEmpty ? exerciseGroups : [recentExercisesGroup] + exerciseGroups)
         self.onAdd = onAdd

@@ -14,7 +14,7 @@ import os.log
 enum Shortcuts {
     static func setShortcutSuggestions() {
         let exercises = ExerciseStore.shared.shownExercises.filter { exercise in
-            ["Bench Press: Barbell", "Squat: Barbell", "Deadlift: Barbell"].contains(exercise.title)
+            ["Bench Press: Barbell", "Squat: Barbell", "Deadlift: Barbell"].contains(where: { exercise.searchNames.contains($0) })
         }
         
         let prShortcuts = exercises.compactMap { exercise -> INShortcut? in
@@ -57,7 +57,7 @@ enum Shortcuts {
     static func donateStartWorkoutInteraction(for workout: Workout) {
         guard let uuid = workout.uuid else { return }
         let intent = INStartWorkoutIntent()
-        intent.suggestedInvocationPhrase = "Weight lifting time"
+        intent.suggestedInvocationPhrase = L10n.string("Weight lifting time")
         let interaction = INInteraction(intent: intent, response: nil)
         interaction.groupIdentifier = "start_workout"
         interaction.identifier = uuid.uuidString

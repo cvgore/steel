@@ -20,7 +20,7 @@ public class WorkoutPlan: NSManagedObject, Codable {
     }
     
     public var displayTitle: String {
-        title ?? "Workout Plan"
+        title ?? L10n.string("Workout Plan")
     }
     
     public func duplicate(context: NSManagedObjectContext) -> WorkoutPlan {

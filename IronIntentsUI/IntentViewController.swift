@@ -56,6 +56,7 @@ class IntentViewController: UIViewController, INUIHostedViewControlling {
                 OneRepMaxView(exercise: exercise, highlightDate: highlightDate)
                     .environment(\.managedObjectContext, WorkoutDataStorage.shared.persistentContainer.viewContext)
                     .environmentObject(SettingsStore.shared)
+                    .environment(\.locale, L10n.locale)
                     .accentColor(.blue)
                     .padding()
             ))
@@ -68,6 +69,7 @@ class IntentViewController: UIViewController, INUIHostedViewControlling {
             
             attachChild(UIHostingController(rootView:
                 PersonalRecordView(displayString: intentSet.displayString)
+                    .environment(\.locale, L10n.locale)
                     .accentColor(.blue)
 //                    .padding()
             ))

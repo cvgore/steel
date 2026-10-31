@@ -9,6 +9,9 @@
 import Foundation
 import SwiftUI
 import Combine
+#if canImport(WidgetKit)
+import WidgetKit
+#endif
 
 final class SettingsStore: ObservableObject {
     let objectWillChange = ObservableObjectPublisher()
@@ -17,6 +20,17 @@ final class SettingsStore: ObservableObject {
     
     init(userDefaults: UserDefaults) {
         self.userDefaults = userDefaults
+    }
+
+    var language: AppLanguage {
+        get { L10n.language }
+        set {
+            objectWillChange.send()
+            L10n.language = newValue
+            #if canImport(WidgetKit) && os(iOS)
+            if #available(iOS 14, *) { WidgetCenter.shared.reloadAllTimelines() }
+            #endif
+        }
     }
 
     var weightUnit: WeightUnit {

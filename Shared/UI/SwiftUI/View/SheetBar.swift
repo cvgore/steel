@@ -16,7 +16,7 @@ struct SheetBar<Leading, Trailing>: View where Leading: View, Trailing: View {
     var body: some View {
         ZStack {
             title.map {
-                Text($0).font(.headline)
+                Text(LocalizedStringKey($0)).font(.headline)
             }
             HStack {
                 leading

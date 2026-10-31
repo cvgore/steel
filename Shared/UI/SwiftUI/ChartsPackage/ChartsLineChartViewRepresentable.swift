@@ -7,15 +7,15 @@
 //
 
 import SwiftUI
-import Charts
+import DGCharts
 
 struct ChartsLineChartViewRepresentable : UIViewRepresentable {
     let chartData: ChartData
     let xAxisValueFormatter: AxisValueFormatter?
     let yAxisValueFormatter: AxisValueFormatter?
     let balloonValueFormatter: BalloonValueFormatter?
-    var preCustomization: ((Charts.LineChartView, ChartData) -> ())?
-    var postCustomization: ((Charts.LineChartView) -> ())?
+    var preCustomization: ((DGCharts.LineChartView, ChartData) -> ())?
+    var postCustomization: ((DGCharts.LineChartView) -> ())?
 
     func makeUIView(context: UIViewRepresentableContext<ChartsLineChartViewRepresentable>) -> StyledLineChartView {
         StyledLineChartView()

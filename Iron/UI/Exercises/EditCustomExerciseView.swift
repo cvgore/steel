@@ -52,7 +52,7 @@ struct EditCustomExerciseView: View {
                 TextField("Description (Optional)", text: $exerciseValues.description)
             }
             
-            Section(header: Text("Muscles".uppercased())) {
+            Section(header: Text(L10n.string("Muscles").uppercased(with: L10n.locale))) {
                 ForEach(primaryMuscles, id: \.self) { exerciseMuscle in
                     HStack {
                         Text(exerciseMuscle.shortDisplayTitle)
@@ -76,7 +76,7 @@ struct EditCustomExerciseView: View {
             
             Picker("Type", selection: $exerciseValues.type) {
                 ForEach(Exercise.ExerciseType.allCases, id: \.self) {
-                    Text($0.title.capitalized).tag($0)
+                    Text(L10n.string($0.title).capitalized(with: L10n.locale)).tag($0)
                 }
             }
         }
@@ -98,15 +98,15 @@ struct EditCustomExerciseView: View {
 extension EditCustomExerciseView.ExerciseValues.ExerciseMuscle {
     var shortDisplayTitle: String {
         let title = Exercise.commonMuscleName(for: muscle) ?? "other"
-        return title.capitalized
+        return L10n.string(title).capitalized(with: L10n.locale)
     }
     
     var displayTitle: String {
         var title = shortDisplayTitle
-        if title.lowercased() != muscle.lowercased() {
-            title.append(" (\(muscle))")
+        if (Exercise.commonMuscleName(for: muscle) ?? "other").caseInsensitiveCompare(muscle) != .orderedSame {
+            title.append(" (\(L10n.string(muscle)))")
         }
-        return title.capitalized
+        return L10n.string(title).capitalized(with: L10n.locale)
     }
 }
 
@@ -128,12 +128,12 @@ struct MuscleSelectionView: View {
     
     var body: some View {
         List(selection: $selection) {
-            Section(header: Text("Primary".uppercased())) {
+            Section(header: Text(L10n.string("Primary").uppercased(with: L10n.locale))) {
                 ForEach(primaryMuscles, id: \.self) { exerciseMuscle in
                     Text(exerciseMuscle.displayTitle)
                 }
             }
-            Section(header: Text("Secondary".uppercased())) {
+            Section(header: Text(L10n.string("Secondary").uppercased(with: L10n.locale))) {
                 ForEach(secondaryMuscles, id: \.self) { exerciseMuscle in
                     Text(exerciseMuscle.displayTitle)
                 }

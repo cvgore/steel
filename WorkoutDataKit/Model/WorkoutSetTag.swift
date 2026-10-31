@@ -18,9 +18,9 @@ public enum WorkoutSetTag: String, CaseIterable {
 //        case .warmUp:
 //            return "warm up"
         case .dropSet:
-            return "drop set"
+            return L10n.string("drop set")
         case .failure:
-            return "failure"
+            return L10n.string("failure")
         }
     }
 }

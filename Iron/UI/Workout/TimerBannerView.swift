@@ -64,6 +64,7 @@ struct TimerBannerView: View {
             }) {
                 HStack {
                     Image(systemName: "clock")
+                        .accessibility(label: Text("Workout Duration"))
                     Text(workoutTimerDurationFormatter.string(from: workout.safeDuration) ?? "")
                         .font(Font.body.monospacedDigit())
                 }
@@ -78,6 +79,7 @@ struct TimerBannerView: View {
                 let remainingTime = restTimerStore.restTimerRemainingTime
                 HStack {
                     Image(systemName: "timer")
+                        .accessibility(label: Text("Rest Timer"))
                     if let remainingTime = remainingTime {
                         Text(restTimerDurationFormatter.string(from: abs(remainingTime.rounded(.up))) ?? "")
                             .font(Font.body.monospacedDigit())
