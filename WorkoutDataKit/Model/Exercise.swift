@@ -25,6 +25,8 @@ public struct Exercise: Hashable {
     // Localization changes presentation only. Encoded backups always retain the
     // original values, and custom exercises never enter the built-in catalog.
     public var title: String { translation?.title ?? originalTitle }
+    /// Stable source name for backup and JSON exercise references.
+    var canonicalTitle: String { originalTitle }
     public var alias: [String] { translation?.alias ?? originalAlias }
     public var description: String? { translation?.primer ?? originalDescription }
     public var steps: [String] { translation?.steps ?? originalSteps }
