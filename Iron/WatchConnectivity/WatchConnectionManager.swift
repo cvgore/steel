@@ -26,6 +26,31 @@ class WatchConnectionManager: NSObject {
     static let shared = WatchConnectionManager()
     
     private let session = WCSession.default
+    private var languageObserver: NSObjectProtocol?
+
+    override init() {
+        super.init()
+        languageObserver = NotificationCenter.default.addObserver(forName: .appLanguageChanged, object: nil, queue: .main) { [weak self] _ in
+            self?.sendLanguagePreference()
+        }
+    }
+
+    private func sendLanguagePreference() {
+        guard session.activationState == .activated else { return }
+        // Application context keeps only the newest preference while Watch is offline.
+        var context = session.applicationContext
+        context[L10n.preferenceKey] = L10n.language.rawValue
+        do {
+            try session.updateApplicationContext(context)
+        } catch {
+            os_log("Could not transfer language preference: %@", log: .watch, type: .error, error.localizedDescription)
+        }
+        // Deliver immediately when both apps are open; the application context
+        // remains the durable fallback for an offline or background Watch.
+        if session.isReachable {
+            session.sendMessage([L10n.preferenceKey: L10n.language.rawValue], replyHandler: nil, errorHandler: nil)
+        }
+    }
     
     func activateSession() {
         guard WCSession.isSupported() else {
@@ -56,6 +81,7 @@ class WatchConnectionManager: NSObject {
 
 extension WatchConnectionManager: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        sendLanguagePreference()
         os_log("Session activation completed isActivated=%@ error=%@", log: .watch, type: .info, String(describing: activationState == .activated), error?.localizedDescription ?? "nil") // printing activationState directly doesn't work
     }
     
@@ -95,7 +121,14 @@ extension WatchConnectionManager: WCSessionDelegate {
     }
     
     func sessionReachabilityDidChange(_ session: WCSession) {
+        sendLanguagePreference()
         os_log("Session reachability did change isReachable=%@", log: .watch, type: .debug, String(describing: session.isReachable))
+    }
+
+    func sessionWatchStateDidChange(_ session: WCSession) {
+        // Activation can precede companion installation or a change of Watch.
+        // Retry the latest preference once the companion becomes available.
+        sendLanguagePreference()
     }
 }
 

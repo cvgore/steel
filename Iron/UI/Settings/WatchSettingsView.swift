@@ -13,9 +13,9 @@ struct WatchSettingsView: View {
     
     private var footer: String {
         if settingsStore.watchCompanion {
-            return "When you start a workout, Iron's Apple Watch companion app will automatically launch to measure your heart rate and approximate your calorie consumption during the workout."
+            return L10n.string("When you start a workout, Iron's Apple Watch companion app will automatically launch to measure your heart rate and approximate your calorie consumption during the workout.")
         } else {
-            return "When you start a workout, Iron's Apple Watch companion app will not automatically launch to measure your heart rate and approximate your calorie consumption during the workout."
+            return L10n.string("When you start a workout, Iron's Apple Watch companion app will not automatically launch to measure your heart rate and approximate your calorie consumption during the workout.")
         }
     }
     

@@ -120,6 +120,7 @@ struct CurrentWorkoutView: View {
         guard let newValue = workoutTitleInput?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
         workoutTitleInput = newValue
         workout.title = newValue.isEmpty ? nil : newValue
+        self.managedObjectContext.saveOrCrash()
     }
     
     private func currentWorkoutExerciseDetailView(workoutExercise: WorkoutExercise) -> some View {
@@ -152,7 +153,7 @@ struct CurrentWorkoutView: View {
                     currentWorkoutExerciseDetailView(workoutExercise: workoutExercise)
                 ) {
                 VStack(alignment: .leading) {
-                    Text(workoutExercise.exercise(in: exerciseStore.exercises)?.title ?? "Unknown Exercise")
+                    Text(workoutExercise.exercise(in: exerciseStore.exercises)?.title ?? L10n.string("Unknown Exercise"))
                         .foregroundColor(isCompleted ? .secondary : .primary)
                     text.map {
                         Text($0)
@@ -164,6 +165,7 @@ struct CurrentWorkoutView: View {
                 if isCompleted {
                     Spacer()
                     Image(systemName: "checkmark.circle.fill")
+                    .accessibility(label: Text("Completed"))
                         .foregroundColor(.green)
                 }
             }
@@ -206,6 +208,7 @@ struct CurrentWorkoutView: View {
                             self.finishWorkoutSheetActivityItems = [logText]
                         }) {
                             Image(systemName: "square.and.arrow.up")
+                    .accessibility(label: Text("Share"))
                         }
                         
                         Button("Finish") {
@@ -265,7 +268,7 @@ struct CurrentWorkoutView: View {
                             }
                         })
                     }
-                    Section(header: Text("Exercises".uppercased())) {
+                    Section(header: Text(L10n.string("Exercises").uppercased(with: L10n.locale))) {
                         ForEach(workoutExercises) { workoutExercise in
                             self.workoutExerciseCell(workoutExercise: workoutExercise)
                         }

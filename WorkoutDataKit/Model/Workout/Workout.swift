@@ -22,20 +22,24 @@ public class Workout: NSManagedObject, Codable {
         return request
     }
 
-    public static let dateFormatter: DateFormatter = {
+    public static var dateFormatter: DateFormatter {
         let dateFormatter = DateFormatter()
+        dateFormatter.locale = L10n.locale
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .short
         dateFormatter.doesRelativeDateFormatting = true
         return dateFormatter
-    }()
+    }
 
-    public static let durationFormatter: DateComponentsFormatter = {
+    public static var durationFormatter: DateComponentsFormatter {
         let formatter = DateComponentsFormatter()
+        var calendar = Calendar.current
+        calendar.locale = L10n.locale
+        formatter.calendar = calendar
         formatter.unitsStyle = .abbreviated
         formatter.allowedUnits = [.hour, .minute]
         return formatter
-    }()
+    }
     
     public class func create(context: NSManagedObjectContext) -> Workout {
         let workout = Workout(context: context)
@@ -73,9 +77,9 @@ public class Workout: NSManagedObject, Codable {
         let muscleGroups = self.muscleGroups(in: exercises)
         switch muscleGroups.count {
         case 1:
-            return muscleGroups[0].capitalized
+            return L10n.string(muscleGroups[0]).capitalized(with: L10n.locale)
         case 2...:
-            return "\(muscleGroups[0].capitalized) & \(muscleGroups[1].capitalized)"
+            return "\(L10n.string(muscleGroups[0]).capitalized(with: L10n.locale)) & \(L10n.string(muscleGroups[1]).capitalized(with: L10n.locale))"
         default:
             return nil
         }
@@ -86,7 +90,7 @@ public class Workout: NSManagedObject, Codable {
     }
 
     public func displayTitle(in exercises: [Exercise]) -> String {
-        optionalDisplayTitle(in: exercises) ?? "Workout"
+        optionalDisplayTitle(in: exercises) ?? L10n.string("Workout")
     }
 
     // no duplicate entries, sorted descending by frequency
@@ -239,17 +243,18 @@ extension Workout {
     public func logText(in exercises: [Exercise], unit: UnitMass, formatter: MeasurementFormatter) -> String? {
         guard let start = start else { return nil }
         guard let weight = totalCompletedWeight else { return nil }
-        let dateFormatter = DateFormatter() // we don't want relative formatting here
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = L10n.locale // we don't want relative formatting here
         dateFormatter.dateStyle = .long
         dateFormatter.timeStyle = .short
         let dateString = "\(dateFormatter.string(from: start))"
-        let durationString = duration.map { "Duration: \(Self.durationFormatter.string(from: $0)!)" }
-        let weightString = "Total weight: \(formatter.string(from: Measurement(value: weight, unit: UnitMass.kilograms).converted(to: unit)))"
+        let durationString = duration.map { L10n.format("Duration: %@", Self.durationFormatter.string(from: $0)!) }
+        let weightString = L10n.format("Total weight: %@", formatter.string(from: Measurement(value: weight, unit: UnitMass.kilograms).converted(to: unit)))
         
         guard let workoutExercises = workoutExercisesWhereNotAllSetsAreUncompleted else { return nil }
         let exercisesDescription = workoutExercises
             .map { workoutExercise -> String in
-                let exerciseTitle = (workoutExercise.exercise(in: exercises)?.title ?? "Unknown Exercise")
+                let exerciseTitle = (workoutExercise.exercise(in: exercises)?.title ?? L10n.string("Unknown Exercise"))
                 guard let workoutSets = workoutExercise.workoutSets else { return exerciseTitle }
                 let setsDescription = workoutSets
                     .compactMap { $0 as? WorkoutSet }
@@ -310,6 +315,6 @@ extension Workout {
     }
     
     private func error(code: Int, message: String) -> NSError {
-        NSError(domain: "WORKOUT_ERROR_DOMAIN", code: code, userInfo: [NSLocalizedFailureReasonErrorKey: message, NSValidationObjectErrorKey: self])
+        NSError(domain: "WORKOUT_ERROR_DOMAIN", code: code, userInfo: [NSLocalizedFailureReasonErrorKey: L10n.string(message), NSValidationObjectErrorKey: self])
     }
 }

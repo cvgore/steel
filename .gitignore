@@ -8,6 +8,7 @@
 ## Build generated
 build/
 DerivedData/
+/.artifacts/
 
 ## Various settings
 *.pbxuser
@@ -28,6 +29,8 @@ xcuserdata/
 ### Xcode Patch ###
 *.xcodeproj/*
 !*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/xcshareddata/**
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
 

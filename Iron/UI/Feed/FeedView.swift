@@ -97,7 +97,7 @@ private struct PinnedChartEditSheet: View {
             
             List {
                 ForEach(pinnedChartsStore.pinnedCharts, id: \.self) { chart in
-                    Text((exerciseStore.find(with: chart.exerciseUuid)?.title ?? "Unknown Exercise") + " (\(chart.measurementType.title))")
+                    Text((exerciseStore.find(with: chart.exerciseUuid)?.title ?? L10n.string("Unknown Exercise")) + " (\(chart.measurementType.title))")
                 }
                 .onDelete { offsets in
                     self.pinnedChartsStore.pinnedCharts.remove(atOffsets: offsets)
@@ -151,7 +151,7 @@ private struct PinnedChartSelectorSheet: View {
             if self.pinnedChartsStore.pinnedCharts.contains(pinnedChart) {
                 return nil
             } else {
-                return .default(Text(measurementType.title)) {
+                return .default(Text(LocalizedStringKey(measurementType.title))) {
                     self.onSelection(pinnedChart)
                     self.resetAndDismiss()
                 }

@@ -25,7 +25,7 @@ struct ActivityCalendarViewCell: View {
                 Spacer()
                 
                 if let workoutsLast28Days = workoutsLast28Days {
-                    Text("\(workoutsLast28Days) workouts")
+                    Text(L10n.format("%d workouts", workoutsLast28Days))
                         .foregroundColor(.secondary)
                 }
             }

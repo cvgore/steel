@@ -16,7 +16,7 @@ struct ExerciseMultiSelectionView: View {
     var body: some View {
         List(selection: $selection) {
             ForEach(exerciseGroups) { exerciseGroup in
-                Section(header: Text(exerciseGroup.title.capitalized)) {
+                Section(header: Text(L10n.string(exerciseGroup.title).capitalized(with: L10n.locale))) {
                     ForEach(exerciseGroup.exercises, id: \.self) { exercise in
                         Text(exercise.title)
                     }

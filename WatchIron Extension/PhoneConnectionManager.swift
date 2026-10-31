@@ -53,6 +53,9 @@ class PhoneConnectionManager: NSObject, ObservableObject {
 // MARK: - Receiving
 extension PhoneConnectionManager: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        if activationState == .activated {
+            receive(message: session.receivedApplicationContext)
+        }
         print(#function + " \(activationState)")
         
         DispatchQueue.main.async {
@@ -96,6 +99,12 @@ extension PhoneConnectionManager: WCSessionDelegate {
 // MARK: - Message Handling
 extension PhoneConnectionManager {
     private func receive(message: [String : Any]) {
+        guard !message.isEmpty else { return }
+        if let rawLanguage = message[L10n.preferenceKey] as? String,
+           let language = AppLanguage(rawValue: rawLanguage) {
+            DispatchQueue.main.async { L10n.language = language }
+            if message.count == 1 { return }
+        }
         if let startMessage = message[PayloadKey.startWorkoutSession] as? [String : Any] {
             handleStartWorkoutSessionMessage(message: startMessage)
         } else if let endMessage = message[PayloadKey.endWorkoutSession] as? [String : Any] {

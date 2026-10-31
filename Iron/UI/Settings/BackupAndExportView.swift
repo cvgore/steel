@@ -37,11 +37,11 @@ struct BackupAndExportView: View {
     private var cloudBackupFooter: some View {
         var strings = [String]()
         if settingsStore.autoBackup {
-            strings.append("A backup is created automatically everytime you quit the app.")
+            strings.append(L10n.string("A backup is created automatically everytime you quit the app."))
         }
-        strings.append("The backups are stored in your private iCloud Drive. Only the last backup of each day is kept. You can also access the backup files via the built in Files app.")
+        strings.append(L10n.string("The backups are stored in your private iCloud Drive. Only the last backup of each day is kept. You can also access the backup files via the built in Files app."))
         if let creationDate = backupStore.lastBackup?.creationDate {
-            strings.append("Last backup: " + BackupFileStore.BackupFile.dateFormatter.string(from: creationDate))
+            strings.append(L10n.string("Last backup: ") + BackupFileStore.BackupFile.dateFormatter.string(from: creationDate))
         }
         
         return Text(strings.joined(separator: "\n"))
@@ -49,7 +49,7 @@ struct BackupAndExportView: View {
     
     var body: some View {
         Form {
-            Section(header: Text("Export".uppercased())) {
+            Section(header: Text(L10n.string("Export").uppercased(with: L10n.locale))) {
                 Button("Workout Data") {
                     self.showExportWorkoutDataSheet = true
                 }
@@ -70,7 +70,7 @@ struct BackupAndExportView: View {
                 }
             }
             
-            Section(header: Text("iCloud Backup".uppercased()), footer: cloudBackupFooter) {
+            Section(header: Text(L10n.string("iCloud Backup").uppercased(with: L10n.locale)), footer: cloudBackupFooter) {
                 NavigationLink(destination: RestoreBackupView(backupStore: backupStore)) {
                     Text("Restore")
                 }

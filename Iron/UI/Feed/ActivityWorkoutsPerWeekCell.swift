@@ -25,7 +25,7 @@ struct ActivityWorkoutsPerWeekCell : View {
                 Spacer()
                 
                 if let mean = workoutsPerWeekMean {
-                    Text("Ø\(String(format: "%.1f", mean))")
+                    Text("Ø\(String(format: "%.1f", locale: L10n.locale, mean))")
                         .foregroundColor(.secondary)
                 }
             }

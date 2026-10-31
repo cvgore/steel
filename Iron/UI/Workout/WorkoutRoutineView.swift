@@ -87,11 +87,11 @@ struct WorkoutRoutineView: View {
                     }
                 })
             }
-            Section(header: Text("Exercises".uppercased())) {
+            Section(header: Text(L10n.string("Exercises").uppercased(with: L10n.locale))) {
                 ForEach(workoutRoutineExercises) { workoutRoutineExercise in
                     NavigationLink(destination: WorkoutRoutineExerciseView(workoutRoutineExercise: workoutRoutineExercise)) {
                         VStack(alignment: .leading) {
-                            Text(workoutRoutineExercise.exercise(in: self.exerciseStore.exercises)?.title ?? "Unknown Exercise")
+                            Text(workoutRoutineExercise.exercise(in: self.exerciseStore.exercises)?.title ?? L10n.string("Unknown Exercise"))
                             workoutRoutineExercise.subtitle.map {
                                 Text($0)
                                     .foregroundColor(.secondary)

@@ -39,20 +39,23 @@ struct WorkoutSetCell: View {
         }
     }
     
-    private static var rpeFormatter: NumberFormatter = {
+    private static var rpeFormatter: NumberFormatter {
         let formatter = NumberFormatter()
+        formatter.locale = L10n.locale
         formatter.minimumFractionDigits = 0
         formatter.maximumFractionDigits = 1
         return formatter
-    }()
+    }
     
     var body: some View {
         HStack {
             if showUpNextIndicator {
                 Image(systemName: "chevron.right.circle.fill")
+                    .accessibility(label: Text("Up Next"))
                     .foregroundColor(.accentColor)
             } else if showCompleted && workoutSet.isCompleted {
                 Image(systemName: "checkmark.circle.fill")
+                    .accessibility(label: Text("Completed"))
                     .foregroundColor(colorMode == .disabled ? .secondary : .green)
             }
             
@@ -92,13 +95,14 @@ struct WorkoutSetCell: View {
             Spacer()
             
             if let rpe = workoutSet.rpeValue {
-                Text("RPE " + (Self.rpeFormatter.string(from: NSNumber(value: rpe)) ?? String(format: "%.1f", rpe)))
+                Text("RPE " + (Self.rpeFormatter.string(from: NSNumber(value: rpe)) ?? String(format: "%.1f", locale: L10n.locale, rpe)))
                     .modifier(TagStyle())
             }
             
             if workoutSet.isPersonalRecord ?? false {
                 // TODO: replace with a trophy symbol
                 Image(systemName: "star.circle.fill")
+                    .accessibility(label: Text("Personal Record"))
                     .foregroundColor(colorMode == .disabled ? .secondary : .yellow)
             }
 
@@ -108,8 +112,9 @@ struct WorkoutSetCell: View {
                 .background(
                     Group {
                         workoutSet.tagValue.map {
-                            Text($0.title.first!.uppercased())
+                            Text(String(L10n.string($0.title).prefix(1)).uppercased(with: L10n.locale))
                                 .fontWeight(.semibold)
+                                .accessibility(label: Text(L10n.string($0.title)))
                                 .foregroundColor($0.color)
                                 .fixedSize()
                         }

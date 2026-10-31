@@ -22,7 +22,7 @@ public class WorkoutRoutine: NSManagedObject, Codable {
     public var fallbackTitle: String? {
         guard let index = workoutPlan?.workoutRoutines?.index(of: self), index != NSNotFound else { return nil }
         guard let letters = toLetters(from: index) else { return nil }
-        return "Routine \(letters)"
+        return L10n.format("Routine %@", letters)
     }
     
     private func toLetters(from index: Int) -> String? {
@@ -47,7 +47,7 @@ public class WorkoutRoutine: NSManagedObject, Codable {
 
     
     public var displayTitle: String {
-        title ?? fallbackTitle ?? "Workout Routine"
+        title ?? fallbackTitle ?? L10n.string("Workout Routine")
     }
     
     public func subtitle(in exercises: [Exercise]) -> String {
@@ -56,7 +56,7 @@ public class WorkoutRoutine: NSManagedObject, Codable {
             .compactMap { $0.exercise(in: exercises)?.title }
             .joined(separator: ", ") ?? ""
         
-        return s.isEmpty ? "Empty" : s
+        return s.isEmpty ? L10n.string("Empty") : s
     }
     
     public func createWorkout(context: NSManagedObjectContext) -> Workout {

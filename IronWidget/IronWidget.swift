@@ -97,7 +97,7 @@ struct LastWorkoutWidgetEntryView : View {
                                 +
                                 Text(" ")
                                 +
-                                Text(days == 1 ? "day" : "days")
+                                Text(LocalizedStringKey(days == 1 ? "day" : "days"))
                                 .font(.system(.body, design: .rounded))
                         } else {
                             Text("-")
@@ -127,9 +127,10 @@ struct IronWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: WidgetKind.lastWorkout.rawValue, provider: Provider()) { entry in
             LastWorkoutWidgetEntryView(entry: entry)
+                .environment(\.locale, L10n.locale)
         }
-        .configurationDisplayName("Last Workout")
-        .description("The number of days since the last workout.")
+        .configurationDisplayName(Text(verbatim: L10n.string("Last Workout")))
+        .description(Text(verbatim: L10n.string("The number of days since the last workout.")))
         .supportedFamilies([.systemSmall])
     }
 }

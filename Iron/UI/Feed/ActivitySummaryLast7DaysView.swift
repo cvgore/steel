@@ -70,6 +70,9 @@ struct ActivitySummaryLast7DaysView: View {
     
     let durationFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
+        var calendar = Calendar.current
+        calendar.locale = L10n.locale
+        formatter.calendar = calendar
         formatter.unitsStyle = .full
         formatter.allowedUnits = [.hour, .minute]
         return formatter
@@ -93,18 +96,19 @@ private struct Entry: View {
         }
     }
     
-    private static var percentNumberFormatter: NumberFormatter = {
+    private static var percentNumberFormatter: NumberFormatter {
         let formatter = NumberFormatter()
+        formatter.locale = L10n.locale
         formatter.allowsFloats = true
         formatter.maximumFractionDigits = 1
         formatter.minimumFractionDigits = 0
         formatter.numberStyle = .percent
         return formatter
-    }()
+    }
     
     private func percentString(for percent: Double) -> String? {
         guard percent.isFinite else { return nil } // we don't want to display +/- infinity
-        return (percent > 0 ? "+" : "") + (Self.percentNumberFormatter.string(from: percent as NSNumber) ?? "\(String(format: "%.1f", percent * 100))%")
+        return (percent > 0 ? "+" : "") + (Self.percentNumberFormatter.string(from: percent as NSNumber) ?? "\(String(format: "%.1f", locale: L10n.locale, percent * 100))%")
     }
 }
 

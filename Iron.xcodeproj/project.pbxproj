@@ -369,6 +369,51 @@
 		8AFF0D842302C60000F762A2 /* MockWorkoutData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF0D832302C60000F762A2 /* MockWorkoutData.swift */; };
 		8AFF0D882303062400F762A2 /* Benchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A16BBD822E337A0002150F0 /* Benchmark.swift */; };
 		8AFF0D8A23032DC700F762A2 /* DateFormatter+OptionalDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF0D8923032DC700F762A2 /* DateFormatter+OptionalDate.swift */; };
+		717100000000000000000010 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000001; };
+		717100000000000000000011 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000002; };
+		717100000000000000000012 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000001; };
+		717100000000000000000013 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000002; };
+		717100000000000000000014 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000001; };
+		717100000000000000000015 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000002; };
+		717100000000000000000016 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000001; };
+		717100000000000000000017 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000002; };
+		717100000000000000000018 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000001; };
+		717100000000000000000019 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000002; };
+		71710000000000000000001A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000002; };
+		71710000000000000000001B /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000001; };
+		71710000000000000000001C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000002; };
+		717100000000000000000068 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000065; };
+		717100000000000000000069 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000065; };
+		71710000000000000000006A /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000065; };
+		71710000000000000000006B /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000065; };
+		71710000000000000000006C /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000065; };
+		71710000000000000000006D /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000065; };
+		71710000000000000000006E /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000065; };
+		71710000000000000000006F /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000065; };
+		717100000000000000000073 /* Intents.strings in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000070; };
+		717100000000000000000074 /* Intents.strings in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000070; };
+		717100000000000000000075 /* Intents.strings in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000070; };
+		717100000000000000000076 /* Intents.strings in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000070; };
+		717100000000000000000077 /* Intents.strings in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000070; };
+		717100000000000000000078 /* Intents.strings in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000070; };
+		717100000000000000000079 /* Intents.strings in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000070; };
+		71710000000000000000007A /* Intents.strings in Resources */ = {isa = PBXBuildFile; fileRef = 717100000000000000000070; };
+		71710000000000000000007E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 71710000000000000000007B; };
+		71710000000000000000007F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 71710000000000000000007B; };
+		717100000000000000000080 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 71710000000000000000007B; };
+		717100000000000000000081 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 71710000000000000000007B; };
+		717100000000000000000082 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 71710000000000000000007B; };
+		717100000000000000000083 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 71710000000000000000007B; };
+		717100000000000000000084 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 71710000000000000000007B; };
+		717100000000000000000085 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 71710000000000000000007B; };
+		7171000000000000000000CC /* AppIntentVocabulary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7171000000000000000000C9; };
+		7171000000000000000000CD /* AppIntentVocabulary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7171000000000000000000C9; };
+		7171000000000000000000CE /* AppIntentVocabulary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7171000000000000000000C9; };
+		7171000000000000000000CF /* AppIntentVocabulary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7171000000000000000000C9; };
+		7171000000000000000000D0 /* AppIntentVocabulary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7171000000000000000000C9; };
+		7171000000000000000000D1 /* AppIntentVocabulary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7171000000000000000000C9; };
+		7171000000000000000000D2 /* AppIntentVocabulary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7171000000000000000000C9; };
+		7171000000000000000000D3 /* AppIntentVocabulary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7171000000000000000000C9; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -753,6 +798,17 @@
 		8AFE11B3232CF2E2000E9393 /* SheetBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetBar.swift; sourceTree = "<group>"; };
 		8AFF0D832302C60000F762A2 /* MockWorkoutData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWorkoutData.swift; sourceTree = "<group>"; };
 		8AFF0D8923032DC700F762A2 /* DateFormatter+OptionalDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+OptionalDate.swift"; sourceTree = "<group>"; };
+		717100000000000000000001 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
+		717100000000000000000003 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		717100000000000000000004 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		717100000000000000000066 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		717100000000000000000067 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = pl; path = pl.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		717100000000000000000071 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Intents.strings; sourceTree = "<group>"; };
+		717100000000000000000072 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Intents.strings; sourceTree = "<group>"; };
+		71710000000000000000007C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		71710000000000000000007D /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7171000000000000000000CA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/AppIntentVocabulary.plist; sourceTree = "<group>"; };
+		7171000000000000000000CB /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = pl; path = pl.lproj/AppIntentVocabulary.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1173,35 +1229,37 @@
 			sourceTree = "<group>";
 		};
 		8A7D6E8B200BF92E00AA0FA7 = {
-			isa = PBXGroup;
-			children = (
-				8AD39685239C075E0000E3C4 /* Shared */,
-				8A7D6E96200BF92E00AA0FA7 /* Iron */,
-				8A86192C236DAB7000C1E96C /* WatchIron Extension */,
-				8AB5210F23992ABC008064B2 /* WorkoutDataKit */,
-				8A604383239C4DBB00CFB7C0 /* IronIntents */,
-				8A60438E239C4DBB00CFB7C0 /* IronIntentsUI */,
-				8AAFE3472534AB3800CF03E5 /* IronWidget */,
-				8A440805239C0F9C00A6D2C7 /* Tests */,
-				8A440804239C0F8000A6D2C7 /* Support */,
-				8A7D6E95200BF92E00AA0FA7 /* Products */,
-				8A6F1729233A809D0048A75B /* Frameworks */,
-			);
+			isa = "PBXGroup";
 			sourceTree = "<group>";
+			children = (
+				"8AD39685239C075E0000E3C4",
+				"8A7D6E96200BF92E00AA0FA7",
+				"8A86192C236DAB7000C1E96C",
+				"8AB5210F23992ABC008064B2",
+				"8A604383239C4DBB00CFB7C0",
+				"8A60438E239C4DBB00CFB7C0",
+				"8AAFE3472534AB3800CF03E5",
+				"8A440805239C0F9C00A6D2C7",
+				"8A440804239C0F8000A6D2C7",
+				"8A7D6E95200BF92E00AA0FA7",
+				"8A6F1729233A809D0048A75B",
+				"7127E2E00000000000000003",
+			);
 		};
 		8A7D6E95200BF92E00AA0FA7 /* Products */ = {
-			isa = PBXGroup;
+			isa = "PBXGroup";
+			name = "Products";
 			children = (
-				8A7D6E94200BF92E00AA0FA7 /* Iron.app */,
-				8A7D6EAB200BF92E00AA0FA7 /* IronTests.xctest */,
-				8A86191C236DAB6E00C1E96C /* WatchIron.app */,
-				8A861928236DAB7000C1E96C /* WatchIron Extension.appex */,
-				8AB5210E23992ABC008064B2 /* WorkoutDataKit.framework */,
-				8A604382239C4DBB00CFB7C0 /* IronIntents.appex */,
-				8A60438B239C4DBB00CFB7C0 /* IronIntentsUI.appex */,
-				8AAFE3422534AB3800CF03E5 /* IronWidgetExtension.appex */,
+				"8A7D6E94200BF92E00AA0FA7",
+				"8A7D6EAB200BF92E00AA0FA7",
+				"8A86191C236DAB6E00C1E96C",
+				"8A861928236DAB7000C1E96C",
+				"8AB5210E23992ABC008064B2",
+				"8A604382239C4DBB00CFB7C0",
+				"8A60438B239C4DBB00CFB7C0",
+				"8AAFE3422534AB3800CF03E5",
+				"7127E2E00000000000000002",
 			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		8A7D6E96200BF92E00AA0FA7 /* Iron */ = {
@@ -1455,6 +1513,12 @@
 		8AD39685239C075E0000E3C4 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				7171000000000000000000C9 /* AppIntentVocabulary.plist */,
+				71710000000000000000007B /* InfoPlist.strings */,
+				717100000000000000000070 /* Intents.strings */,
+				717100000000000000000065 /* Localizable.stringsdict */,
+				717100000000000000000001 /* Localization.swift */,
+				717100000000000000000002 /* Localizable.strings */,
 				8A507E03239C090200883339 /* Extension */,
 				8A507E05239C096200883339 /* Data */,
 				8A507E08239C099C00883339 /* UI */,
@@ -1623,21 +1687,21 @@
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		8A86191B236DAB6E00C1E96C /* WatchIron */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8A861943236DAB7100C1E96C /* Build configuration list for PBXNativeTarget "WatchIron" */;
+			buildConfigurationList = "8A861943236DAB7100C1E96C";
+			productReference = "8A86191C236DAB6E00C1E96C";
+			productType = "com.apple.product-type.application";
+			productName = "WatchIron";
+			isa = "PBXNativeTarget";
 			buildPhases = (
-				8A86191A236DAB6E00C1E96C /* Resources */,
-				8A86193F236DAB7100C1E96C /* Embed Foundation Extensions */,
-			);
-			buildRules = (
+				"8A861924236DAB7000C1E96C",
+				"8A861925236DAB7000C1E96C",
+				"8A86191A236DAB6E00C1E96C",
 			);
 			dependencies = (
-				8A86192B236DAB7000C1E96C /* PBXTargetDependency */,
 			);
-			name = WatchIron;
-			productName = WatchIron;
-			productReference = 8A86191C236DAB6E00C1E96C /* WatchIron.app */;
-			productType = "com.apple.product-type.application.watchapp2";
+			name = "WatchIron";
+			buildRules = (
+			);
 		};
 		8A861927236DAB7000C1E96C /* WatchIron Extension */ = {
 			isa = PBXNativeTarget;
@@ -1696,68 +1760,70 @@
 
 /* Begin PBXProject section */
 		8A7D6E8C200BF92E00AA0FA7 /* Project object */ = {
-			isa = PBXProject;
+			buildConfigurationList = "8A7D6E8F200BF92E00AA0FA7";
+			packageReferences = (
+				"8A50F125243F5253003B3A6E",
+			);
+			targets = (
+				"8A7D6E93200BF92E00AA0FA7",
+				"8A7D6EAA200BF92E00AA0FA7",
+				"8A86191B236DAB6E00C1E96C",
+				"8AB5210D23992ABC008064B2",
+				"8A604381239C4DBB00CFB7C0",
+				"8A60438A239C4DBB00CFB7C0",
+				"8AAFE3412534AB3800CF03E5",
+				"7127E2E00000000000000001",
+			);
+			developmentRegion = "en";
+			knownRegions = (
+				"en",
+				"pl",
+				"Base",
+			);
+			isa = "PBXProject";
+			compatibilityVersion = "Xcode 8.0";
+			productRefGroup = "8A7D6E95200BF92E00AA0FA7";
+			projectDirPath = "";
 			attributes = {
-				LastSwiftUpdateCheck = 1200;
-				LastUpgradeCheck = 1400;
+				LastSwiftUpdateCheck = "1200";
+				LastUpgradeCheck = "1400";
 				ORGANIZATIONNAME = "Karim Abou Zeid Software";
 				TargetAttributes = {
+					8AB5210D23992ABC008064B2 = {
+						LastSwiftMigration = "1120";
+						CreatedOnToolsVersion = "11.2.1";
+					};
 					8A604381239C4DBB00CFB7C0 = {
-						CreatedOnToolsVersion = 11.2.1;
-					};
-					8A60438A239C4DBB00CFB7C0 = {
-						CreatedOnToolsVersion = 11.2.1;
-					};
-					8A7D6E93200BF92E00AA0FA7 = {
-						CreatedOnToolsVersion = 9.2;
-						LastSwiftMigration = 1020;
-					};
-					8A7D6EAA200BF92E00AA0FA7 = {
-						CreatedOnToolsVersion = 9.2;
-						LastSwiftMigration = 1020;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 8A7D6E93200BF92E00AA0FA7;
+						CreatedOnToolsVersion = "11.2.1";
 					};
 					8A86191B236DAB6E00C1E96C = {
-						CreatedOnToolsVersion = 11.2;
-					};
-					8A861927236DAB7000C1E96C = {
-						CreatedOnToolsVersion = 11.2;
+						CreatedOnToolsVersion = "11.2";
 					};
 					8AAFE3412534AB3800CF03E5 = {
-						CreatedOnToolsVersion = 12.0.1;
+						CreatedOnToolsVersion = "12.0.1";
 					};
-					8AB5210D23992ABC008064B2 = {
-						CreatedOnToolsVersion = 11.2.1;
-						LastSwiftMigration = 1120;
+					8A60438A239C4DBB00CFB7C0 = {
+						CreatedOnToolsVersion = "11.2.1";
+					};
+					8A7D6EAA200BF92E00AA0FA7 = {
+						TestTargetID = "8A7D6E93200BF92E00AA0FA7";
+						ProvisioningStyle = "Automatic";
+						LastSwiftMigration = "1020";
+						CreatedOnToolsVersion = "9.2";
+					};
+					8A7D6E93200BF92E00AA0FA7 = {
+						LastSwiftMigration = "1020";
+						CreatedOnToolsVersion = "9.2";
+					};
+					7127E2E00000000000000001 = {
+						CreatedOnToolsVersion = "27.0";
+						TestTargetID = "8A7D6E93200BF92E00AA0FA7";
 					};
 				};
 			};
-			buildConfigurationList = 8A7D6E8F200BF92E00AA0FA7 /* Build configuration list for PBXProject "Iron" */;
-			compatibilityVersion = "Xcode 8.0";
-			developmentRegion = en;
-			hasScannedForEncodings = 0;
-			knownRegions = (
-				en,
-				Base,
-			);
-			mainGroup = 8A7D6E8B200BF92E00AA0FA7;
-			packageReferences = (
-				8A50F125243F5253003B3A6E /* XCRemoteSwiftPackageReference "Charts" */,
-			);
-			productRefGroup = 8A7D6E95200BF92E00AA0FA7 /* Products */;
-			projectDirPath = "";
+			hasScannedForEncodings = "0";
 			projectRoot = "";
-			targets = (
-				8A7D6E93200BF92E00AA0FA7 /* Iron */,
-				8A7D6EAA200BF92E00AA0FA7 /* IronTests */,
-				8A86191B236DAB6E00C1E96C /* WatchIron */,
-				8A861927236DAB7000C1E96C /* WatchIron Extension */,
-				8AB5210D23992ABC008064B2 /* WorkoutDataKit */,
-				8A604381239C4DBB00CFB7C0 /* IronIntents */,
-				8A60438A239C4DBB00CFB7C0 /* IronIntentsUI */,
-				8AAFE3412534AB3800CF03E5 /* IronWidgetExtension */,
-			);
+			mainGroup = "8A7D6E8B200BF92E00AA0FA7";
 		};
 /* End PBXProject section */
 
@@ -1766,6 +1832,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7171000000000000000000D2 /* AppIntentVocabulary.plist in Resources */,
+				717100000000000000000084 /* InfoPlist.strings in Resources */,
+				717100000000000000000079 /* Intents.strings in Resources */,
+				71710000000000000000006E /* Localizable.stringsdict in Resources */,
+				717100000000000000000017 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1773,6 +1844,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7171000000000000000000CC /* AppIntentVocabulary.plist in Resources */,
+				71710000000000000000007E /* InfoPlist.strings in Resources */,
+				717100000000000000000073 /* Intents.strings in Resources */,
+				717100000000000000000068 /* Localizable.stringsdict in Resources */,
+				717100000000000000000013 /* Localizable.strings in Resources */,
 				8A604393239C4DBB00CFB7C0 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1781,6 +1857,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7171000000000000000000D0 /* AppIntentVocabulary.plist in Resources */,
+				717100000000000000000082 /* InfoPlist.strings in Resources */,
+				717100000000000000000077 /* Intents.strings in Resources */,
+				71710000000000000000006C /* Localizable.stringsdict in Resources */,
+				717100000000000000000011 /* Localizable.strings in Resources */,
 				8AC4C9D223254A7E008E474A /* quotes in Resources */,
 				8AA14D692437631E009B5C2F /* AppIntentVocabulary.plist in Resources */,
 				8AED58C02364B79800BF06D3 /* iron_backup_file_images in Resources */,
@@ -1793,6 +1874,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7171000000000000000000CF /* AppIntentVocabulary.plist in Resources */,
+				717100000000000000000081 /* InfoPlist.strings in Resources */,
+				717100000000000000000076 /* Intents.strings in Resources */,
+				71710000000000000000006B /* Localizable.stringsdict in Resources */,
 				8A574732242D83E700A63C51 /* workout_data in Resources */,
 				8A0ECFD3242BC0A200C0B306 /* iron_backups in Resources */,
 				8AED58AC236475A600BF06D3 /* workout_data.json in Resources */,
@@ -1801,17 +1886,29 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8A86191A236DAB6E00C1E96C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
+			isa = "PBXResourcesBuildPhase";
+			buildActionMask = "2147483647";
 			files = (
-				8A861922236DAB7000C1E96C /* Assets.xcassets in Resources */,
+				"7171000000000000000000CD",
+				"71710000000000000000007F",
+				"717100000000000000000074",
+				"717100000000000000000069",
+				"71710000000000000000001A",
+				"8A861922236DAB7000C1E96C",
+				"8A861937236DAB7100C1E96C",
+				"8A861934236DAB7100C1E96C",
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = "0";
 		};
 		8A861926236DAB7000C1E96C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7171000000000000000000D1 /* AppIntentVocabulary.plist in Resources */,
+				717100000000000000000083 /* InfoPlist.strings in Resources */,
+				717100000000000000000078 /* Intents.strings in Resources */,
+				71710000000000000000006D /* Localizable.stringsdict in Resources */,
+				717100000000000000000015 /* Localizable.strings in Resources */,
 				8A861937236DAB7100C1E96C /* Preview Assets.xcassets in Resources */,
 				8A861934236DAB7100C1E96C /* Assets.xcassets in Resources */,
 			);
@@ -1821,6 +1918,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7171000000000000000000D3 /* AppIntentVocabulary.plist in Resources */,
+				717100000000000000000085 /* InfoPlist.strings in Resources */,
+				71710000000000000000007A /* Intents.strings in Resources */,
+				71710000000000000000006F /* Localizable.stringsdict in Resources */,
+				717100000000000000000019 /* Localizable.strings in Resources */,
 				8AAFE34B2534AB3900CF03E5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1829,6 +1931,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7171000000000000000000CE /* AppIntentVocabulary.plist in Resources */,
+				717100000000000000000080 /* InfoPlist.strings in Resources */,
+				717100000000000000000075 /* Intents.strings in Resources */,
+				71710000000000000000006A /* Localizable.stringsdict in Resources */,
+				71710000000000000000001C /* Localizable.strings in Resources */,
 				8AB5212A2399329D008064B2 /* everkinetic-data in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1840,6 +1947,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				717100000000000000000016 /* Localization.swift in Sources */,
 				8AAD1017239D927900C1A447 /* DateFormatter+OptionalDate.swift in Sources */,
 				8AAD1012239D927900C1A447 /* Workout+SwiftUI.swift in Sources */,
 				8AAD105B239D92A000C1A447 /* ChartsBarChartViewRepresentable.swift in Sources */,
@@ -1916,6 +2024,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				717100000000000000000012 /* Localization.swift in Sources */,
 				8AAD106E239DA97B00C1A447 /* WorkoutExerciseChartData.swift in Sources */,
 				8AAD1044239D928C00C1A447 /* BannerView.swift in Sources */,
 				8AAD1052239D929600C1A447 /* IdentifiableHolder.swift in Sources */,
@@ -1987,6 +2096,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				717100000000000000000010 /* Localization.swift in Sources */,
 				8A3A11592426B667006DA244 /* WorkoutRoutineSetEditor.swift in Sources */,
 				8A63B3772329463A001BD7B5 /* CurrentWorkoutView.swift in Sources */,
 				8AF92552232FD49600C6977D /* ExerciseFilter.swift in Sources */,
@@ -2149,6 +2259,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				717100000000000000000014 /* Localization.swift in Sources */,
 				8A58807A23776004007F31A1 /* WorkoutSessionView.swift in Sources */,
 				8A141CAF239C7DFF00993A61 /* Benchmark.swift in Sources */,
 				8ADC1B5E2371C9390019C01A /* WorkoutSessionManager.swift in Sources */,
@@ -2169,6 +2280,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				717100000000000000000018 /* Localization.swift in Sources */,
 				8A9D3B442541F78A00C5A8B7 /* OSLog+Logs.swift in Sources */,
 				8AAFE3832534B68700CF03E5 /* WorkoutDataStorage+shared2.swift in Sources */,
 				8AAFE3492534AB3800CF03E5 /* IronWidget.swift in Sources */,
@@ -2183,6 +2295,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71710000000000000000001B /* Localization.swift in Sources */,
 				8AA6252423AE673000217DA9 /* WorkoutPlan.swift in Sources */,
 				8AF5DAF3242E364E00A90A60 /* UuidMigrationPolicy.swift in Sources */,
 				8AB52128239931A8008064B2 /* NSManagedObjectContext+Publisher.swift in Sources */,
@@ -2285,6 +2398,11 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		717100000000000000000002 /* Localizable.strings */ = {isa = PBXVariantGroup; children = (717100000000000000000003 /* en */, 717100000000000000000004 /* pl */,); name = Localizable.strings; sourceTree = "<group>"; };
+		717100000000000000000065 /* Localizable.stringsdict */ = {isa = PBXVariantGroup; children = (717100000000000000000066, 717100000000000000000067,); name = Localizable.stringsdict; sourceTree = "<group>"; };
+		717100000000000000000070 /* Intents.strings */ = {isa = PBXVariantGroup; children = (717100000000000000000071, 717100000000000000000072,); name = Intents.strings; sourceTree = "<group>"; };
+		71710000000000000000007B /* InfoPlist.strings */ = {isa = PBXVariantGroup; children = (71710000000000000000007C, 71710000000000000000007D,); name = InfoPlist.strings; sourceTree = "<group>"; };
+		7171000000000000000000C9 /* AppIntentVocabulary.plist */ = {isa = PBXVariantGroup; children = (7171000000000000000000CA, 7171000000000000000000CB,); name = AppIntentVocabulary.plist; sourceTree = "<group>"; };
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -2298,7 +2416,7 @@
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = 2L6CX7XT2U;
 				INFOPLIST_FILE = IronIntents/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2325,7 +2443,7 @@
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = 2L6CX7XT2U;
 				INFOPLIST_FILE = IronIntents/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2351,7 +2469,7 @@
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = 2L6CX7XT2U;
 				INFOPLIST_FILE = IronIntentsUI/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2378,7 +2496,7 @@
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = 2L6CX7XT2U;
 				INFOPLIST_FILE = IronIntentsUI/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2446,7 +2564,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -2501,7 +2619,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -2521,7 +2639,7 @@
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = 2L6CX7XT2U;
 				INFOPLIST_FILE = Iron/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2546,7 +2664,7 @@
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = 2L6CX7XT2U;
 				INFOPLIST_FILE = Iron/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2603,59 +2721,77 @@
 			name = Release;
 		};
 		8A86193D236DAB7100C1E96C /* Debug */ = {
-			isa = XCBuildConfiguration;
+			isa = "XCBuildConfiguration";
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
-				DEVELOPMENT_TEAM = 2L6CX7XT2U;
-				GENERATE_INFOPLIST_FILE = YES;
-				IBSC_MODULE = WatchIron_Extension;
-				INFOPLIST_KEY_CFBundleDisplayName = Iron;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.kabouzeid.Iron;
-				MARKETING_VERSION = 1.6;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kabouzeid.Iron.watchkitapp;
+				MARKETING_VERSION = "1.6";
+				DEVELOPMENT_TEAM = "2L6CX7XT2U";
+				CURRENT_PROJECT_VERSION = "36";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kabouzeid.Iron.watchkitapp";
+				MTL_FAST_MATH = "YES";
+				INFOPLIST_KEY_CFBundleDisplayName = "Iron";
+				MTL_ENABLE_DEBUG_INFO = "INCLUDE_SOURCE";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "YES";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.kabouzeid.Iron";
+				TARGETED_DEVICE_FAMILY = "4";
+				CODE_SIGN_STYLE = "Automatic";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon";
+				WATCHOS_DEPLOYMENT_TARGET = "27.0";
+				SDKROOT = "watchos";
+				SWIFT_VERSION = "5.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				SKIP_INSTALL = "YES";
+				CLANG_ENABLE_OBJC_WEAK = "YES";
+				GENERATE_INFOPLIST_FILE = "YES";
+				CODE_SIGN_ENTITLEMENTS = "WatchIron Extension/WatchIron Extension.entitlements";
+				INFOPLIST_FILE = "WatchIron/Info.plist";
+				INFOPLIST_KEY_WKApplication = "YES";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Iron can display your heart rate and burned calories during a workout.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Iron can save your finished workouts to Apple Health.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				ENABLE_PREVIEWS = "YES";
 			};
-			name = Debug;
+			name = "Debug";
 		};
 		8A86193E236DAB7100C1E96C /* Release */ = {
-			isa = XCBuildConfiguration;
+			isa = "XCBuildConfiguration";
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
-				DEVELOPMENT_TEAM = 2L6CX7XT2U;
-				GENERATE_INFOPLIST_FILE = YES;
-				IBSC_MODULE = WatchIron_Extension;
-				INFOPLIST_KEY_CFBundleDisplayName = Iron;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.kabouzeid.Iron;
-				MARKETING_VERSION = 1.6;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kabouzeid.Iron.watchkitapp;
+				MARKETING_VERSION = "1.6";
+				DEVELOPMENT_TEAM = "2L6CX7XT2U";
+				CURRENT_PROJECT_VERSION = "36";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kabouzeid.Iron.watchkitapp";
+				MTL_FAST_MATH = "YES";
+				INFOPLIST_KEY_CFBundleDisplayName = "Iron";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "YES";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.kabouzeid.Iron";
+				TARGETED_DEVICE_FAMILY = "4";
+				CODE_SIGN_STYLE = "Automatic";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon";
+				WATCHOS_DEPLOYMENT_TARGET = "27.0";
+				SDKROOT = "watchos";
+				SWIFT_VERSION = "5.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				SKIP_INSTALL = "YES";
+				CLANG_ENABLE_OBJC_WEAK = "YES";
+				GENERATE_INFOPLIST_FILE = "YES";
+				CODE_SIGN_ENTITLEMENTS = "WatchIron Extension/WatchIron Extension.entitlements";
+				INFOPLIST_FILE = "WatchIron/Info.plist";
+				INFOPLIST_KEY_WKApplication = "YES";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Iron can display your heart rate and burned calories during a workout.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Iron can save your finished workouts to Apple Health.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				ENABLE_PREVIEWS = "YES";
 			};
-			name = Release;
+			name = "Release";
 		};
 		8A861940236DAB7100C1E96C /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2688,7 +2824,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+				WATCHOS_DEPLOYMENT_TARGET = 27.0;
 			};
 			name = Debug;
 		};
@@ -2722,7 +2858,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 8.0;
+				WATCHOS_DEPLOYMENT_TARGET = 27.0;
 			};
 			name = Release;
 		};
@@ -2738,7 +2874,7 @@
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = 2L6CX7XT2U;
 				INFOPLIST_FILE = IronWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2767,7 +2903,7 @@
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = 2L6CX7XT2U;
 				INFOPLIST_FILE = IronWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2799,7 +2935,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = WorkoutDataKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2834,7 +2970,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = WorkoutDataKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2981,6 +3117,126 @@
 			versionGroupType = wrapper.xcdatamodel;
 		};
 /* End XCVersionGroup section */
+/* E2E UI test target */
+		7127E2E00000000000000001 = {
+			isa = "PBXNativeTarget";
+			buildConfigurationList = "7127E2E00000000000000009";
+			buildPhases = (
+				"7127E2E00000000000000006",
+				"7127E2E00000000000000007",
+				"7127E2E00000000000000008",
+			);
+			buildRules = (
+			);
+			dependencies = (
+				"7127E2E0000000000000000C",
+			);
+			name = "IronE2ETests";
+			productName = "IronE2ETests";
+			productReference = "7127E2E00000000000000002";
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		7127E2E00000000000000002 = {
+			isa = "PBXFileReference";
+			explicitFileType = "wrapper.cfbundle";
+			includeInIndex = "0";
+			path = "IronE2ETests.xctest";
+			sourceTree = "BUILT_PRODUCTS_DIR";
+		};
+		7127E2E00000000000000003 = {
+			isa = "PBXGroup";
+			children = (
+				"7127E2E00000000000000004",
+			);
+			path = "IronE2ETests";
+			sourceTree = "<group>";
+		};
+		7127E2E00000000000000004 = {
+			isa = "PBXFileReference";
+			lastKnownFileType = "sourcecode.swift";
+			path = "LocalizationE2ETests.swift";
+			sourceTree = "<group>";
+		};
+		7127E2E00000000000000005 = {
+			isa = "PBXBuildFile";
+			fileRef = "7127E2E00000000000000004";
+		};
+		7127E2E00000000000000006 = {
+			isa = "PBXSourcesBuildPhase";
+			buildActionMask = "2147483647";
+			files = (
+				"7127E2E00000000000000005",
+			);
+			runOnlyForDeploymentPostprocessing = "0";
+		};
+		7127E2E00000000000000007 = {
+			isa = "PBXFrameworksBuildPhase";
+			buildActionMask = "2147483647";
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = "0";
+		};
+		7127E2E00000000000000008 = {
+			isa = "PBXResourcesBuildPhase";
+			buildActionMask = "2147483647";
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = "0";
+		};
+		7127E2E00000000000000009 = {
+			isa = "XCConfigurationList";
+			buildConfigurations = (
+				"7127E2E0000000000000000A",
+				"7127E2E0000000000000000B",
+			);
+			defaultConfigurationIsVisible = "0";
+			defaultConfigurationName = "Release";
+		};
+		7127E2E0000000000000000C = {
+			isa = "PBXTargetDependency";
+			target = "8A7D6E93200BF92E00AA0FA7";
+			targetProxy = "7127E2E0000000000000000D";
+		};
+		7127E2E0000000000000000D = {
+			isa = "PBXContainerItemProxy";
+			containerPortal = "8A7D6E8C200BF92E00AA0FA7";
+			proxyType = "1";
+			remoteGlobalIDString = "8A7D6E93200BF92E00AA0FA7";
+			remoteInfo = "Iron";
+		};
+		7127E2E0000000000000000A = {
+			isa = "XCBuildConfiguration";
+			name = "Debug";
+			buildSettings = {
+				CODE_SIGN_STYLE = "Automatic";
+				DEVELOPMENT_TEAM = "2L6CX7XT2U";
+				GENERATE_INFOPLIST_FILE = "YES";
+				IPHONEOS_DEPLOYMENT_TARGET = "27.0";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kabouzeid.Iron.e2etests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = "iphoneos";
+				SWIFT_VERSION = "5.0";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Iron";
+			};
+		};
+		7127E2E0000000000000000B = {
+			isa = "XCBuildConfiguration";
+			name = "Release";
+			buildSettings = {
+				CODE_SIGN_STYLE = "Automatic";
+				DEVELOPMENT_TEAM = "2L6CX7XT2U";
+				GENERATE_INFOPLIST_FILE = "YES";
+				IPHONEOS_DEPLOYMENT_TARGET = "27.0";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kabouzeid.Iron.e2etests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = "iphoneos";
+				SWIFT_VERSION = "5.0";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Iron";
+			};
+		};
+
 	};
 	rootObject = 8A7D6E8C200BF92E00AA0FA7 /* Project object */;
 }

@@ -61,13 +61,13 @@ enum WorkoutExerciseChartData {
         var title: String {
             switch self {
             case .oneRM:
-                return "Estimated 1RM"
+                return L10n.string("Estimated 1RM")
             case .totalWeight:
-                return "Total Weight"
+                return L10n.string("Total Weight")
             case .totalSets:
-                return "Total Sets"
+                return L10n.string("Total Sets")
             case .totalRepetitions:
-                return "Total Repetitions"
+                return L10n.string("Total Repetitions")
             }
         }
     }
@@ -81,13 +81,13 @@ enum WorkoutExerciseChartData {
         var title: String {
             switch self {
             case .month:
-                return "Month"
+                return L10n.string("Month")
             case .threeMonths:
-                return "3 Months"
+                return L10n.string("3 Months")
             case .year:
-                return "Year"
+                return L10n.string("Year")
             case .all:
-                return "All"
+                return L10n.string("All")
             }
         }
         

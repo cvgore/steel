@@ -15,9 +15,9 @@ enum WeightUnit: String, CaseIterable, Hashable {
     var title: String {
         switch self {
         case .metric:
-            return "Metric (kg)"
+            return L10n.string("Metric (kg)")
         case .imperial:
-            return "Imperial (lb)"
+            return L10n.string("Imperial (lb)")
         }
     }
     
@@ -45,6 +45,7 @@ extension WeightUnit {
     
     var numberFormatter: NumberFormatter {
         let numberFormatter = NumberFormatter()
+        numberFormatter.locale = L10n.locale
         numberFormatter.allowsFloats = true
         numberFormatter.minimumFractionDigits = minimumFractionDigits
         numberFormatter.maximumFractionDigits = maximumFractionDigits
@@ -53,6 +54,7 @@ extension WeightUnit {
     
     var formatter: MeasurementFormatter {
         let formatter = MeasurementFormatter()
+        formatter.locale = L10n.locale
         formatter.unitOptions = .providedUnit
         formatter.numberFormatter = numberFormatter
         return formatter

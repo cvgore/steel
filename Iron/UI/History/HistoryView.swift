@@ -124,7 +124,7 @@ private struct WorkoutCell: View {
                 Text(workout.displayTitle(in: self.exerciseStore.exercises))
                     .font(.body)
                 
-                Text(Workout.dateFormatter.string(from: workout.start, fallback: "Unknown date"))
+                Text(Workout.dateFormatter.string(from: workout.start, fallback: L10n.string("Unknown date")))
                     .font(.caption)
                     .foregroundColor(.secondary)
                 

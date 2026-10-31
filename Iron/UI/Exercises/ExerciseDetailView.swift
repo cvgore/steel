@@ -41,10 +41,14 @@ struct ExerciseDetailView : View {
     }
     
     private func pdfToImage(url: URL, fit: CGSize) -> UIImage? {
+        guard fit.width.isFinite, fit.height.isFinite,
+              fit.width > 0, fit.height > 0 else { return nil }
         guard let document = CGPDFDocument(url as CFURL) else { return nil }
         guard let page = document.page(at: 1) else { return nil }
         
         let pageRect = page.getBoxRect(.mediaBox)
+        guard pageRect.width.isFinite, pageRect.height.isFinite,
+              pageRect.width > 0, pageRect.height > 0 else { return nil }
         let scale = min(fit.width / pageRect.width, fit.height / pageRect.height)
         let size = CGSize(width: pageRect.width * scale, height: pageRect.height * scale)
         
@@ -72,7 +76,7 @@ struct ExerciseDetailView : View {
     }
     
     private func imageHeight(geometry: GeometryProxy) -> CGFloat {
-        min(geometry.size.width, (geometry.size.height - geometry.safeAreaInsets.top - geometry.safeAreaInsets.bottom) * 0.7)
+        max(0, min(geometry.size.width, (geometry.size.height - geometry.safeAreaInsets.top - geometry.safeAreaInsets.bottom) * 0.7))
     }
     
     private var closeSheetButton: some View {
@@ -118,10 +122,10 @@ struct ExerciseDetailView : View {
     }
     
     private var muscleSection: some View {
-        Section(header: Text("Muscles".uppercased())) {
+        Section(header: Text(L10n.string("Muscles").uppercased(with: L10n.locale))) {
             ForEach(self.exercise.primaryMuscleCommonName, id: \.hashValue) { primaryMuscle in
                 HStack {
-                    Text(primaryMuscle.capitalized)
+                    Text(L10n.string(primaryMuscle).capitalized(with: L10n.locale))
                     Spacer()
                     Text("Primary")
                         .foregroundColor(.secondary)
@@ -129,7 +133,7 @@ struct ExerciseDetailView : View {
             }
             ForEach(self.exercise.secondaryMuscleCommonName, id: \.hashValue) { secondaryMuscle in
                 HStack {
-                    Text(secondaryMuscle.capitalized)
+                    Text(L10n.string(secondaryMuscle).capitalized(with: L10n.locale))
                     Spacer()
                     Text("Secondary")
                         .foregroundColor(.secondary)
@@ -139,7 +143,7 @@ struct ExerciseDetailView : View {
     }
     
     private var stepsSection: some View {
-        Section(header: Text("Steps".uppercased())) {
+        Section(header: Text(L10n.string("Steps").uppercased(with: L10n.locale))) {
             ForEach(self.exercise.steps, id: \.hashValue) { step in
                 Text(step as String)
                     .lineLimit(nil)
@@ -148,7 +152,7 @@ struct ExerciseDetailView : View {
     }
     
     private var tipsSection: some View {
-        Section(header: Text("Tips".uppercased())) {
+        Section(header: Text(L10n.string("Tips").uppercased(with: L10n.locale))) {
             ForEach(self.exercise.tips, id: \.hashValue) { tip in
                 Text(tip as String)
                     .lineLimit(nil)
@@ -157,7 +161,7 @@ struct ExerciseDetailView : View {
     }
     
     private var referencesSection: some View {
-        Section(header: Text("References".uppercased())) {
+        Section(header: Text(L10n.string("References").uppercased(with: L10n.locale))) {
             ForEach(self.exercise.references, id: \.hashValue) { reference in
                 Button(reference as String) {
                     if let url = URL(string: reference) {
@@ -169,7 +173,7 @@ struct ExerciseDetailView : View {
     }
     
     private var aliasSection: some View {
-        Section(header: Text("Also known as".uppercased())) {
+        Section(header: Text(L10n.string("Also known as").uppercased(with: L10n.locale))) {
             ForEach(self.exercise.alias, id: \.hashValue) { alias in
                 Text(alias)
             }
@@ -244,6 +248,7 @@ struct ExerciseDetailView : View {
                     self.showOptionsMenu = true
                 }) {
                     Image(systemName: "ellipsis")
+                    .accessibility(label: Text("More"))
                         .padding([.leading, .top, .bottom])
                 }
                 if exercise.isCustom {

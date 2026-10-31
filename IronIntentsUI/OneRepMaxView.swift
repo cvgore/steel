@@ -23,7 +23,7 @@ struct OneRepMaxView: View {
             Text(exercise.title)
                 .font(.body)
             
-            Text(WorkoutExerciseChartData.MeasurementType.oneRM.title).font(.caption).foregroundColor(.secondary)
+            Text(LocalizedStringKey(WorkoutExerciseChartData.MeasurementType.oneRM.title)).font(.caption).foregroundColor(.secondary)
 
             chartView
         }

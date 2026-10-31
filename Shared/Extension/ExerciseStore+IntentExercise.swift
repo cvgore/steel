@@ -26,10 +26,10 @@ extension ExerciseStore {
             completion(.unsupported())
             return
         }
-        guard find(with: uuid) != nil else {
+        guard let exercise = find(with: uuid) else {
             completion(.unsupported())
             return
         }
-        completion(.success(with: intentExercise))
+        completion(.success(with: exercise.intentExercise))
     }
 }

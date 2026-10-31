@@ -63,7 +63,9 @@ extension WorkoutExerciseChartDataGenerator {
 
         init() {
             dateFormatter = DateFormatter()
+            dateFormatter.locale = L10n.locale
             yearDateFormatter = DateFormatter()
+            yearDateFormatter.locale = L10n.locale
             dateFormatter.doesRelativeDateFormatting = true
             yearDateFormatter.doesRelativeDateFormatting = true
             dateFormatter.setLocalizedDateFormatFromTemplate("MMMd")
@@ -82,6 +84,7 @@ extension WorkoutExerciseChartDataGenerator {
     class DateBalloonValueFormatter: BalloonValueFormatter {
         let yAxisValueFormatter = DefaultAxisValueFormatter(formatter: {
             let formatter = NumberFormatter()
+            formatter.locale = L10n.locale
             formatter.minimumFractionDigits = 0
             formatter.maximumFractionDigits = 1
             formatter.usesGroupingSeparator = true
@@ -94,7 +97,9 @@ extension WorkoutExerciseChartDataGenerator {
         init(yUnit: String?) {
             self.yUnit = yUnit
             dateFormatter = DateFormatter()
+            dateFormatter.locale = L10n.locale
             yearDateFormatter = DateFormatter()
+            yearDateFormatter.locale = L10n.locale
             dateFormatter.doesRelativeDateFormatting = true
             yearDateFormatter.doesRelativeDateFormatting = true
             dateFormatter.setLocalizedDateFormatFromTemplate("MMMdjmm")

@@ -58,6 +58,7 @@ struct WorkoutSetEditor : View {
 
     private var weightNumberFormatter: NumberFormatter {
         let formatter = NumberFormatter()
+        formatter.locale = L10n.locale
         formatter.allowsFloats = true
         formatter.maximumFractionDigits = settingsStore.weightUnit.maximumFractionDigits
         formatter.minimumFractionDigits = minimumFractionDigits
@@ -86,13 +87,14 @@ struct WorkoutSetEditor : View {
         }) {
             HStack(spacing: 0) {
                 Image(systemName: "tag")
+                    .accessibility(label: Text("Tag"))
                     .padding(6)
             }
         }
     }
     
     private var doneButton: some View {
-        textButton(label: Text(workoutSet.isCompleted ? "Ok" : "Complete Set").foregroundColor(.white), color: .accentColor, action: {
+        textButton(label: Text(LocalizedStringKey(workoutSet.isCompleted ? "Ok" : "Complete Set")).foregroundColor(.white), color: .accentColor, action: {
             self.onDone()
         })
     }
@@ -115,6 +117,7 @@ struct WorkoutSetEditor : View {
                         .padding(6)
                     HStack {
                         Image(systemName: "keyboard")
+                            .accessibility(label: Text("Hide Keyboard"))
                             .foregroundColor(.secondary)
                         Image(systemName: "chevron.compact.down")
                             .foregroundColor(.secondary)
@@ -165,7 +168,7 @@ struct WorkoutSetEditor : View {
     private var repetitionsDragger: some View {
         Dragger(
             value: workoutSetRepetitions,
-            unit: "reps",
+            unit: L10n.string("reps"),
             minValue: 0,
             maxValue: Double(WorkoutSet.MAX_REPETITIONS),
             showCursor: showKeyboard == .repetitions,
@@ -208,14 +211,17 @@ struct WorkoutSetEditor : View {
                             self.showKeyboard = .none
                         }
                     }
+                    .accessibility(label: Text("Hide Keyboard"))
                     
                     NumericKeyboard.imageActionKeyboardButton(label: Image(systemName: "questionmark"), width: geometry.size.width / 4) {
                         self.showHelpAlert = true
                     }
+                    .accessibility(label: Text("Help"))
                     
                     NumericKeyboard.imageActionKeyboardButton(label: Image(systemName: "tag"), width: geometry.size.width / 4) {
                         self.showMoreSheet = true
                     }
+                    .accessibility(label: Text("Tag"))
                     
                     Button(action: {
                         NumericKeyboard.playButtonSound()
@@ -227,6 +233,7 @@ struct WorkoutSetEditor : View {
                         }
                     }) {
                         Image(systemName: self.showKeyboard == .weight ? "arrow.right" : "checkmark")
+                            .accessibility(label: Text(LocalizedStringKey(self.showKeyboard == .weight ? "Next" : "Complete Set")))
                             .padding()
                             .foregroundColor(.white)
                             .background(
@@ -351,7 +358,7 @@ private struct MoreView: View {
                 Image(systemName: "circle.fill")
                     .imageScale(.small)
                     .foregroundColor(tag.color)
-                Text(tag.title.capitalized)
+                Text(L10n.string(tag.title).capitalized(with: L10n.locale))
                 Spacer()
                 if self.workoutSet.tagValue == tag {
                     Image(systemName: "checkmark")
@@ -371,8 +378,8 @@ private struct MoreView: View {
             }
         }) {
             HStack {
-                Text(String(format: "%.1f", rpe))
-                Text(RPE.title(rpe) ?? "")
+                Text(String(format: "%.1f", locale: L10n.locale, rpe))
+                Text(LocalizedStringKey(RPE.title(rpe) ?? ""))
                     .lineLimit(nil)
                     .foregroundColor(.secondary)
                 Spacer()
@@ -389,12 +396,13 @@ private struct MoreView: View {
         List {
             Section(header:
                 HStack {
-                    Text("Tag".uppercased())
+                    Text(L10n.string("Tag").uppercased(with: L10n.locale))
                     Spacer()
                     Button(action: {
                         self.activeAlert = .tagInfo
                     }) {
                         Image(systemName: "questionmark.circle")
+                            .accessibility(label: Text("Help"))
                             .foregroundColor(.accentColor)
                     }
                 }) {
@@ -403,7 +411,7 @@ private struct MoreView: View {
                 }
             }
             
-            Section(header: Text("Comment".uppercased())) {
+            Section(header: Text(L10n.string("Comment").uppercased(with: L10n.locale))) {
                 TextField("Comment", text: workoutSetComment, onEditingChanged: { isEditingTextField in
                     if !isEditingTextField {
                         self.adjustAndSaveWorkoutSetCommentInput()
@@ -419,6 +427,7 @@ private struct MoreView: View {
                         self.activeAlert = .rpeInfo
                     }) {
                         Image(systemName: "questionmark.circle")
+                            .accessibility(label: Text("Help"))
                             .foregroundColor(.accentColor)
                     }
                 }) {

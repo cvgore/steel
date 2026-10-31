@@ -148,7 +148,7 @@ struct WorkoutExerciseDetailView : View {
     private func rpe(rpe: Double) -> some View {
         VStack {
             Group {
-                Text(String(format: "%.1f", rpe))
+                Text(String(format: "%.1f", locale: L10n.locale, rpe))
                 Text("RPE")
             }
             .font(.caption)
@@ -329,6 +329,7 @@ struct WorkoutExerciseDetailView : View {
                         showExerciseInfo = true
                     }, label: {
                         Image(systemName: "info.circle")
+                    .accessibility(label: Text("Exercise"))
                             .padding([.leading, .top, .bottom])
                     })
                 }

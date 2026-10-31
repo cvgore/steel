@@ -17,7 +17,7 @@ A modern and completely free weightlifting workout tracker for iOS, written in S
 
 ## Building
 
-**Xcode 13** or later is required.
+**Xcode 27** or later is required. Deployment targets are **iOS 27.0** and **watchOS 27.0**. The Watch app uses a single executable target. See [localization and validation notes](docs/localization.md) for the current Charts compiler workaround and test setup.
 
 - Select the "Iron" project in the Xcode sidebar
 - Under "Targets", select "Iron"

@@ -161,6 +161,7 @@ struct WorkoutDetailView : View {
                     self.showingOptionsMenu = true
                 }) {
                     Image(systemName: "ellipsis")
+                    .accessibility(label: Text("More"))
                         .padding([.leading, .top, .bottom])
                 }
                 EditButton()

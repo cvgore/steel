@@ -138,7 +138,7 @@ struct WorkoutRoutineSetEditor: View {
     private var repetitionsMinDragger: some View {
         Dragger(
             value: draggerRepetitionsMin,
-            unit: "min reps",
+            unit: L10n.string("min reps"),
             minValue: 0,
             maxValue: Double(WorkoutSet.MAX_REPETITIONS),
             nilPosition: .belowMin,
@@ -159,7 +159,7 @@ struct WorkoutRoutineSetEditor: View {
     private var repetitionsMaxDragger: some View {
         Dragger(
             value: draggerRepetitionsMax,
-            unit: "max reps",
+            unit: L10n.string("max reps"),
             minValue: 0,
             maxValue: Double(WorkoutSet.MAX_REPETITIONS),
             nilPosition: .belowMin,
@@ -183,6 +183,7 @@ struct WorkoutRoutineSetEditor: View {
         }) {
             HStack(spacing: 0) {
                 Image(systemName: "tag")
+                    .accessibility(label: Text("Tag"))
                     .padding(6)
             }
         }
@@ -194,7 +195,7 @@ struct WorkoutRoutineSetEditor: View {
         }) {
             HStack {
                 Spacer()
-                Text(showNext ? "Next" : "Ok")
+                Text(LocalizedStringKey(showNext ? "Next" : "Ok"))
                     .fixedSize()
                     .foregroundColor(.white)
                     .padding(6)
@@ -208,7 +209,7 @@ struct WorkoutRoutineSetEditor: View {
     }
     
     private var moreSheet: some View {
-        var title = "Set"
+        var title = L10n.string("Set")
         if let index = workoutRoutineSet.workoutRoutineExercise?.workoutRoutineSets?.index(of: workoutRoutineSet), index != NSNotFound {
             title += " \(index + 1)"
         }
@@ -240,14 +241,17 @@ struct WorkoutRoutineSetEditor: View {
                             self.showKeyboard = .none
                         }
                     }
+                    .accessibility(label: Text("Hide Keyboard"))
                     
                     NumericKeyboard.imageActionKeyboardButton(label: Image(systemName: "questionmark"), width: geometry.size.width / 4) {
                         self.showHelpAlert = true
                     }
+                    .accessibility(label: Text("Help"))
                     
                     NumericKeyboard.imageActionKeyboardButton(label: Image(systemName: "tag"), width: geometry.size.width / 4) {
                         self.showMoreSheet = true
                     }
+                    .accessibility(label: Text("Tag"))
                     
                     Button(action: {
                         NumericKeyboard.playButtonSound()
@@ -261,6 +265,7 @@ struct WorkoutRoutineSetEditor: View {
                         }
                     }) {
                         Image(systemName: self.showKeyboard == .repetitionsMin ? "arrow.right" : self.showNext ? "arrow.right" : "checkmark")
+                            .accessibility(label: Text(LocalizedStringKey(self.showKeyboard == .repetitionsMin || self.showNext ? "Next" : "Ok")))
                             .padding()
                             .foregroundColor(.white)
                             .background(
@@ -367,7 +372,7 @@ private struct MoreView: View {
                 Image(systemName: "circle.fill")
                     .imageScale(.small)
                     .foregroundColor(tag.color)
-                Text(tag.title.capitalized)
+                Text(L10n.string(tag.title).capitalized(with: L10n.locale))
                 Spacer()
                 if self.workoutRoutineSet.tagValue == tag {
                     Image(systemName: "checkmark")
@@ -380,13 +385,13 @@ private struct MoreView: View {
     
     var body: some View {
         List {
-            Section(header: Text("Tag".uppercased())) {
+            Section(header: Text(L10n.string("Tag").uppercased(with: L10n.locale))) {
                 ForEach(WorkoutRoutineSet.supportedTags, id: \.self) { tag in
                     self.tagButton(tag: tag)
                 }
             }
             
-            Section(header: Text("Comment".uppercased())) {
+            Section(header: Text(L10n.string("Comment").uppercased(with: L10n.locale))) {
                 TextField("Comment", text: workoutRoutineSetComment, onEditingChanged: { isEditingTextField in
                     if !isEditingTextField {
                         self.adjustAndSaveWorkoutRoutineSetCommentInput()

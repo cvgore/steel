@@ -56,8 +56,9 @@ struct WorkoutRoutineSetCell: View {
                 .background(
                     Group {
                         workoutRoutineSet.tagValue.map {
-                            Text($0.title.first!.uppercased())
+                            Text(String(L10n.string($0.title).prefix(1)).uppercased(with: L10n.locale))
                                 .fontWeight(.semibold)
+                                .accessibility(label: Text(L10n.string($0.title)))
                                 .foregroundColor($0.color)
                                 .fixedSize()
                         }

@@ -25,6 +25,7 @@ struct NumericKeyboard: View {
     
     private var numberFormatter: NumberFormatter {
         let formatter = NumberFormatter()
+        formatter.locale = L10n.locale
         formatter.allowsFloats = allowsFloats
         formatter.maximumFractionDigits = maximumFractionDigits
         formatter.minimumFractionDigits = min(minimumFractionDigits, maximumFractionDigits)  // TODO: min() necessary?
@@ -124,7 +125,7 @@ struct NumericKeyboard: View {
                     self.textKeyboardButton(label: Text("4"), value: "4", width: geometry.size.width / 3)
                     self.textKeyboardButton(label: Text("7"), value: "7", width: geometry.size.width / 3)
                     
-                    Self.textActionKeyboardButton(label: Text(self.allowsFloats ? (locale.decimalSeparator ?? ".") : " "), width: geometry.size.width / 3) {
+                    Self.textActionKeyboardButton(label: Text(self.allowsFloats ? (L10n.locale.decimalSeparator ?? ".") : " "), width: geometry.size.width / 3) {
                         guard self.allowsFloats else { return }
                         if self.value == nil {
                             self.prepareNumberFormatter()
@@ -158,6 +159,7 @@ struct NumericKeyboard: View {
                         }
                         self.setValue(string: String(string.dropLast()))
                     }
+                    .accessibility(label: Text("Delete Digit"))
                 }
             }
             .fixedSize()
@@ -177,6 +179,7 @@ struct NumericKeyboard_Previews: PreviewProvider {
         
         private var numberFormatter: NumberFormatter {
             let formatter = NumberFormatter()
+            formatter.locale = L10n.locale
             formatter.allowsFloats = true
             formatter.maximumFractionDigits = weightUnit.maximumFractionDigits
             formatter.minimumFractionDigits = minimumFractionDigits

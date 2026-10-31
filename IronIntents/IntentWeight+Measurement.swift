@@ -13,9 +13,11 @@ extension IntentWeight {
     convenience init(measurement: Measurement<UnitMass>, weightUnit: WeightUnit) {
         let measurement = measurement.converted(to: weightUnit.unit)
         let formatter = weightUnit.formatter
+        formatter.locale = L10n.locale
+        formatter.numberFormatter.locale = L10n.locale
         formatter.numberFormatter.maximumFractionDigits = 1
         let display = formatter.string(from: measurement)
-        self.init(identifier: nil, display: display, pronunciationHint: display.replacingOccurrences(of: "kg", with: "kilograms").replacingOccurrences(of: "lb", with: "pounds"))
+        self.init(identifier: nil, display: display, pronunciationHint: display.replacingOccurrences(of: "kg", with: L10n.string("kilograms")).replacingOccurrences(of: "lb", with: L10n.string("pounds")))
         self.value = measurement.value as NSNumber
         self.unit = weightUnit.unit.symbol
     }

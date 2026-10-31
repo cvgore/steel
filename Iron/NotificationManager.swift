@@ -11,12 +11,17 @@ import UserNotifications
 class NotificationManager: NSObject {
     static let shared = NotificationManager(notificationCenter: UNUserNotificationCenter.current())
     
+    private var languageObserver: NSObjectProtocol?
+
     let notificationCenter: UNUserNotificationCenter
     
     init(notificationCenter: UNUserNotificationCenter) {
         self.notificationCenter = notificationCenter
         super.init()
         self.notificationCenter.delegate = self
+        languageObserver = NotificationCenter.default.addObserver(forName: .appLanguageChanged, object: nil, queue: .main) { [weak self] _ in
+            self?.localizePendingNotifications()
+        }
         
         let restTimerAdd30Action = UNNotificationAction(identifier: NotificationActionIdentifier.restTimerAdd30.rawValue, title: "+30s")
         let restTimerAdd60Action = UNNotificationAction(identifier: NotificationActionIdentifier.restTimerAdd60.rawValue, title: "+60s")
@@ -32,6 +37,29 @@ class NotificationManager: NSObject {
         notificationCenter.setNotificationCategories([restTimerUpCategory])
     }
     
+    private func localizePendingNotifications() {
+        notificationCenter.getPendingNotificationRequests { [weak self] requests in
+            guard let self = self else { return }
+            for request in requests {
+                guard let content = request.content.mutableCopy() as? UNMutableNotificationContent,
+                      let identifier = NotificationIdentifier(rawValue: request.identifier) else { continue }
+                switch identifier {
+                case .unfinishedWorkout, .unfinishedTraining:
+                    content.title = L10n.string("Unfinished workout")
+                    content.body = L10n.string("You have an unfinished workout. Do you want to finish it?")
+                case .restTimerUp:
+                    let suffix = content.title.range(of: " (").map { String(content.title[$0.lowerBound...]) } ?? ""
+                    content.title = L10n.string("You've rested enough!") + suffix
+                    content.body = L10n.string("Back to work 💪")
+                case .startedWorkout:
+                    content.title = L10n.string("Your workout was started")
+                    content.body = L10n.string("Open Iron to launch the Apple Watch companion.")
+                }
+                self.notificationCenter.add(UNNotificationRequest(identifier: request.identifier, content: content, trigger: request.trigger))
+            }
+        }
+    }
+
     func requestAuthorization() {
         notificationCenter.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
             if let error = error {
@@ -53,8 +81,8 @@ class NotificationManager: NSObject {
             guard settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional else { return }
             
             let content = UNMutableNotificationContent()
-            content.title = "Unfinished workout"
-            content.body = "You have an unfinished workout. Do you want to finish it?"
+            content.title = L10n.string("Unfinished workout")
+            content.body = L10n.string("You have an unfinished workout. Do you want to finish it?")
             if settings.soundSetting == .enabled {
                 content.sound = UNNotificationSound.default
             }
@@ -81,11 +109,11 @@ class NotificationManager: NSObject {
             }
             
             let content = UNMutableNotificationContent()
-            content.title = "You've rested enough!"
+            content.title = L10n.string("You've rested enough!")
             if let totalTime = totalTime, let totalTimeString = restTimerDurationFormatter.string(from: totalTime) {
                 content.title += " (\(totalTimeString))"
             }
-            content.body = "Back to work 💪"
+            content.body = L10n.string("Back to work 💪")
             if settings.soundSetting == .enabled {
                 content.sound = UNNotificationSound.default
             }
@@ -111,8 +139,8 @@ class NotificationManager: NSObject {
             guard settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional else { return }
             
             let content = UNMutableNotificationContent()
-            content.title = "Your workout was started"
-            content.body = "Open Iron to launch the Apple Watch companion."
+            content.title = L10n.string("Your workout was started")
+            content.body = L10n.string("Open Iron to launch the Apple Watch companion.")
             if #available(iOS 15.0, *) {
                 content.interruptionLevel = .timeSensitive
             }

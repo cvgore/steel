@@ -133,7 +133,7 @@ extension ExerciseStore {
 extension ExerciseStore {
     private static func titleMatchesFilter(title: String, filter: String) -> Bool {
         for s in filter.split(separator: " ") {
-            if !title.lowercased().contains(s) {
+            if !title.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: Locale(identifier: "pl")).replacingOccurrences(of: "ł", with: "l").contains(s) {
                 return false
             }
         }
@@ -141,11 +141,11 @@ extension ExerciseStore {
     }
 
     public static func filter(exercises: [Exercise], using filter: String) -> [Exercise] {
-        let filter = filter.lowercased().trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        let filter = filter.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: Locale(identifier: "pl")).replacingOccurrences(of: "ł", with: "l").trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         guard !filter.isEmpty else { return exercises }
         
         return exercises.filter { exercise in
-            for title in [exercise.title] + exercise.alias {
+            for title in exercise.searchNames {
                 if titleMatchesFilter(title: title, filter: filter) {
                     return true
                 }

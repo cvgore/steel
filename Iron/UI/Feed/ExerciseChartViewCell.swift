@@ -24,7 +24,7 @@ struct ExerciseChartViewCell : View {
                 .font(.subheadline)
                 .foregroundColor(exercise.muscleGroupColor)
             
-            Text(measurementType.title).font(.headline)
+            Text(LocalizedStringKey(measurementType.title)).font(.headline)
             
             Divider()
             

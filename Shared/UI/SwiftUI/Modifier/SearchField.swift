@@ -26,6 +26,7 @@ struct SearchTextFieldStyle: TextFieldStyle {
                 }, label: {
                     Image(systemName: "xmark.circle.fill")
                 })
+                .accessibility(label: Text("Clear Search"))
                 .buttonStyle(PlainButtonStyle())
                 .foregroundColor(.secondary)
             }
