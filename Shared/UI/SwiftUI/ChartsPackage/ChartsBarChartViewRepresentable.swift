@@ -7,14 +7,14 @@
 //
 
 import SwiftUI
-import Charts
+import DGCharts
 
 struct ChartsBarChartViewRepresentable : UIViewRepresentable {
     var chartData: ChartData
     var xAxisValueFormatter: AxisValueFormatter
     var yAxisValueFormatter: AxisValueFormatter
-    var preCustomization: ((Charts.BarChartView, ChartData) -> ())?
-    var postCustomization: ((Charts.BarChartView) -> ())?
+    var preCustomization: ((DGCharts.BarChartView, ChartData) -> ())?
+    var postCustomization: ((DGCharts.BarChartView) -> ())?
 
     func makeUIView(context: UIViewRepresentableContext<ChartsBarChartViewRepresentable>) -> StyledBarChartView {
         StyledBarChartView()

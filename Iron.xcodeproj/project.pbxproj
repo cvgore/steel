@@ -3076,10 +3076,10 @@
 /* Begin XCRemoteSwiftPackageReference section */
 		8A50F125243F5253003B3A6E /* XCRemoteSwiftPackageReference "Charts" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/danielgindi/Charts";
+			repositoryURL = "https://github.com/ChartsOrg/Charts";
 			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 4.1.0;
+				kind = revision;
+				revision = afc7c983d2f98c4d81cac28b1169951cc7323bb5;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -3088,17 +3088,17 @@
 		8A50F126243F5253003B3A6E /* Charts */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8A50F125243F5253003B3A6E /* XCRemoteSwiftPackageReference "Charts" */;
-			productName = Charts;
+			productName = DGCharts;
 		};
 		8A50F128243F525D003B3A6E /* Charts */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8A50F125243F5253003B3A6E /* XCRemoteSwiftPackageReference "Charts" */;
-			productName = Charts;
+			productName = DGCharts;
 		};
 		8A50F12A243F5262003B3A6E /* Charts */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8A50F125243F5253003B3A6E /* XCRemoteSwiftPackageReference "Charts" */;
-			productName = Charts;
+			productName = DGCharts;
 		};
 /* End XCSwiftPackageProductDependency section */
 

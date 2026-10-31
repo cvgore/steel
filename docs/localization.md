@@ -18,21 +18,23 @@ Run `python3 scripts/validate-localization.py` from the repository root. It vali
 
 All project deployment targets now use iOS 27.0 / watchOS 27.0, matching the installed Xcode 27 SDKs. The Watch app migrated from the obsolete app-plus-WatchKit-extension arrangement to a single executable WatchIron target. Source files remain in their existing folders; the app keeps its companion bundle ID, HealthKit entitlement, background workout mode and localized resources. The extension target is no longer part of the project build graph.
 
-Charts 4.1.0 still has unqualified `log10`/`pow` calls shadowed by newer Swift members. Validation uses a disposable package checkout in `/tmp/steel71-packages`, qualifying `Darwin.log10` (two calls) and `Darwin.pow` (one call) in `Charts/Source/Charts/Utils/ChartUtils.swift`. Package versions and lockfile remain unchanged. A fresh packages directory also bypassed a stale default cache revision error. No command-line deployment overrides are now needed.
+DGCharts is pinned to upstream commit [`afc7c983d2f98c4d81cac28b1169951cc7323bb5`](https://github.com/ChartsOrg/Charts/commit/afc7c983d2f98c4d81cac28b1169951cc7323bb5), which qualifies the math functions with `Foundation` for newer Swift/SDK versions. The released 5.1.0 tag still contains the compiler error, so the project uses this immutable upstream revision rather than a moving branch. Imports and module-qualified chart types use `DGCharts`; the package has no transitive dependencies. The Xcode SwiftPM `Package.resolved` is checked in. No downloaded dependency source needs editing.
 
-Commands (after the temporary external Charts qualification):
+Shared schemes are checked in: `Iron` runs `IronTests`, `IronE2E` runs `IronE2ETests`, and `WatchIron` builds the standalone Watch app. For a fresh build, use new package/build directories; package resolution consumes the checked-in revision. For example:
 
 ```sh
 xcodebuild -project Iron.xcodeproj -scheme Iron \
   -destination 'platform=iOS Simulator,id=42E753C7-7272-46F8-B3FF-150303B7D076' \
-  -clonedSourcePackagesDirPath /tmp/steel71-packages \
-  -derivedDataPath /tmp/steel71-os27 -jobs 4 CODE_SIGN_IDENTITY=- test
+  -clonedSourcePackagesDirPath /tmp/iron-packages \
+  -derivedDataPath /tmp/iron-build -jobs 4 CODE_SIGN_IDENTITY=- test
 xcodebuild -project Iron.xcodeproj -scheme WatchIron \
   -destination 'generic/platform=watchOS Simulator' \
-  -clonedSourcePackagesDirPath /tmp/steel71-packages \
-  -derivedDataPath /tmp/steel71-watch -jobs 4 CODE_SIGNING_ALLOWED=NO \
+  -clonedSourcePackagesDirPath /tmp/iron-packages \
+  -derivedDataPath /tmp/iron-watch -jobs 4 CODE_SIGN_IDENTITY=- \
   ONLY_ACTIVE_ARCH=YES ARCHS=arm64 build
 ```
+
+Review-fix validation on 2026-10-31 used new package/build directories and the checked-in pin without dependency edits: generic iOS Simulator build PASS, standalone Watch simulator build PASS, `Iron` unit suite 39/39 PASS (including workout-history chart rendering), and `IronE2E` language/search/detail/relaunch scenario PASS. Logs, xcresult bundles and the rendered chart are retained in `.artifacts/review-fixes-2026-10-31/`. These checks resolve build/test reproducibility; they do not establish Siri routing or a full Watch workout lifecycle.
 
 Simulator tests need ad-hoc signing so the app-group entitlement is retained; disabling signing causes the existing app startup to fail before tests. The post-migration iOS 27 test run and final connectivity-retry regression run passed all 38 tests: `/tmp/steel71-os27-tests.log` and `/tmp/steel71-os27-final-tests.log`, with results under `/tmp/steel71-os27/Logs/Test/`. This builds the single-target watchOS 27 app as an embedded companion too.
 

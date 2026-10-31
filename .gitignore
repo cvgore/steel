@@ -32,6 +32,14 @@ xcuserdata/
 !*.xcodeproj/xcshareddata/
 !*.xcodeproj/xcshareddata/**
 !*.xcworkspace/contents.xcworkspacedata
+# Keep Xcode's SwiftPM lockfile without checking in local workspace state.
+!*.xcodeproj/project.xcworkspace/
+*.xcodeproj/project.xcworkspace/*
+!*.xcodeproj/project.xcworkspace/xcshareddata/
+*.xcodeproj/project.xcworkspace/xcshareddata/*
+!*.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
+*.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/*
+!*.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
 /*.gcno
 
 ### fastlane ###

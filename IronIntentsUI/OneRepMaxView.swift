@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import Charts
+import DGCharts
 import WorkoutDataKit
 
 struct OneRepMaxView: View {

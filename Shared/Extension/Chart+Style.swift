@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Charts
+import DGCharts
 
 extension BarLineChartViewBase {
     func setupStyle() {

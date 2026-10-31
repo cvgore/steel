@@ -12,6 +12,34 @@ import WorkoutDataKit
 @testable import Iron
 
 class GeneralTests: XCTestCase {
+
+    func testWorkoutHistoryChartRendersWithPinnedDependency() throws {
+        let fixture = MockWorkoutData.metric
+        let history = try fixture.context.fetch(fixture.workoutExercise.historyFetchRequest)
+        let generator = WorkoutExerciseChartDataGenerator(
+            workoutExercises: history,
+            evaluator: WorkoutExerciseChartData.evaluator(
+                for: .oneRM, weightUnit: .metric, maxRepetitionsForOneRepMax: 12))
+        let entries = generator.chartDataEntries()
+        XCTAssertFalse(entries.isEmpty)
+
+        let chart = StyledLineChartView(frame: CGRect(x: 0, y: 0, width: 360, height: 240))
+        chart.data = generator.lineChartData(label: "Estimated 1RM")
+        chart.notifyDataSetChanged()
+        chart.layoutIfNeeded()
+        let image = UIGraphicsImageRenderer(bounds: chart.bounds).image { context in
+            chart.layer.render(in: context.cgContext)
+        }
+
+        XCTAssertEqual(chart.data?.entryCount, entries.count)
+        XCTAssertTrue(chart.leftAxis.axisMinimum.isFinite)
+        XCTAssertTrue(chart.leftAxis.axisMaximum.isFinite)
+        XCTAssertGreaterThan(chart.leftAxis.axisMaximum, chart.leftAxis.axisMinimum)
+        let attachment = XCTAttachment(image: image)
+        attachment.name = "Workout history chart with pinned DGCharts"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
     
     override func setUp() {
         super.setUp()

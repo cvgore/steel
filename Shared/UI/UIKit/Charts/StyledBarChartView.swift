@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import Charts
+import DGCharts
 
-class StyledBarChartView: Charts.BarChartView {
+class StyledBarChartView: DGCharts.BarChartView {
     var autoStyleData: Bool = true
 
     override func layoutMarginsDidChange() {

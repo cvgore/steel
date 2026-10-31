@@ -7,7 +7,7 @@
 //
 
 import CoreData
-import Charts
+import DGCharts
 import WorkoutDataKit
 
 enum WorkoutExerciseChartData {
