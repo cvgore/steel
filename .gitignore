@@ -68,3 +68,30 @@ fastlane/screenshots_dark/screenshots.html
 fastlane/test_output
 
 fastlane/metadata
+
+# Local user data, exports, and runtime artifacts
+*.ironbackup
+!IronTests/iron_backups/
+!IronTests/iron_backups/**
+*.xcresult/
+*.log
+*.crash
+*.ips
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.sqlite3
+*.sqlite3-*
+*.sqlite-journal
+!IronTests/workout_data/
+!IronTests/workout_data/**
+/workout_data.json
+/workout_data.txt
+.DS_Store
+
+# Local signing and environment secrets
+.env
+.env.*
+!.env.example
+*.p12
+*.mobileprovision
