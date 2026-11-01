@@ -414,6 +414,19 @@
 		7171000000000000000000D1 /* AppIntentVocabulary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7171000000000000000000C9; };
 		7171000000000000000000D2 /* AppIntentVocabulary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7171000000000000000000C9; };
 		7171000000000000000000D3 /* AppIntentVocabulary.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7171000000000000000000C9; };
+		D80000000000000000000011 /* WorkoutOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80000000000000000000001 /* WorkoutOperation.swift */; };
+		D80000000000000000000012 /* WorkoutOperationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80000000000000000000002 /* WorkoutOperationStore.swift */; };
+		D80000000000000000000013 /* WorkoutDataStorage+SessionMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80000000000000000000003 /* WorkoutDataStorage+SessionMigration.swift */; };
+		D80000000000000000000015 /* WorkoutOperationStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80000000000000000000005; };
+		D80000000000000000000016 = {isa = PBXBuildFile; fileRef = D80000000000000000000006; };
+		D80000000000000000000017 = {isa = PBXBuildFile; fileRef = D80000000000000000000006; };
+		D80000000000000000000018 = {isa = PBXBuildFile; fileRef = D80000000000000000000001; };
+		D80000000000000000000019 = {isa = PBXBuildFile; fileRef = D80000000000000000000007; };
+		D80000000000000000000020 = {isa = PBXBuildFile; fileRef = D80000000000000000000007; };
+		D80000000000000000000021 = {isa = PBXBuildFile; fileRef = D80000000000000000000008; };
+		D80000000000000000000022 = {isa = PBXBuildFile; fileRef = D80000000000000000000009; };
+		D80000000000000000000024 = {isa = PBXBuildFile; fileRef = D80000000000000000000023; };
+		D80000000000000000000025 /* WeightUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB5213323993C3D008064B2; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -809,6 +822,17 @@
 		71710000000000000000007D /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7171000000000000000000CA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/AppIntentVocabulary.plist; sourceTree = "<group>"; };
 		7171000000000000000000CB /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = pl; path = pl.lproj/AppIntentVocabulary.plist; sourceTree = "<group>"; };
+		D80000000000000000000001 /* WorkoutOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shared/WorkoutSession/WorkoutOperation.swift"; sourceTree = SOURCE_ROOT; };
+		D80000000000000000000002 /* WorkoutOperationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session/WorkoutOperationStore.swift"; sourceTree = "<group>"; };
+		D80000000000000000000003 /* WorkoutDataStorage+SessionMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session/WorkoutDataStorage+SessionMigration.swift"; sourceTree = "<group>"; };
+		D80000000000000000000004 /* WorkoutData v5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WorkoutData v5.xcdatamodel"; sourceTree = "<group>"; };
+		D80000000000000000000005 /* WorkoutOperationStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutOperationStoreTests.swift; sourceTree = "<group>"; };
+		D80000000000000000000006 /* WorkoutEditingRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Shared/WorkoutSession/WorkoutEditingRules.swift"; sourceTree = SOURCE_ROOT; };
+		D80000000000000000000007 /* WorkoutReplicaStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchIron Extension/Data/WorkoutReplicaStore.swift"; sourceTree = SOURCE_ROOT; };
+		D80000000000000000000008 /* WorkoutReplicaStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IronTests/WorkoutReplicaStoreTests.swift"; sourceTree = SOURCE_ROOT; };
+		D80000000000000000000009 /* WorkoutCommandWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Iron/Data/Store/WorkoutCommandWriter.swift"; sourceTree = SOURCE_ROOT; };
+		D80000000000000000000010 /* WorkoutData v6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WorkoutData v6.xcdatamodel"; sourceTree = "<group>"; };
+		D80000000000000000000023 /* WorkoutPhoneWriterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutPhoneWriterTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1289,6 +1313,8 @@
 				8AED58A9236474F600BF06D3 /* ExportImportWorkoutDataTests.swift */,
 				8A0ECFCB242BBB9100C0B306 /* IronBackupTests.swift */,
 				8AC6AF98242D60F400974279 /* WorkoutDataMigrationTests.swift */,
+				D80000000000000000000005 /* WorkoutOperationStoreTests.swift */,
+				D80000000000000000000023 /* WorkoutPhoneWriterTests.swift */,
 			);
 			path = IronTests;
 			sourceTree = "<group>";
@@ -1428,6 +1454,13 @@
 				8AB5211D23992DB2008064B2 /* Model */,
 				8A68F7C923631F6C0089263B /* Migration */,
 				8AB5213B239999C7008064B2 /* WorkoutDataStorage.swift */,
+				D80000000000000000000003 /* WorkoutDataStorage+SessionMigration.swift */,
+				D80000000000000000000002 /* WorkoutOperationStore.swift */,
+				D80000000000000000000001 /* WorkoutOperation.swift */,
+				D80000000000000000000009 /* WorkoutCommandWriter.swift */,
+				D80000000000000000000008 /* WorkoutReplicaStoreTests.swift */,
+				D80000000000000000000007 /* WorkoutReplicaStore.swift */,
+				D80000000000000000000006 /* WorkoutEditingRules.swift */,
 			);
 			path = WorkoutDataKit;
 			sourceTree = "<group>";
@@ -2096,6 +2129,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D80000000000000000000022,
 				717100000000000000000010 /* Localization.swift in Sources */,
 				8A3A11592426B667006DA244 /* WorkoutRoutineSetEditor.swift in Sources */,
 				8A63B3772329463A001BD7B5 /* CurrentWorkoutView.swift in Sources */,
@@ -2245,9 +2279,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D80000000000000000000021,
+				D80000000000000000000020,
 				8AB972F7203583E40099507B /* InMemoryPersistentContainer.swift in Sources */,
 				8A0ECFCC242BBB9100C0B306 /* IronBackupTests.swift in Sources */,
 				8AC6AF99242D60F400974279 /* WorkoutDataMigrationTests.swift in Sources */,
+				D80000000000000000000015 /* WorkoutOperationStoreTests.swift in Sources */,
+				D80000000000000000000024,
 				8AFF0D842302C60000F762A2 /* MockWorkoutData.swift in Sources */,
 				8AED58AA236474F600BF06D3 /* ExportImportWorkoutDataTests.swift in Sources */,
 				8A7D6EB0200BF92E00AA0FA7 /* GeneralTests.swift in Sources */,
@@ -2259,6 +2297,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D80000000000000000000019,
+				D80000000000000000000025,
+				D80000000000000000000018,
+				D80000000000000000000017,
 				717100000000000000000014 /* Localization.swift in Sources */,
 				8A58807A23776004007F31A1 /* WorkoutSessionView.swift in Sources */,
 				8A141CAF239C7DFF00993A61 /* Benchmark.swift in Sources */,
@@ -2295,6 +2337,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D80000000000000000000016,
 				71710000000000000000001B /* Localization.swift in Sources */,
 				8AA6252423AE673000217DA9 /* WorkoutPlan.swift in Sources */,
 				8AF5DAF3242E364E00A90A60 /* UuidMigrationPolicy.swift in Sources */,
@@ -2320,6 +2363,9 @@
 				8AB5212E2399341C008064B2 /* UserDefaults+HiddenExerciseUuids.swift in Sources */,
 				8AB5212223992F2E008064B2 /* WorkoutSetTag.swift in Sources */,
 				8AB5213C239999C7008064B2 /* WorkoutDataStorage.swift in Sources */,
+				D80000000000000000000013 /* WorkoutDataStorage+SessionMigration.swift in Sources */,
+				D80000000000000000000012 /* WorkoutOperationStore.swift in Sources */,
+				D80000000000000000000011 /* WorkoutOperation.swift in Sources */,
 				8AB5212F2399343A008064B2 /* Codable+NSManagedObjectContext.swift in Sources */,
 				8AB5212523992F42008064B2 /* WorkoutExerciseMigrationPolicyV1.swift in Sources */,
 				8AE0A085241188E000A0C419 /* OSLog+Logs.swift in Sources */,
@@ -3106,12 +3152,14 @@
 		8A08D3D42349486800B09687 /* WorkoutData.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				D80000000000000000000010 /* WorkoutData v6.xcdatamodel */,
+				D80000000000000000000004 /* WorkoutData v5.xcdatamodel */,
 				8AC6AF9D242D74BA00974279 /* WorkoutData v4.xcdatamodel */,
 				8AD329B7237608A700515B3B /* WorkoutData v3.xcdatamodel */,
 				8A68F7C7236319040089263B /* WorkoutData v2.xcdatamodel */,
 				8A08D3D52349486800B09687 /* WorkoutData.xcdatamodel */,
 			);
-			currentVersion = 8AC6AF9D242D74BA00974279 /* WorkoutData v4.xcdatamodel */;
+			currentVersion = D80000000000000000000010 /* WorkoutData v6.xcdatamodel */;
 			path = WorkoutData.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

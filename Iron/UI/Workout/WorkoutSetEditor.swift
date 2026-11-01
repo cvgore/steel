@@ -20,6 +20,7 @@ struct WorkoutSetEditor : View {
     @EnvironmentObject var exerciseStore: ExerciseStore
     
     @ObservedObject var workoutSet: WorkoutSet
+    @Binding var draft: WorkoutSetDraft
     var onDone: () -> Void = {}
     
     @State private var showHelpAlert = false
@@ -35,10 +36,10 @@ struct WorkoutSetEditor : View {
     private var workoutSetWeight: Binding<Double?> {
         Binding(
             get: {
-                WeightUnit.convert(weight: self.workoutSet.weightValue, from: .metric, to: self.settingsStore.weightUnit)
+                WeightUnit.convert(weight: (self.draft.weight ?? 0), from: .metric, to: self.settingsStore.weightUnit)
             },
             set: { newValue in
-                self.workoutSet.weightValue = max(min(WeightUnit.convert(weight: newValue ?? 0, from: self.settingsStore.weightUnit, to: .metric), WorkoutSet.MAX_WEIGHT), 0)
+                self.draft.weight = max(min(WeightUnit.convert(weight: newValue ?? 0, from: self.settingsStore.weightUnit, to: .metric), WorkoutSet.MAX_WEIGHT), 0)
                 self.refresher.refresh()
             }
         )
@@ -47,10 +48,10 @@ struct WorkoutSetEditor : View {
     private var workoutSetRepetitions: Binding<Double?> {
         Binding(
             get: {
-                Double(self.workoutSet.repetitionsValue)
+                Double(self.draft.repetitions ?? 0)
             },
             set: { newValue in
-                self.workoutSet.repetitionsValue = Int16(max(min(newValue ?? 0, Double(WorkoutSet.MAX_REPETITIONS)), 0))
+                self.draft.repetitions = Int16(max(min(newValue ?? 0, Double(WorkoutSet.MAX_REPETITIONS)), 0))
                 self.refresher.refresh()
             }
         )
@@ -185,7 +186,7 @@ struct WorkoutSetEditor : View {
     
     private var moreSheet: some View {
         NavigationView {
-            MoreView(workoutSet: workoutSet)
+            MoreView(draft: $draft)
                 .navigationBarTitle(Text(workoutSet.displayTitle(weightUnit: settingsStore.weightUnit)), displayMode: .inline)
                 .navigationBarItems(leading:
                     Button("Close") {
@@ -308,8 +309,17 @@ struct WorkoutSetEditor : View {
 }
 
 private struct MoreView: View {
-    @ObservedObject var workoutSet: WorkoutSet
+    @Binding var draft: WorkoutSetDraft
     
+    private var draftTag: WorkoutSetTag? {
+        get { WorkoutSetTag(rawValue: draft.tag ?? "") }
+        nonmutating set { draft.tag = newValue?.rawValue }
+    }
+    private var draftRPE: Double? {
+        get { RPE.allowedValues.contains(draft.rpe) ? draft.rpe : nil }
+        nonmutating set { draft.rpe = newValue ?? 0 }
+    }
+
     @State private var activeAlert: AlertType?
     
     private enum AlertType: Identifiable {
@@ -328,30 +338,28 @@ private struct MoreView: View {
         }
     }
     
-    @State private var workoutSetCommentInput: String? // cannot use ValueHolder here, since it would be recreated on changes
     private var workoutSetComment: Binding<String> {
         Binding(
             get: {
-                self.workoutSetCommentInput ?? self.workoutSet.comment ?? ""
+                self.draft.comment ?? ""
             },
             set: { newValue in
-                self.workoutSetCommentInput = newValue
+                self.draft.comment = newValue.isEmpty ? nil : newValue
             }
         )
     }
     private func adjustAndSaveWorkoutSetCommentInput() {
-        guard let newValue = workoutSetCommentInput?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
-        workoutSetCommentInput = newValue
-        workoutSet.comment = newValue.isEmpty ? nil : newValue
-        workoutSet.managedObjectContext?.saveOrCrash()
+        guard let newValue = draft.comment?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
+        draft.comment = newValue.isEmpty ? nil : newValue
+
     }
 
     private func tagButton(tag: WorkoutSetTag) -> some View {
         Button(action: {
-            if self.workoutSet.tagValue == tag {
-                self.workoutSet.tagValue = nil
+            if self.draftTag == tag {
+                self.draftTag = nil
             } else {
-                self.workoutSet.tagValue = tag
+                self.draftTag = tag
             }
         }) {
             HStack {
@@ -360,7 +368,7 @@ private struct MoreView: View {
                     .foregroundColor(tag.color)
                 Text(L10n.string(tag.title).capitalized(with: L10n.locale))
                 Spacer()
-                if self.workoutSet.tagValue == tag {
+                if self.draftTag == tag {
                     Image(systemName: "checkmark")
                         .foregroundColor(.secondary)
                 }
@@ -371,10 +379,10 @@ private struct MoreView: View {
     
     private func rpeButton(rpe: Double) -> some View {
         Button(action: {
-            if self.workoutSet.rpeValue == rpe {
-                self.workoutSet.rpeValue = nil
+            if self.draftRPE == rpe {
+                self.draftRPE = nil
             } else {
-                self.workoutSet.rpeValue = rpe
+                self.draftRPE = rpe
             }
         }) {
             HStack {
@@ -383,7 +391,7 @@ private struct MoreView: View {
                     .lineLimit(nil)
                     .foregroundColor(.secondary)
                 Spacer()
-                if self.workoutSet.rpeValue == rpe {
+                if self.draftRPE == rpe {
                     Image(systemName: "checkmark")
                         .foregroundColor(.secondary)
                 }
@@ -445,17 +453,17 @@ private struct MoreView: View {
 struct WorkoutSetEditor_Previews : PreviewProvider {
     static var previews: some View {
         return Group {
-            WorkoutSetEditor(workoutSet: MockWorkoutData.metricRandom.workoutSet)
+            WorkoutSetEditor(workoutSet: MockWorkoutData.metricRandom.workoutSet, draft: .constant(WorkoutSetDraft(set: MockWorkoutData.metricRandom.workoutSet)))
                 .mockEnvironment(weightUnit: .metric)
                 .previewDisplayName("Metric")
                 .previewLayout(.sizeThatFits)
             
-            WorkoutSetEditor(workoutSet: MockWorkoutData.imperialRandom.workoutSet)
+            WorkoutSetEditor(workoutSet: MockWorkoutData.imperialRandom.workoutSet, draft: .constant(WorkoutSetDraft(set: MockWorkoutData.imperialRandom.workoutSet)))
                 .mockEnvironment(weightUnit: .imperial)
                 .previewDisplayName("Imperial")
                 .previewLayout(.sizeThatFits)
             
-            MoreView(workoutSet: MockWorkoutData.metricRandom.workoutSet)
+            MoreView(draft: .constant(WorkoutSetDraft(set: MockWorkoutData.metricRandom.workoutSet)))
                 .mockEnvironment(weightUnit: .metric)
                 .previewLayout(.sizeThatFits)
                 .listStyle(GroupedListStyle())

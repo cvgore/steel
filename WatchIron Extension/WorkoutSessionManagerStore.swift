@@ -14,6 +14,8 @@ import os.log
 
 class WorkoutSessionManagerStore: ObservableObject {
     static let shared = WorkoutSessionManagerStore()
+    // Persistence is separate from HealthKit tracking; STEEL-9 consumes this same owner.
+    let workoutReplica = WorkoutReplicaStore.shared
     
     let objectWillChange = PassthroughSubject<Void, Never>()
     

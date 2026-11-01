@@ -17,7 +17,7 @@ public class WorkoutRoutineSet: NSManagedObject, Codable {
     public static let supportedTags = [WorkoutSetTag.dropSet]
     
     public class func create(context: NSManagedObjectContext) -> WorkoutRoutineSet {
-        let workoutRoutineSet = WorkoutRoutineSet(context: context)
+        let workoutRoutineSet = WorkoutRoutineSet(entity: NSEntityDescription.entity(forEntityName: "WorkoutRoutineSet", in: context)!, insertInto: context)
         workoutRoutineSet.uuid = UUID()
         return workoutRoutineSet
     }

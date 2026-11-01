@@ -23,15 +23,27 @@ struct WorkoutExerciseDetailView : View {
 
     @State private var selectedWorkoutSet: WorkoutSet? = nil
     
+    @State private var setDraft = WorkoutSetDraft(weight: nil, repetitions: nil, tag: nil, rpe: 0, comment: nil)
+    @State private var draftVersion: Int64 = 0
+    @State private var draftSessionID: UUID?
+    @State private var draftSnapshotAvailable = false
+    @State private var operationError = false
+    @State private var pendingOperation: WorkoutOperation?
+
     @State private var showExerciseInfo = false
     
     @State private var workoutExerciseCommentInput: String? = nil
+    @State private var commentBaseVersion: Int64?
     private var workoutExerciseComment: Binding<String> {
         Binding(
             get: {
                 return self.workoutExerciseCommentInput ?? self.workoutExercise.comment ?? ""
             },
             set: { newValue in
+                if self.isCurrentWorkout, self.commentBaseVersion == nil, let workout = self.workoutExercise.workout {
+                    do { self.commentBaseVersion = try WorkoutCommandWriter(context: self.managedObjectContext).snapshot(workout: workout).version }
+                    catch { self.operationError = true }
+                }
                 self.workoutExerciseCommentInput = newValue
             }
         )
@@ -39,6 +51,21 @@ struct WorkoutExerciseDetailView : View {
     private func adjustAndSaveWorkoutExerciseCommentInput() {
         guard let newValue = workoutExerciseCommentInput?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
         workoutExerciseCommentInput = newValue
+        if isCurrentWorkout {
+            guard let workout = workoutExercise.workout, let exerciseID = workoutExercise.uuid else {
+                operationError = true
+                return
+            }
+            guard let version = commentBaseVersion else { operationError = true; return }
+            do {
+                try WorkoutCommandWriter(context: managedObjectContext).write(workout: workout,
+                    mutation: .exerciseComment(exerciseID: exerciseID, comment: newValue.isEmpty ? nil : newValue), expectedVersion: version)
+                commentBaseVersion = nil
+                workoutExerciseCommentInput = nil
+            }
+            catch { operationError = true }
+            return
+        }
         workoutExercise.comment = newValue.isEmpty ? nil : newValue
         self.managedObjectContext.saveOrCrash()
     }
@@ -65,10 +92,21 @@ struct WorkoutExerciseDetailView : View {
     }
     
     private func select(set: WorkoutSet?, forceNoAnimation: Bool = false) {
-        if let set = set, !set.isCompleted, set.repetitions == nil || set.weight == nil { // treat as uninitialized
-            initRepsAndWeight(for: set)
+        if let set = set {
+            setDraft = initialDraft(for: set)
+            pendingOperation = nil
+            draftSnapshotAvailable = false
+            do {
+                if let workoutID = set.workoutExercise?.workout?.uuid,
+                   let coordinator = managedObjectContext.persistentStoreCoordinator {
+                    let snapshot = try WorkoutOperationStore(coordinator: coordinator).snapshot(workoutID: workoutID)
+                    draftVersion = snapshot.version
+                    draftSessionID = snapshot.sessionID
+                    draftSnapshotAvailable = true
+                }
+            } catch { operationError = true }
         }
-        
+
         // only animate if we would show/hide the editor
         if !forceNoAnimation, set == nil && selectedWorkoutSet != nil || set != nil && selectedWorkoutSet == nil {
             withAnimation {
@@ -83,7 +121,9 @@ struct WorkoutExerciseDetailView : View {
         }
     }
     
-    private func initRepsAndWeight(for set: WorkoutSet) {
+    private func initialDraft(for set: WorkoutSet) -> WorkoutSetDraft {
+        var draft = WorkoutSetDraft(set: set)
+        guard !set.isCompleted, set.repetitions == nil || set.weight == nil else { return draft }
         let index = workoutExercise.workoutSets!.index(of: set)
         let previousSet: WorkoutSet?
         if index > 0 { // not the first set
@@ -96,16 +136,17 @@ struct WorkoutExerciseDetailView : View {
             previousSet = workoutExerciseHistory.first?.workoutSets?.firstObject as? WorkoutSet
         }
         if let previousSet = previousSet {
-            set.repetitionsValue = previousSet.repetitionsValue
-            set.weightValue = previousSet.weightValue
+            draft.repetitions = previousSet.repetitionsValue
+            draft.weight = previousSet.weightValue
         } else {
             // TODO: let the user configure default repetitions and weight
-            set.repetitionsValue = 5
+            draft.repetitions = WorkoutEditingRules.defaultRepetitions
             if workoutExercise.exercise(in: exerciseStore.exercises)?.type == .barbell {
                 let weightUnit = self.settingsStore.weightUnit
-                set.weightValue = WeightUnit.convert(weight: weightUnit.barbellWeight, from: weightUnit, to: .metric)
+                draft.weight = WeightUnit.convert(weight: weightUnit.barbellWeight, from: weightUnit, to: .metric)
             }
         }
+        return draft
     }
     
     // looks for a previous exercise where the same sequence of sets was performed
@@ -122,23 +163,6 @@ struct WorkoutExerciseDetailView : View {
             return true
         }
         return exercise?.workoutSets?[index] as? WorkoutSet
-    }
-    
-    private func moveWorkoutExerciseBehindLastBegun() {
-        assert(isCurrentWorkout)
-        guard let workout = workoutExercise.workout else { return }
-        
-        workout.removeFromWorkoutExercises(workoutExercise) // remove before doing the other stuff!
-        
-        let lastBegun = workout.workoutExercises?
-            .compactMap { $0 as? WorkoutExercise }
-            .last { $0.numberOfCompletedSets ?? 0 > 0 }
-        
-        if let lastBegun = lastBegun, let index = workout.workoutExercises?.index(of: lastBegun), index != NSNotFound {
-            workout.insertIntoWorkoutExercises(workoutExercise, at: index + 1) // insert after last begun exercise
-        } else {
-            workout.insertIntoWorkoutExercises(workoutExercise, at: 0) // no workout exercise begun
-        }
     }
     
     private func shouldHighlightRow(for set: WorkoutSet) -> Bool {
@@ -163,9 +187,6 @@ struct WorkoutExerciseDetailView : View {
                 .background(Color.fakeClear) // hack that allows tap gesture to work (13.1 beta2)
                 .onTapGesture {
                     guard self.editMode?.wrappedValue != .active else { return }
-                    if self.selectedWorkoutSet?.hasChanges ?? false {
-                        self.managedObjectContext.saveOrCrash()
-                    }
                     if self.selectedWorkoutSet == workoutSet {
                         self.select(set: nil)
                     } else if workoutSet.isCompleted || workoutSet == self.firstUncompletedSet {
@@ -174,6 +195,17 @@ struct WorkoutExerciseDetailView : View {
                 }
         }
         .onDelete { offsets in
+            if self.isCurrentWorkout {
+                guard let workout = self.workoutExercise.workout, let exerciseID = self.workoutExercise.uuid else { return }
+                let sets = self.workoutSets(for: self.workoutExercise)
+                let deletingSelection = offsets.contains { sets[$0] == self.selectedWorkoutSet }
+                do {
+                    try WorkoutCommandWriter(context: self.managedObjectContext).write(workout: workout,
+                        mutation: .removeSets(exerciseID: exerciseID, setIDs: offsets.compactMap { sets[$0].uuid }))
+                    if deletingSelection { self.select(set: self.firstUncompletedSet) }
+                } catch { self.operationError = true }
+                return
+            }
             var deletedSelectedSet = false
             let workoutSets = self.workoutSets(for: self.workoutExercise)
             for i in offsets {
@@ -212,6 +244,15 @@ struct WorkoutExerciseDetailView : View {
     
     private var addSetButton: some View {
         Button(action: {
+            if self.isCurrentWorkout {
+                guard let workout = self.workoutExercise.workout, let exerciseID = self.workoutExercise.uuid else { return }
+                do {
+                    try WorkoutCommandWriter(context: self.managedObjectContext).write(workout: workout,
+                        mutation: .addSet(exerciseID: exerciseID, set: WorkoutPlannedSet()))
+                    self.select(set: self.firstUncompletedSet)
+                } catch { self.operationError = true }
+                return
+            }
             let workoutSet = WorkoutSet.create(context: self.workoutExercise.managedObjectContext!)
             workoutSet.workoutExercise = self.workoutExercise
             self.select(set: self.firstUncompletedSet)
@@ -259,34 +300,41 @@ struct WorkoutExerciseDetailView : View {
     private var workoutSetEditor: some View {
         VStack(spacing: 0) {
             Divider()
-            WorkoutSetEditor(workoutSet: self.selectedWorkoutSet!, onDone: {
-                guard let set = self.selectedWorkoutSet else { return }
-                
-                if !set.isCompleted {
-                     assert(self.isCurrentWorkout)
-                    // these preconditions should never ever happen, but just to be sure
-                    precondition(set.weightValue >= 0)
-                    precondition(set.repetitionsValue >= 0)
-                    set.isCompleted = true
-                    let workout = set.workoutExercise?.workout
-                    workout?.start = workout?.start ?? Date()
-                    
-                    if #available(iOS 14, *) { // fixed in iOS 14.0
-                        self.moveWorkoutExerciseBehindLastBegun() // this causes a "jump back" bug since iOS 13.4
-                    }
-                    
-                    let feedbackGenerator = UINotificationFeedbackGenerator()
-                    feedbackGenerator.prepare()
-                    feedbackGenerator.notificationOccurred(.success)
-                    AudioServicesPlaySystemSound(1103) // Tink sound
-                    
-                    self.restTimerStore.restTimerDuration = self.restTimerDuration
-                    self.restTimerStore.restTimerStart = Date() // start the rest timer
+            WorkoutSetEditor(workoutSet: self.selectedWorkoutSet!, draft: $setDraft, onDone: {
+                guard self.draftSnapshotAvailable, let set = self.selectedWorkoutSet,
+                      let workoutID = set.workoutExercise?.workout?.uuid,
+                      let exerciseID = set.workoutExercise?.uuid, let setID = set.uuid,
+                      self.managedObjectContext.persistentStoreCoordinator != nil else { return }
+                let operation: WorkoutOperation
+                if let pending = self.pendingOperation, pending.draft == self.setDraft {
+                    operation = pending
+                } else {
+                    operation = WorkoutOperation(workoutID: workoutID, sessionID: self.draftSessionID,
+                        expectedVersion: self.draftVersion,
+                        mutation: .saveSet(exerciseID: exerciseID, setID: setID, draft: self.setDraft,
+                            complete: true, restDuration: self.restTimerDuration))
+                    self.pendingOperation = operation
                 }
-                self.select(set: self.firstUncompletedSet)
-                
-                self.managedObjectContext.saveOrCrash()
+                do {
+                    let receipt = try WorkoutCommandWriter(context: self.managedObjectContext).apply(operation)
+                    if receipt.didComplete {
+                        let feedbackGenerator = UINotificationFeedbackGenerator()
+                        feedbackGenerator.prepare()
+                        feedbackGenerator.notificationOccurred(.success)
+                        AudioServicesPlaySystemSound(1103)
+                        self.restTimerStore.presentCommittedRest(start: receipt.restStart, duration: receipt.restDuration)
+                    }
+                    self.pendingOperation = nil
+                    if receipt.didComplete {
+                        self.select(set: self.firstUncompletedSet)
+                    } else {
+                        self.draftVersion = receipt.version
+                    }
+                } catch {
+                    self.operationError = true
+                }
             })
+            .id(self.selectedWorkoutSet!.objectID)
             .background(Color(.systemFill).opacity(0.5))
         }
         .transition(AnyTransition.move(edge: .bottom))
@@ -336,12 +384,28 @@ struct WorkoutExerciseDetailView : View {
                 EditButton()
             }
         )
+        .alert(isPresented: $operationError) {
+            Alert(title: Text("Could not save set"), message: Text("Your changes are still in the editor. Please try again."), dismissButton: .default(Text("Ok")))
+        }
+        .onReceive(NotificationCenter.default.publisher(for: WorkoutCommandWriter.didCommit)) { notification in
+            guard let context = notification.object as? NSManagedObjectContext, context === self.managedObjectContext,
+                  let commit = notification.userInfo?["commit"] as? WorkoutCommandWriter.Commit,
+                  self.draftSnapshotAvailable, let selected = self.selectedWorkoutSet,
+                  let setID = selected.uuid, let exerciseID = selected.workoutExercise?.uuid,
+                  let workoutID = selected.workoutExercise?.workout?.uuid,
+                  let next = WorkoutDraftRevision(version: self.draftVersion, sessionID: self.draftSessionID)
+                    .following(commit, workoutID: workoutID, exerciseID: exerciseID, setID: setID) else { return }
+            self.draftVersion = next.version
+            self.draftSessionID = next.sessionID
+            // A previous rejected operation has an obsolete base; keep the draft itself.
+            self.pendingOperation = nil
+        }
         .onAppear {
             self.select(set: self.firstUncompletedSet, forceNoAnimation: true)
 //            self.fetchWorkoutExerciseHistory()
         }
         .onDisappear {
-            self.managedObjectContext.saveOrCrash()
+            if !self.isCurrentWorkout { self.managedObjectContext.saveOrCrash() }
         }
     }
     
