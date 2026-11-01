@@ -14,7 +14,7 @@ extension WorkoutRoutine {
 
 public class WorkoutRoutine: NSManagedObject, Codable {
     public class func create(context: NSManagedObjectContext) -> WorkoutRoutine {
-        let workoutRoutine = WorkoutRoutine(context: context)
+        let workoutRoutine = WorkoutRoutine(entity: NSEntityDescription.entity(forEntityName: "WorkoutRoutine", in: context)!, insertInto: context)
         workoutRoutine.uuid = UUID()
         return workoutRoutine
     }

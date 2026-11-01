@@ -86,6 +86,16 @@ struct WorkoutDetailView : View {
     }
     
     var body: some View {
+        Group {
+            if workout.isCurrentWorkout {
+                CurrentWorkoutView(workout: workout)
+            } else {
+                historyBody
+            }
+        }
+    }
+
+    private var historyBody: some View {
         List {
             Section {
                 WorkoutDetailBannerView(workout: workout)

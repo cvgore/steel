@@ -9,7 +9,7 @@
 import Foundation
 
 public enum RPE {
-    public static let allowedValues = stride(from: 7, through: 10, by: 0.5)
+    public static let allowedValues = WorkoutEditingRules.allowedRPE
     
     public static func title(_ rpe: Double) -> String? {
         switch rpe {
