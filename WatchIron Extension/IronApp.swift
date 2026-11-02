@@ -74,19 +74,7 @@ class AppDelegate: NSObject, WKApplicationDelegate {
     }
     
     func handleActiveWorkoutRecovery() {
-        Self.logger.log("Recovering active workout session")
-        WorkoutSessionManager.healthStore.recoverActiveWorkoutSession { workoutSession, error in
-            guard let workoutSession = workoutSession else {
-                if let error = error {
-                    Self.logger.error("Could not recover active workout session: \(error.localizedDescription)")
-                } else {
-                    Self.logger.info("No active workout session to recover")
-                }
-                return
-            }
-            Self.logger.info("Successfully recovered active workout session")
-            WorkoutSessionManagerStore.shared.recoverWorkoutSession(workoutSession: workoutSession)
-        }
+        WorkoutSessionManagerStore.shared.recoverActiveSession()
     }
     
     /// from `HKHealthStore.startWatchApp`

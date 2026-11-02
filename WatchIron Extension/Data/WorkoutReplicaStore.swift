@@ -19,7 +19,11 @@ public final class WorkoutReplicaStore {
         public let receipts: [WorkoutOperationReceipt]
         public let conflicts: [SnapshotConflict]
     }
+    public enum HealthEffect: String, Codable { case pending, saving, saved, blocked, uncertain, discarded }
     public struct State: Codable, Equatable {
+        public var deferredTrackingStarts: [UUID: Date]?
+        public var deferredSnapshot: WorkoutSessionSnapshot?
+        public var healthEffects: [UUID: HealthEffect]?
         public var originID: String
         public var acceptedSnapshot: WorkoutSessionSnapshot?
         public var snapshot: WorkoutSessionSnapshot?
@@ -132,9 +136,13 @@ public final class WorkoutReplicaStore {
                 if let previous = previous { state.retainConflict(accepted: incoming, candidate: previous); projected = previous }
             } else if incoming.phase.isTerminal {
                 if !state.terminalSessions.contains(session) { state.terminalSessions.append(session) }
+                state.deferredTrackingStarts?.removeValue(forKey: incoming.workoutID)
+                if state.healthEffects == nil { state.healthEffects = [:] }
+                if state.healthEffects?[incoming.workoutID] == nil { state.healthEffects?[incoming.workoutID] = .pending }
             } else if !state.agreed { projected.phase = .joining }
             else if projected.phase == .joining { projected.phase = .agreed }
             state.acceptedSnapshot = incoming; state.snapshot = projected
+            if state.deferredSnapshot?.sessionID == incoming.sessionID { state.deferredSnapshot = nil }
         }
     }
     @discardableResult public func submit(_ mutation: WorkoutMutation, id: UUID = UUID(), date: Date = Date(), expectedSetResult: WorkoutSetDraft? = nil, trackCompletion: Bool = false, navigation: WatchWorkoutNavigation? = nil) throws -> WorkoutOperation {
@@ -251,7 +259,9 @@ public final class WorkoutReplicaStore {
                   start.map({ $0.timeIntervalSinceReferenceDate.isFinite }) ?? true,
                   duration.map({ $0.isFinite && $0 >= 0 }) ?? true else { throw Failure.invalidMutation }
             s.restStart = start; s.restDuration = duration
-        case .requestFinish: s.phase = .pendingFinish
+        case .requestFinish:
+            s.phase = .pendingFinish
+            s.end = s.end ?? max(s.start ?? date, date)
         case .requestCancel: s.phase = .pendingCancel
         case .addExercise, .removeExercises, .addSet, .removeSets, .resolveConflict: throw Failure.invalidMutation
         }
@@ -271,13 +281,35 @@ extension WorkoutReplicaStore {
             }
         default: throw Failure.invalidMutation
         }
-        try adopt(snapshot: incoming)
+        do { try adopt(snapshot: incoming) }
+        catch Failure.wrongSession {
+            // A new join can overtake the old terminal reply. Retain the offer while recovering
+            // the old session; never replace its pending results to make room for the new one.
+            let current = state
+            guard incoming.phase == .joining, let session = incoming.sessionID,
+                  !current.terminalSessions.contains(session), let active = current.acceptedSnapshot,
+                  active.sessionID != session else { throw Failure.wrongSession }
+            try transaction { $0.deferredSnapshot = incoming }
+            return .request(workoutID: active.workoutID, sessionID: active.sessionID)
+        }
+        if incoming.phase.isTerminal, let deferred = state.deferredSnapshot {
+            do {
+                try adopt(snapshot: deferred)
+                return .joined(workoutID: deferred.workoutID, sessionID: deferred.sessionID!)
+            } catch Failure.wrongSession {
+                // Coverage may precede its receipts. Retry the old session until both arrive.
+                return .request(workoutID: incoming.workoutID, sessionID: incoming.sessionID)
+            }
+        }
         guard let sessionID = incoming.sessionID else { throw Failure.wrongSession }
         if incoming.phase == .joining {
             return .joined(workoutID: incoming.workoutID, sessionID: sessionID)
         }
-        if incoming.phase == .agreed && !state.agreed { try agree(sessionID: sessionID) }
-        return nil
+        if [.agreed, .pendingFinish, .pendingCancel].contains(incoming.phase) && !state.agreed {
+            try agree(sessionID: sessionID)
+            if incoming.phase != .agreed { try adopt(snapshot: incoming) }
+        }
+        return terminalReadiness
     }
 }
 
@@ -290,5 +322,86 @@ extension WorkoutReplicaStore {
             if current.phase.occupiesSharedSlot { return false }
         }
         return !state.archivedSessions.contains { $0.acceptedSnapshot.workoutID == workoutID }
+    }
+}
+
+extension WorkoutReplicaStore {
+    public var terminalReadiness: WorkoutSyncMessage? {
+        let state = state
+        guard let accepted = state.acceptedSnapshot, let sessionID = accepted.sessionID,
+              [.pendingFinish, .pendingCancel].contains(accepted.phase), state.snapshot?.phase == accepted.phase,
+              (accepted.unresolvedConflictIDs ?? []).isEmpty,
+              state.operations.allSatisfy({ op in
+                  (accepted.coveredOperationIDs.contains(op.id) || (accepted.resolvedOperationIDs ?? []).contains(op.id)) &&
+                  state.receipts.contains { $0.operationID == op.id && $0.disposition != .waitingForPredecessor }
+              }) else { return nil }
+        return .terminalReady(workoutID: accepted.workoutID, sessionID: sessionID, version: accepted.version)
+    }
+
+    /// Persist intent before invoking HealthKit. An uncertain attempt is never automatically retried.
+    public func claimHealthEffect(workoutID: UUID) throws -> Bool {
+        try transaction { state in
+            let terminal = state.acceptedSnapshot?.workoutID == workoutID && state.acceptedSnapshot?.phase.isTerminal == true ||
+                state.archivedSessions.contains { $0.acceptedSnapshot.workoutID == workoutID && $0.acceptedSnapshot.phase.isTerminal }
+            guard terminal, state.healthEffects?[workoutID] == nil || state.healthEffects?[workoutID] == .pending else { return false }
+            if state.healthEffects == nil { state.healthEffects = [:] }
+            state.healthEffects?[workoutID] = .saving
+            return true
+        }
+    }
+    public func recordHealthEffect(_ effect: HealthEffect, workoutID: UUID) throws {
+        try transaction { state in
+            if state.healthEffects == nil { state.healthEffects = [:] }
+            state.healthEffects?[workoutID] = effect
+        }
+    }
+    public func retryBlockedHealthEffect(workoutID: UUID) throws {
+        try transaction { state in
+            guard state.healthEffects?[workoutID] == .blocked else { return }
+            state.healthEffects?[workoutID] = .pending
+        }
+    }
+}
+
+
+extension WorkoutReplicaStore {
+    /// Probe every uncertain effect independently; one unreadable older sample cannot starve another.
+    /// A negative query is deliberately not a retry authorization.
+    public func recoverHealthEffects(excluding activeIDs: Set<UUID> = [],
+        findSaved: (UUID, @escaping (Bool) -> Void) -> Void,
+        completion: @escaping (UUID, Result<Void, Error>) -> Void) {
+        let effects = state.healthEffects ?? [:]
+        for (id, effect) in effects where !activeIDs.contains(id) && [.saving, .uncertain].contains(effect) {
+            findSaved(id) { found in
+                let result = Result { try self.recordHealthEffect(found ? .saved : .uncertain, workoutID: id) }
+                completion(id, result)
+            }
+        }
+    }
+}
+
+
+extension WorkoutReplicaStore {
+    /// Legacy measurement-start delivery can overtake journal reconciliation; persist it in the same replica.
+    public func retainTrackingStart(workoutID: UUID, start: Date) throws {
+        try transaction { state in
+            guard start.timeIntervalSinceReferenceDate.isFinite else { throw Failure.invalidMutation }
+            if state.snapshot?.workoutID == workoutID && state.snapshot?.phase.isTerminal == true ||
+                state.archivedSessions.contains(where: { $0.acceptedSnapshot.workoutID == workoutID }) { return }
+            if state.deferredTrackingStarts == nil { state.deferredTrackingStarts = [:] }
+            state.deferredTrackingStarts?[workoutID] = start
+        }
+    }
+    public var trackingStartToResume: (workoutID: UUID, start: Date)? {
+        let state = state
+        guard let snapshot = state.snapshot else {
+            guard state.deferredTrackingStarts?.count == 1, let request = state.deferredTrackingStarts?.first else { return nil }
+            return (request.key, request.value)
+        }
+        guard !snapshot.phase.isTerminal, let start = state.deferredTrackingStarts?[snapshot.workoutID] else { return nil }
+        return (snapshot.workoutID, snapshot.start ?? start)
+    }
+    public func acknowledgeTrackingStart(workoutID: UUID) throws {
+        try transaction { $0.deferredTrackingStarts?.removeValue(forKey: workoutID) }
     }
 }

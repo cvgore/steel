@@ -244,6 +244,43 @@ final class WorkoutPhoneWriterTests: XCTestCase {
         XCTAssertNil(timer.restTimerEnd)
     }
 
+    func testTerminalCommitBeforeRestPresentationClearsTimerAfterRestart() throws {
+        let (workout, _, _) = try activeWorkout()
+        let store = WorkoutOperationStore(coordinator: context.persistentStoreCoordinator!)
+        let joining = try store.beginJoining(workoutID: workout.uuid!, mergingInto: context)
+        _ = try store.recordSessionAgreement(workoutID: workout.uuid!, sessionID: joining.sessionID!, phase: .agreed, mergingInto: context)
+        let timer = timer()
+        XCTAssertTrue(timer.setRest(start: Date(), duration: 90))
+        let pending = try WorkoutCommandWriter(context: context).write(workout: workout, mutation: .requestFinish)
+        _ = try store.finalizeSharedWorkout(workoutID: workout.uuid!, sessionID: joining.sessionID!, expectedVersion: pending.version, mergingInto: context)
+        XCTAssertNotNil(timer.restTimerStart)
+        timer.restoreCommittedRest()
+        XCTAssertNil(timer.restTimerStart)
+        XCTAssertNil(timer.restTimerDuration)
+    }
+
+    func testRepeatedTerminalSnapshotPreservesLaterManualAndOtherWorkoutRest() throws {
+        let (workout, _, _) = try activeWorkout()
+        let store = WorkoutOperationStore(coordinator: context.persistentStoreCoordinator!)
+        let joining = try store.beginJoining(workoutID: workout.uuid!, mergingInto: context)
+        let timer = timer()
+        XCTAssertTrue(timer.setRest(start: Date(), duration: 90))
+        try WorkoutCommandWriter(context: context).write(workout: workout, mutation: .requestFinish)
+        let terminal = try store.snapshot(workoutID: joining.workoutID)
+        XCTAssertTrue(terminal.phase.isTerminal)
+        try timer.presentCommittedRest(from: terminal)
+        XCTAssertNil(timer.restTimerStart, "The first terminal reply clears its owned rest")
+        let manualStart = Date(timeIntervalSince1970: 2_000)
+        XCTAssertTrue(timer.setRest(start: manualStart, duration: 120))
+        try timer.presentCommittedRest(from: terminal)
+        XCTAssertEqual(timer.restTimerStart, manualStart)
+        XCTAssertEqual(timer.restTimerDuration, 120)
+        _ = try activeWorkout()
+        XCTAssertTrue(timer.setRest(start: manualStart, duration: 180))
+        try timer.presentCommittedRest(from: terminal)
+        XCTAssertEqual(timer.restTimerDuration, 180, "Old terminal replies cannot clear another workout's rest")
+    }
+
     func testManualTimerWithoutActiveWorkoutUsesDefaults() throws {
         let timer = timer()
         let start = Date(timeIntervalSince1970: 2_000)

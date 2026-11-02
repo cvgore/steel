@@ -416,11 +416,29 @@ private struct WorkoutSynchronizationStatusView: View {
             return nil
         } catch { return L10n.string("Could not load workout synchronization") }
     }
+    private var healthMessage: String? {
+        if let error = owner.healthEffectError { return error }
+        guard let recovery = owner.healthRecovery else { return nil }
+        switch recovery.effect {
+        case .blocked: return L10n.string("Workout saved. Measurements need Health permission or session recovery.")
+        case .saving, .uncertain: return L10n.string("Workout saved. Health save is unconfirmed; it will not be repeated.")
+        default: return nil
+        }
+    }
     var body: some View {
-        if let message = message {
+        if message != nil || healthMessage != nil {
             VStack {
-                Text(message).font(.caption).multilineTextAlignment(.center)
-                Button("Retry synchronization") { connection.synchronizeWorkout() }.font(.caption)
+                if let message = message {
+                    Text(message).font(.caption).multilineTextAlignment(.center)
+                    Button("Retry synchronization") { connection.synchronizeWorkout() }.font(.caption)
+                }
+                if let healthMessage = healthMessage {
+                    Text(healthMessage).font(.caption2).multilineTextAlignment(.center)
+                    Button("Check measurements") {
+                        owner.recoverSharedHealthEffect()
+                        connection.synchronizeWorkout()
+                    }.font(.caption)
+                }
             }
         }
     }

@@ -440,6 +440,11 @@ extension WatchConnectionManager {
             }
             if let reply = reply {
                 // A valid reply to an old session must not change current presentation.
+                switch reply {
+                case let .snapshot(snapshot), let .update(snapshot, _):
+                    if snapshot.phase.isTerminal { try refreshWorkoutSyncState(snapshot) }
+                default: break
+                }
                 if let current = try sharedSnapshot() { try refreshWorkoutSyncState(current) }
                 try sendWorkoutSync(reply)
             }
@@ -451,7 +456,10 @@ extension WatchConnectionManager {
         let context = WorkoutDataStorage.shared.persistentContainer.viewContext
         let request: NSFetchRequest<Workout> = Workout.fetchRequest()
         request.predicate = NSPredicate(format: "uuid == %@", snapshot.workoutID as CVarArg)
-        guard let workout = try context.fetch(request).first else { throw WorkoutOperationError.missingObject }
+        guard let workout = try context.fetch(request).first else {
+            if snapshot.phase.isTerminal { return snapshot }
+            throw WorkoutOperationError.missingObject
+        }
         let settings = SettingsStore.shared
         let exercises = ExerciseStore.shared.exercises
         snapshot.editorContext = WorkoutEditorContext(weightUnit: settings.weightUnit.rawValue,
@@ -486,13 +494,7 @@ extension WatchConnectionManager {
     }
     private func refreshWorkoutSyncState(_ snapshot: WorkoutSessionSnapshot) throws {
         workoutSyncSnapshot = snapshot
-        let rest = RestTimerStore.shared
-        let context = WorkoutDataStorage.shared.persistentContainer.viewContext
-        let currentID = try context.fetch(Workout.currentWorkoutFetchRequest).first?.uuid
-        if currentID == snapshot.workoutID,
-           rest.restTimerStart != snapshot.restStart || rest.restTimerDuration != snapshot.restDuration {
-            rest.presentCommittedRest(start: snapshot.restStart, duration: snapshot.restDuration)
-        }
+        try RestTimerStore.shared.presentCommittedRest(from: snapshot)
         workoutSyncConflicts = try operationStore.operations(workoutID: snapshot.workoutID, disposition: .conflict)
             .filter { !(snapshot.resolvedOperationIDs ?? []).contains($0.operation.id) }
     }
@@ -502,6 +504,12 @@ extension WatchConnectionManager {
             expectedVersion: expectedVersion, mutation: .resolveConflict(operationID: id, useCandidate: useCandidate))
         _ = try WorkoutCommandWriter(context: WorkoutDataStorage.shared.persistentContainer.viewContext).apply(decision)
         publishSharedWorkout()
+    }
+    func publishTerminalWorkout(_ snapshot: WorkoutSessionSnapshot) {
+        do {
+            try refreshWorkoutSyncState(snapshot)
+            try sendWorkoutSync(.snapshot(snapshot))
+        } catch { reportWorkoutSyncError(error) }
     }
     private func sendWorkoutSync(_ message: WorkoutSyncMessage) throws {
         guard isActivated else { return } // Activation retries from the durable store.

@@ -374,3 +374,23 @@
 "Current result" = "Current result";
 "Use my correction" = "Use my correction";
 "Review saved draft" = "Review saved draft";
+
+"Cancel Workout" = "Cancel Workout";
+
+"Cancel Workout?" = "Cancel Workout?";
+
+"Keep Workout" = "Keep Workout";
+
+"Could not save workout changes. Please retry." = "Could not save workout changes. Please retry.";
+
+"Could not save measurement recovery status." = "Could not save measurement recovery status.";
+
+"Workout saved. Measurements need Health permission or session recovery." = "Workout saved. Measurements need Health permission or session recovery.";
+
+"Workout saved. Health save is unconfirmed; it will not be repeated." = "Workout saved. Health save is unconfirmed; it will not be repeated.";
+
+"Check measurements" = "Check measurements";
+
+"Could not recover workout measurements. Please retry." = "Could not recover workout measurements. Please retry.";
+
+"Could not start workout measurements. Please retry." = "Could not start workout measurements. Please retry.";

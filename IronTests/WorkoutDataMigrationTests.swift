@@ -34,6 +34,7 @@ class WorkoutDataMigrationTests: XCTestCase {
     
     func testMigrateFromV4PreservesGraphAndOptionalMetadata() throws { try autoreleasepool { try assertAdditiveMigration(version: 4) } }
     func testMigrateFromV5PreservesLegacyOperationRetryAndGraph() throws { try autoreleasepool { try assertAdditiveMigration(version: 5) } }
+    func testMigrateFromV6PreservesGraphAndOperationReceipts() throws { try autoreleasepool { try assertAdditiveMigration(version: 6) } }
     private func assertAdditiveMigration(version: Int) throws {
         let bundle = Bundle(for: WorkoutDataStorage.self)
         let directory = try XCTUnwrap(bundle.url(forResource: "WorkoutData", withExtension: "momd"))
@@ -65,7 +66,7 @@ class WorkoutDataMigrationTests: XCTestCase {
         let date = Date(timeIntervalSince1970: 1_800_000_000)
         let legacyOperation = WorkoutOperation(id: operationID, workoutID: workoutID, exerciseID: exerciseID,
             setID: setID, expectedVersion: 0, draft: .init(weight: nil, repetitions: nil, tag: nil, rpe: 0, comment: "Keep metadata"), date: date, restDuration: 90)
-        if version == 5 {
+        if version >= 5 {
             set.setValue(true, forKey: "isCompleted")
             let session = NSEntityDescription.insertNewObject(forEntityName: "WorkoutSessionState", into: context)
             session.setValue(workoutID, forKey: "workoutID"); session.setValue(sessionID, forKey: "sessionID")
@@ -100,7 +101,7 @@ class WorkoutDataMigrationTests: XCTestCase {
         XCTAssertNil(migrated.minTargetRepetitions)
         XCTAssertEqual(migrated.maxTargetRepetitions, 8)
         XCTAssertEqual(migrated.result.comment, "Keep metadata")
-        if version == 5 {
+        if version >= 5 {
             XCTAssertEqual(snapshot.sessionID, sessionID)
             XCTAssertEqual(snapshot.version, 1)
             XCTAssertEqual(snapshot.phase, .local)

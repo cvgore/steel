@@ -219,7 +219,9 @@ public final class WorkoutOperationStore {
                 try validate(candidate.1.mutation, workout: workout, context: context)
                 return try mutate(candidate.1, workout: workout, session: session, context: context)
             }
-        case .requestFinish: session.setValue(WorkoutSessionPhase.pendingFinish.rawValue, forKey: "phase")
+        case .requestFinish:
+            session.setValue(WorkoutSessionPhase.pendingFinish.rawValue, forKey: "phase")
+            workout.end = workout.end ?? max(workout.start ?? operation.date, operation.date)
         case .requestCancel: session.setValue(WorkoutSessionPhase.pendingCancel.rawValue, forKey: "phase")
         }
         return false
@@ -238,6 +240,20 @@ public final class WorkoutOperationStore {
             }
             guard operation.expectedVersion >= 0, operation.sequence >= 0, !operation.originID.isEmpty,
                   operation.date.timeIntervalSinceReferenceDate.isFinite, operation.predecessorID != operation.id else { throw WorkoutOperationError.invalidPayload }
+            // Cancellation removes the graph but retains identity and all receipts for late retries.
+            if let terminal = try record("WorkoutSessionState", key: "workoutID", id: operation.workoutID, in: context),
+               try phase(terminal).isTerminal {
+                guard operation.sessionID == terminal.value(forKey: "sessionID") as? UUID else { throw WorkoutOperationError.invalidSession }
+                let receipt = WorkoutOperationReceipt(operationID: operation.id, sessionID: operation.sessionID!,
+                    version: version(terminal), disposition: .conflict, reason: .sessionUnavailable,
+                    didComplete: false, restStart: nil, restDuration: nil)
+                let row = stored ?? NSEntityDescription.insertNewObject(forEntityName: "WorkoutAppliedOperation", into: context)
+                row.setValue(operation.id, forKey: "operationID")
+                row.setValue(try JSONEncoder().encode(operation), forKey: "payload")
+                row.setValue(try JSONEncoder().encode(receipt), forKey: "receipt")
+                try save(context)
+                return receipt
+            }
             let workout = try workout(operation.workoutID, in: context)
             try validateScalars(operation.mutation)
             let session = try session(operation.workoutID, in: context)
@@ -258,7 +274,7 @@ public final class WorkoutOperationStore {
             let terminalRequest: Bool
             switch operation.mutation { case .requestFinish, .requestCancel: terminalRequest = true; default: terminalRequest = false }
             if state.isTerminal || !workout.isCurrentWorkout && remote ||
-                (remote && state != .agreed) || (!remote && ![.local, .joining, .agreed].contains(state) && !resolving) || (terminalRequest && state != .agreed) {
+                (remote && state != .agreed) || (!remote && ![.local, .joining, .agreed].contains(state) && !resolving) || (terminalRequest && state != .agreed && state != .joining) {
                 disposition = .conflict; reason = .sessionUnavailable
             } else if let predecessorID = operation.predecessorID {
                 if let predecessorRecord = try record("WorkoutAppliedOperation", key: "operationID", id: predecessorID, in: context),
@@ -292,6 +308,9 @@ public final class WorkoutOperationStore {
             row.setValue(operation.id, forKey: "operationID")
             row.setValue(try JSONEncoder().encode(operation), forKey: "payload")
             row.setValue(try JSONEncoder().encode(receipt), forKey: "receipt")
+            if terminalRequest && state == .joining && disposition == .applied {
+                _ = try finalizeGraph(workoutID: operation.workoutID, value: session, state: try phase(session), context: context)
+            }
             try save(context)
             return receipt
         }
@@ -339,25 +358,21 @@ public final class WorkoutOperationStore {
         return try snapshot(workoutID: workoutID)
     }
 
-    /// Records agreement only; graph pruning/cancellation/HealthKit are STEEL-13 consumers.
+    /// Initial agreement. Terminal transitions require the version-bound reconciliation API.
     public func recordSessionAgreement(workoutID: UUID, sessionID: UUID, phase target: WorkoutSessionPhase,
                                        mergingInto viewContext: NSManagedObjectContext? = nil) throws -> WorkoutSessionSnapshot {
+        if target.isTerminal {
+            let current = try snapshot(workoutID: workoutID)
+            guard current.phase == target || (current.phase == .pendingFinish && target == .finished) ||
+                    (current.phase == .pendingCancel && target == .cancelled) else { throw WorkoutOperationError.invalidSession }
+            return try finalizeSharedWorkout(workoutID: workoutID, sessionID: sessionID, expectedVersion: current.version, mergingInto: viewContext)
+        }
         try transaction(mergingInto: viewContext) { context in
             let value = try session(workoutID, in: context)
             guard value.value(forKey: "sessionID") as? UUID == sessionID else { throw WorkoutOperationError.invalidSession }
             let state = try phase(value)
             if state == target { return }
-            let allowed = (state == .joining && target == .agreed) || (state == .pendingFinish && target == .finished) || (state == .pendingCancel && target == .cancelled)
-            guard allowed, version(value) < Int64.max else { throw WorkoutOperationError.invalidSession }
-            if target.isTerminal {
-                let records = try storedOperations(context)
-                let resolved = resolvedIDs(records)
-                let unresolved = records.contains { _, operation, receipt in
-                    operation.workoutID == workoutID && receipt.sessionID == sessionID && receipt.disposition != .applied && !resolved.contains(operation.id)
-                }
-                guard !unresolved else { throw WorkoutOperationError.unresolvedOperations }
-                value.setValue(nil, forKey: "restStart"); value.setValue(nil, forKey: "restDuration")
-            }
+            guard state == .joining && target == .agreed, version(value) < Int64.max else { throw WorkoutOperationError.invalidSession }
             value.setValue(target.rawValue, forKey: "phase"); value.setValue(version(value) + 1, forKey: "version")
             try save(context)
         }
@@ -365,36 +380,90 @@ public final class WorkoutOperationStore {
     }
 
     public func snapshot(workoutID: UUID) throws -> WorkoutSessionSnapshot {
+        try transaction { context in try makeSnapshot(workoutID: workoutID, in: context) }
+    }
+    private func makeSnapshot(workoutID: UUID, in context: NSManagedObjectContext) throws -> WorkoutSessionSnapshot {
+        let session = try record("WorkoutSessionState", key: "workoutID", id: workoutID, in: context)
+        if let data = session?.value(forKey: "terminalSnapshot") as? Data {
+            return try JSONDecoder().decode(WorkoutSessionSnapshot.self, from: data)
+        }
+        let workout = try workout(workoutID, in: context)
+        let sessionID = session?.value(forKey: "sessionID") as? UUID
+        let coverage = try storedOperations(context).compactMap { _, operation, receipt -> UUID? in
+            operation.workoutID == workoutID && receipt.sessionID == sessionID && receipt.disposition == .applied ? operation.id : nil
+        }.sorted { $0.uuidString < $1.uuidString }
+        var snapshot = try WorkoutSessionSnapshot(workoutID: workoutID, sessionID: sessionID,
+            version: session.map(version) ?? 0, phase: session.map { try phase($0) } ?? .local, coveredOperationIDs: coverage,
+            title: workout.title, comment: workout.comment, start: workout.start, end: workout.end,
+            isCurrentWorkout: workout.isCurrentWorkout, restStart: session?.value(forKey: "restStart") as? Date,
+            restDuration: session?.value(forKey: "restDuration") as? Double,
+            exercises: (workout.workoutExercises?.array as? [WorkoutExercise] ?? []).map { exercise in
+                guard let id = exercise.uuid else { throw WorkoutOperationError.missingObject }
+                return try WorkoutSessionSnapshot.Exercise(id: id, exerciseID: exercise.exerciseUuid, comment: exercise.comment,
+                    sets: (exercise.workoutSets?.array as? [WorkoutSet] ?? []).map { set in
+                        guard let id = set.uuid else { throw WorkoutOperationError.missingObject }
+                        var snapshotSet = WorkoutSessionSnapshot.Set(id: id, result: WorkoutSetDraft(set: set), isCompleted: set.isCompleted,
+                            minTargetRepetitions: set.minTargetRepetitionsValue, maxTargetRepetitions: set.maxTargetRepetitionsValue)
+                        snapshotSet.isPersonalRecord = set.isCompleted ? set.isPersonalRecord : nil
+                        return snapshotSet
+                    })
+            })
+        let resolved = resolvedIDs(try storedOperations(context).filter { $0.1.workoutID == workoutID && $0.2.sessionID == sessionID })
+        snapshot.resolvedOperationIDs = resolved.isEmpty ? nil : resolved.sorted { $0.uuidString < $1.uuidString }
+        let conflicts = try storedOperations(context).compactMap { _, operation, receipt -> UUID? in
+            operation.workoutID == workoutID && receipt.sessionID == sessionID && receipt.disposition == .conflict && !resolved.contains(operation.id) ? operation.id : nil
+        }.sorted { $0.uuidString < $1.uuidString }
+        snapshot.unresolvedConflictIDs = conflicts.isEmpty ? nil : conflicts
+        return snapshot
+    }
+
+    /// The Watch sends readiness only after every local operation is durably covered/resolved.
+    /// Version comparison closes the race with phone corrections and conflict decisions.
+    public func finalizeSharedWorkout(workoutID: UUID, sessionID: UUID, expectedVersion: Int64,
+                                      mergingInto viewContext: NSManagedObjectContext? = nil) throws -> WorkoutSessionSnapshot {
+        try transaction(mergingInto: viewContext) { context in
+            let value = try session(workoutID, in: context)
+            guard value.value(forKey: "sessionID") as? UUID == sessionID else { throw WorkoutOperationError.invalidSession }
+            let state = try phase(value)
+            if state.isTerminal { return try makeSnapshot(workoutID: workoutID, in: context) }
+            guard version(value) == expectedVersion else { throw WorkoutOperationError.staleVersion }
+            guard state == .pendingFinish || state == .pendingCancel, expectedVersion < Int64.max else { throw WorkoutOperationError.invalidSession }
+            let terminal = try finalizeGraph(workoutID: workoutID, value: value, state: state, context: context)
+            try save(context)
+            return terminal
+        }
+    }
+    private func finalizeGraph(workoutID: UUID, value: NSManagedObject, state: WorkoutSessionPhase,
+                               context: NSManagedObjectContext) throws -> WorkoutSessionSnapshot {
+        guard version(value) < Int64.max else { throw WorkoutOperationError.invalidPayload }
+        let records = try storedOperations(context).filter { $0.1.workoutID == workoutID }
+        let resolved = resolvedIDs(records)
+        guard !records.contains(where: { $0.2.disposition != .applied && !resolved.contains($0.1.id) }) else {
+            throw WorkoutOperationError.unresolvedOperations
+        }
+        let workout = try workout(workoutID, in: context)
+        value.setValue((state == .pendingFinish ? WorkoutSessionPhase.finished : .cancelled).rawValue, forKey: "phase")
+        value.setValue(version(value) + 1, forKey: "version")
+        value.setValue(nil, forKey: "restStart"); value.setValue(nil, forKey: "restDuration")
+        if state == .pendingFinish {
+            workout.deleteExercisesWhereAllSetsAreUncompleted()
+            workout.deleteUncompletedSets()
+            workout.start = workout.safeStart; workout.end = workout.safeEnd
+        }
+        workout.isCurrentWorkout = false
+        var terminal = try makeSnapshot(workoutID: workoutID, in: context)
+        if state == .pendingCancel { terminal.exercises = [] }
+        value.setValue(try JSONEncoder().encode(terminal), forKey: "terminalSnapshot")
+        if state == .pendingCancel { context.delete(workout) }
+        return terminal
+    }
+
+    /// Shared sessions never fall back to an automatic phone HealthKit save, even after restart.
+    public func watchOwnedWorkoutIDs() throws -> Set<UUID> {
         try transaction { context in
-            let workout = try workout(workoutID, in: context)
-            let session = try record("WorkoutSessionState", key: "workoutID", id: workoutID, in: context)
-            let sessionID = session?.value(forKey: "sessionID") as? UUID
-            let coverage = try storedOperations(context).compactMap { _, operation, receipt -> UUID? in
-                operation.workoutID == workoutID && receipt.sessionID == sessionID && receipt.disposition == .applied ? operation.id : nil
-            }.sorted { $0.uuidString < $1.uuidString }
-            var snapshot = try WorkoutSessionSnapshot(workoutID: workoutID, sessionID: sessionID,
-                version: session.map(version) ?? 0, phase: session.map { try phase($0) } ?? .local, coveredOperationIDs: coverage,
-                title: workout.title, comment: workout.comment, start: workout.start, end: workout.end,
-                isCurrentWorkout: workout.isCurrentWorkout, restStart: session?.value(forKey: "restStart") as? Date,
-                restDuration: session?.value(forKey: "restDuration") as? Double,
-                exercises: (workout.workoutExercises?.array as? [WorkoutExercise] ?? []).map { exercise in
-                    guard let id = exercise.uuid else { throw WorkoutOperationError.missingObject }
-                    return try WorkoutSessionSnapshot.Exercise(id: id, exerciseID: exercise.exerciseUuid, comment: exercise.comment,
-                        sets: (exercise.workoutSets?.array as? [WorkoutSet] ?? []).map { set in
-                            guard let id = set.uuid else { throw WorkoutOperationError.missingObject }
-                            var snapshotSet = WorkoutSessionSnapshot.Set(id: id, result: WorkoutSetDraft(set: set), isCompleted: set.isCompleted,
-                                minTargetRepetitions: set.minTargetRepetitionsValue, maxTargetRepetitions: set.maxTargetRepetitionsValue)
-                            snapshotSet.isPersonalRecord = set.isCompleted ? set.isPersonalRecord : nil
-                            return snapshotSet
-                        })
-                })
-            let resolved = resolvedIDs(try storedOperations(context).filter { $0.1.workoutID == workoutID && $0.2.sessionID == sessionID })
-            snapshot.resolvedOperationIDs = resolved.isEmpty ? nil : resolved.sorted { $0.uuidString < $1.uuidString }
-            let conflicts = try storedOperations(context).compactMap { _, operation, receipt -> UUID? in
-                operation.workoutID == workoutID && receipt.sessionID == sessionID && receipt.disposition == .conflict && !resolved.contains(operation.id) ? operation.id : nil
-            }.sorted { $0.uuidString < $1.uuidString }
-            snapshot.unresolvedConflictIDs = conflicts.isEmpty ? nil : conflicts
-            return snapshot
+            Set(try context.fetch(NSFetchRequest<NSManagedObject>(entityName: "WorkoutSessionState")).compactMap {
+                ($0.value(forKey: "phase") as? String) != WorkoutSessionPhase.local.rawValue ? $0.value(forKey: "workoutID") as? UUID : nil
+            })
         }
     }
     private func resolvedIDs(_ records: [(NSManagedObject, WorkoutOperation, WorkoutOperationReceipt)]) -> Set<UUID> {
@@ -424,6 +493,16 @@ extension WorkoutOperationStore {
     /// Replies are constructed only after the corresponding persistent transaction succeeds.
     public func receiveSync(_ message: WorkoutSyncMessage, mergingInto context: NSManagedObjectContext? = nil) throws -> WorkoutSyncMessage? {
         switch message {
+        case let .terminalReady(workoutID, sessionID, version):
+            do {
+                let terminal = try finalizeSharedWorkout(workoutID: workoutID, sessionID: sessionID,
+                    expectedVersion: version, mergingInto: context)
+                return .update(snapshot: terminal, receipts: try operations(workoutID: workoutID).map(\.receipt))
+            } catch WorkoutOperationError.staleVersion {
+                return .update(snapshot: try snapshot(workoutID: workoutID), receipts: try operations(workoutID: workoutID).map(\.receipt))
+            } catch WorkoutOperationError.unresolvedOperations {
+                return .update(snapshot: try snapshot(workoutID: workoutID), receipts: try operations(workoutID: workoutID).map(\.receipt))
+            }
         case let .joined(workoutID, sessionID):
             let current = try snapshot(workoutID: workoutID)
             guard current.sessionID == sessionID, current.phase != .local else { throw WorkoutOperationError.invalidSession }

@@ -158,6 +158,8 @@ extension HealthManager {
                                 request.predicate = NSPredicate(format: "\(#keyPath(Workout.isCurrentWorkout)) != %@", NSNumber(booleanLiteral: true))
                                 request.sortDescriptors = [NSSortDescriptor(keyPath: \Workout.start, ascending: false)]
                                 let workouts = try backgroundContext.fetch(request)
+                                guard let coordinator = managedObjectContext.persistentStoreCoordinator else { throw WorkoutOperationError.invalidSession }
+                                let watchOwned = try WorkoutOperationStore(coordinator: coordinator).watchOwnedWorkoutIDs()
                                 
                                 let group = DispatchGroup()
                                 var _success = true
@@ -167,7 +169,7 @@ extension HealthManager {
                                 let workoutSamplesToDelete = workoutSamples.filter { workoutSample in
                                     guard let externalUuid = workoutSample.externalUuid else { return true } // if the uuid is missing --> delete
                                     // if there is no workout for this uuid --> delete
-                                    return !workouts.contains { $0.uuid == externalUuid }
+                                    return !watchOwned.contains(externalUuid) && !workouts.contains { $0.uuid == externalUuid }
                                 }
                                 os_log("Deleting HealthKit workouts: %@", log: .health, type: .info, workoutSamplesToDelete)
                                 if !workoutSamplesToDelete.isEmpty {
@@ -182,7 +184,7 @@ extension HealthManager {
                                 
                                 // save workouts that are missing from HealthKit
                                 let workoutSamplesToSave: [HKWorkout] = workouts.filter { workout in
-                                    guard let uuid = workout.uuid else { return false } // if the uuid is missing (should never happen) --> don't save
+                                    guard let uuid = workout.uuid, !watchOwned.contains(uuid) else { return false }
                                     // if there is no workout sample for this uuid --> save
                                     return !workoutSamples.contains { $0.externalUuid == uuid }
                                 }
@@ -207,7 +209,7 @@ extension HealthManager {
                                 
                                 // update start / end times
                                 let workoutSamplesToModify: [(HKWorkout, Workout)] = workouts.compactMap { workout in
-                                    guard let uuid = workout.uuid else { return nil }
+                                    guard let uuid = workout.uuid, !watchOwned.contains(uuid) else { return nil }
                                     guard let workoutSample = workoutSamples.first(where: { $0.externalUuid == uuid }) else { return nil }
                                     return (workoutSample, workout)
                                 }

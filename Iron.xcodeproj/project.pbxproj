@@ -811,6 +811,7 @@
 		D80000000000000000000007 /* WorkoutReplicaStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchIron Extension/Data/WorkoutReplicaStore.swift"; sourceTree = SOURCE_ROOT; };
 		D80000000000000000000008 /* WorkoutReplicaStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IronTests/WorkoutReplicaStoreTests.swift"; sourceTree = SOURCE_ROOT; };
 		D80000000000000000000009 /* WorkoutCommandWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Iron/Data/Store/WorkoutCommandWriter.swift"; sourceTree = SOURCE_ROOT; };
+		D13000000000000000000001 /* WorkoutData v7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WorkoutData v7.xcdatamodel"; sourceTree = "<group>"; };
 		D80000000000000000000010 /* WorkoutData v6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WorkoutData v6.xcdatamodel"; sourceTree = "<group>"; };
 		D80000000000000000000023 /* WorkoutPhoneWriterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutPhoneWriterTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -3017,6 +3018,7 @@
 		8A08D3D42349486800B09687 /* WorkoutData.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				D13000000000000000000001 /* WorkoutData v7.xcdatamodel */,
 				D80000000000000000000010 /* WorkoutData v6.xcdatamodel */,
 				D80000000000000000000004 /* WorkoutData v5.xcdatamodel */,
 				8AC6AF9D242D74BA00974279 /* WorkoutData v4.xcdatamodel */,
@@ -3024,7 +3026,7 @@
 				8A68F7C7236319040089263B /* WorkoutData v2.xcdatamodel */,
 				8A08D3D52349486800B09687 /* WorkoutData.xcdatamodel */,
 			);
-			currentVersion = D80000000000000000000010 /* WorkoutData v6.xcdatamodel */;
+			currentVersion = D13000000000000000000001 /* WorkoutData v7.xcdatamodel */;
 			path = WorkoutData.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
