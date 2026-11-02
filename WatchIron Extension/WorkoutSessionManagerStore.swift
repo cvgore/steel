@@ -269,7 +269,6 @@ extension WorkoutSessionManagerStore {
                     case .success:
                         if self.measurementGate.finishCollection(workoutID: uuid, succeeded: true) {
                             self.acknowledgeTrackingStart(uuid)
-                            self.healthEffectError = nil
                             WKInterfaceDevice.current().play(.start)
                         }
                     case .failure(let error):
@@ -563,7 +562,10 @@ extension WorkoutSessionManagerStore {
         } catch { reportHealthEffectError(error) }
     }
     private func acknowledgeTrackingStart(_ id: UUID) {
-        do { try workoutReplica.get().acknowledgeTrackingStart(workoutID: id) }
+        do {
+            try workoutReplica.get().acknowledgeTrackingStart(workoutID: id)
+            healthEffectError = nil
+        }
         catch { reportHealthEffectError(error) }
     }
 

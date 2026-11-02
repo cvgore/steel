@@ -494,13 +494,7 @@ extension WatchConnectionManager {
     }
     private func refreshWorkoutSyncState(_ snapshot: WorkoutSessionSnapshot) throws {
         workoutSyncSnapshot = snapshot
-        let rest = RestTimerStore.shared
-        let context = WorkoutDataStorage.shared.persistentContainer.viewContext
-        let currentID = try context.fetch(Workout.currentWorkoutFetchRequest).first?.uuid
-        if currentID == snapshot.workoutID || snapshot.phase.isTerminal && currentID == nil,
-           rest.restTimerStart != snapshot.restStart || rest.restTimerDuration != snapshot.restDuration {
-            rest.presentCommittedRest(start: snapshot.restStart, duration: snapshot.restDuration)
-        }
+        try RestTimerStore.shared.presentCommittedRest(from: snapshot)
         workoutSyncConflicts = try operationStore.operations(workoutID: snapshot.workoutID, disposition: .conflict)
             .filter { !(snapshot.resolvedOperationIDs ?? []).contains($0.operation.id) }
     }

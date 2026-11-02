@@ -349,6 +349,24 @@ final class WorkoutOperationStoreTests: XCTestCase {
         XCTAssertNil(watch.trackingStartToResume)
     }
 
+    func testFailedTrackingAcknowledgmentRetainsIntentUntilDurableRetry() throws {
+        let watch = try joinedReplica(), id = workout.uuid!
+        try watch.retainTrackingStart(workoutID: id, start: date)
+        let url = directory.appendingPathComponent("watch.json")
+        var failWrite = true
+        let retrying = try WorkoutReplicaStore(url: url, write: { data, url in
+            if failWrite { throw CocoaError(.fileWriteUnknown) }
+            try data.write(to: url, options: .atomic)
+        })
+        XCTAssertThrowsError(try retrying.acknowledgeTrackingStart(workoutID: id))
+        XCTAssertNotNil(retrying.trackingStartToResume)
+        XCTAssertNotNil(try WorkoutReplicaStore(url: url).trackingStartToResume)
+        failWrite = false
+        try retrying.acknowledgeTrackingStart(workoutID: id)
+        XCTAssertNil(retrying.trackingStartToResume)
+        XCTAssertNil(try WorkoutReplicaStore(url: url).trackingStartToResume)
+    }
+
     func testDelayedRecoveryBlocksPreparationAndRetainedStartUntilOwnerIsAttached() throws {
         let watch = try joinedReplica(), id = workout.uuid!
         try watch.retainTrackingStart(workoutID: id, start: date)

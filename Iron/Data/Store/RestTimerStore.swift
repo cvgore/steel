@@ -116,6 +116,17 @@ final class RestTimerStore: ObservableObject {
         }
     }
 
+    /// Terminal retries only clear presentation owned by that workout, never a later manual timer.
+    func presentCommittedRest(from snapshot: WorkoutSessionSnapshot) throws {
+        let currentID = try contextProvider().fetch(Workout.currentWorkoutFetchRequest).first?.uuid
+        let ownedID = userDefaults.string(forKey: Self.restWorkoutIDKey).flatMap(UUID.init(uuidString:))
+        guard currentID == snapshot.workoutID ||
+                snapshot.phase.isTerminal && currentID == nil && ownedID == snapshot.workoutID else { return }
+        if restTimerStart != snapshot.restStart || restTimerDuration != snapshot.restDuration {
+            presentCommittedRest(start: snapshot.restStart, duration: snapshot.restDuration)
+        }
+    }
+
     func restoreCommittedRest() {
         let context = contextProvider()
         do {
