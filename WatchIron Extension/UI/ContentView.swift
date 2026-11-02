@@ -14,6 +14,8 @@ struct ContentView: View {
     var body: some View {
         _ContentView()
             .environmentObject(WorkoutSessionManagerStore.shared)
+            .safeAreaInset(edge: .top) { WorkoutSynchronizationStatusView() }
+            .onAppear { PhoneConnectionManager.shared.synchronizeWorkout() }
     }
 }
 
@@ -78,3 +80,34 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 #endif
+
+
+private struct WorkoutSynchronizationStatusView: View {
+    @ObservedObject private var owner = WorkoutSessionManagerStore.shared
+    @ObservedObject private var connection = PhoneConnectionManager.shared
+    private var message: String? {
+        do {
+            let state = try owner.workoutReplica.get().state
+            if let error = connection.workoutSyncError { return error }
+            guard let snapshot = state.snapshot else { return nil }
+            if !state.agreed { return L10n.string("Waiting for iPhone agreement") }
+            let resolved = state.acceptedSnapshot?.resolvedOperationIDs ?? []
+            if !(snapshot.unresolvedConflictIDs ?? []).isEmpty || state.receipts.contains(where: { $0.disposition == .conflict && !resolved.contains($0.operationID) }) {
+                return L10n.string("Resolve conflicts on iPhone")
+            }
+            let covered = state.acceptedSnapshot?.coveredOperationIDs ?? []
+            if !state.pendingOperations.isEmpty || state.operations.contains(where: { !covered.contains($0.id) && !resolved.contains($0.id) }) || snapshot.phase == .pendingFinish || snapshot.phase == .pendingCancel {
+                return L10n.string("Changes pending synchronization")
+            }
+            return nil
+        } catch { return L10n.string("Could not load workout synchronization") }
+    }
+    var body: some View {
+        if let message = message {
+            VStack {
+                Text(message).font(.caption).multilineTextAlignment(.center)
+                Button("Retry synchronization") { connection.synchronizeWorkout() }.font(.caption)
+            }
+        }
+    }
+}

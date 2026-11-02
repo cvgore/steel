@@ -34,6 +34,10 @@ public final class WorkoutReplicaStore {
         public var pendingOperations: [WorkoutOperation] {
             operations.filter { op in !receipts.contains { $0.operationID == op.id && $0.disposition != .waitingForPredecessor } }
         }
+        fileprivate mutating func retainConflict(accepted: WorkoutSessionSnapshot, candidate: WorkoutSessionSnapshot) {
+            let conflict = SnapshotConflict(accepted: accepted, candidate: candidate)
+            if !conflicts.contains(conflict) { conflicts.append(conflict) }
+        }
         public var occupiesSharedSlot: Bool { snapshot?.phase.occupiesSharedSlot ?? false }
     }
     public static var defaultURL: URL {
@@ -72,8 +76,9 @@ public final class WorkoutReplicaStore {
             state.agreed = true; state.snapshot?.phase = .agreed
         }
     }
-    public func adopt(snapshot incoming: WorkoutSessionSnapshot) throws {
+    public func adopt(snapshot received: WorkoutSessionSnapshot) throws {
         try transaction { state in
+            var incoming = received
             guard let session = incoming.sessionID, incoming.phase != .local else { throw Failure.wrongSession }
             if state.terminalSessions.contains(session) && !incoming.phase.isTerminal { throw Failure.terminalRegression }
             if let current = state.acceptedSnapshot {
@@ -81,8 +86,8 @@ public final class WorkoutReplicaStore {
                     guard !state.terminalSessions.contains(session), current.phase.isTerminal,
                           let projected = state.snapshot, projected.phase.isTerminal,
                           state.operations.allSatisfy({ op in
-                              current.coveredOperationIDs.contains(op.id) && state.receipts.contains {
-                                  $0.operationID == op.id && $0.disposition == .applied
+                              (current.coveredOperationIDs.contains(op.id) || (current.resolvedOperationIDs ?? []).contains(op.id)) && state.receipts.contains {
+                                  $0.operationID == op.id && $0.disposition != .waitingForPredecessor
                               }
                           }),
                           state.conflicts.allSatisfy({ $0.accepted.version < current.version }) else { throw Failure.wrongSession }
@@ -94,30 +99,35 @@ public final class WorkoutReplicaStore {
                 } else {
                     if current.phase.isTerminal && !incoming.phase.isTerminal { throw Failure.terminalRegression }
                     if incoming.version < current.version { return }
-                    if incoming.version == current.version && current != incoming {
-                        state.conflicts.append(.init(accepted: incoming, candidate: state.snapshot ?? current)); return
+                    if incoming.version == current.version && current.domainSnapshot != incoming.domainSnapshot {
+                        state.retainConflict(accepted: incoming, candidate: state.snapshot ?? current); return
                     }
                 }
             }
+            // Conflict metadata can arrive after another snapshot at the same domain version.
+            // Only an explicit durable resolution removes a previously advertised candidate.
+            let unresolved = Swift.Set(state.acceptedSnapshot?.unresolvedConflictIDs ?? [])
+                .union(incoming.unresolvedConflictIDs ?? []).subtracting(incoming.resolvedOperationIDs ?? [])
+            incoming.unresolvedConflictIDs = unresolved.isEmpty ? nil : unresolved.sorted { $0.uuidString < $1.uuidString }
             let previous = state.snapshot
             if let accepted = state.acceptedSnapshot, let previous = previous,
                incoming.version > accepted.version,
-               state.operations.contains(where: { !incoming.coveredOperationIDs.contains($0.id) }),
+               state.operations.contains(where: { !incoming.coveredOperationIDs.contains($0.id) && !(incoming.resolvedOperationIDs ?? []).contains($0.id) }),
                !Self.isIntermediateCoverage(incoming, after: accepted, operations: state.operations) {
-                state.conflicts.append(.init(accepted: incoming, candidate: previous))
+                state.retainConflict(accepted: incoming, candidate: previous)
             }
             var projected = incoming
-            let uncovered = state.operations.filter { !incoming.coveredOperationIDs.contains($0.id) }
+            let uncovered = state.operations.filter { !incoming.coveredOperationIDs.contains($0.id) && !(incoming.resolvedOperationIDs ?? []).contains($0.id) }
             do {
                 for op in uncovered { try Self.project(op.mutation, date: op.date, into: &projected) }
             } catch {
                 if let previous = previous {
-                    state.conflicts.append(.init(accepted: incoming, candidate: previous))
+                    state.retainConflict(accepted: incoming, candidate: previous)
                     projected = previous
                 }
             }
             if incoming.phase.isTerminal && !uncovered.isEmpty {
-                if let previous = previous { state.conflicts.append(.init(accepted: incoming, candidate: previous)); projected = previous }
+                if let previous = previous { state.retainConflict(accepted: incoming, candidate: previous); projected = previous }
             } else if incoming.phase.isTerminal {
                 if !state.terminalSessions.contains(session) { state.terminalSessions.append(session) }
             } else if !state.agreed { projected.phase = .joining }
@@ -136,7 +146,7 @@ public final class WorkoutReplicaStore {
                   state.nextSequence > 0, state.nextSequence < Int64.max,
                   state.localRevision < Int64.max else { throw Failure.invalidMutation }
             // Partial coverage advances the snapshot without rebasing its uncovered suffix.
-            let predecessor = state.operations.last.flatMap { accepted.coveredOperationIDs.contains($0.id) ? nil : $0 }
+            let predecessor = state.operations.last.flatMap { (accepted.coveredOperationIDs.contains($0.id) || (accepted.resolvedOperationIDs ?? []).contains($0.id)) ? nil : $0 }
             let op = WorkoutOperation(id: id, workoutID: snapshot.workoutID, sessionID: session, originID: state.originID,
                 sequence: state.nextSequence, predecessorID: predecessor?.id,
                 expectedVersion: predecessor?.expectedVersion ?? accepted.version, mutation: mutation, date: date)
@@ -171,12 +181,13 @@ public final class WorkoutReplicaStore {
             for op in newlyCovered { try project(op.mutation, date: op.date, into: &expected) }
         } catch { return false }
         // Version and coverage are envelope fields; all domain fields must match the covered edits.
-        let normalized = WorkoutSessionSnapshot(workoutID: expected.workoutID, sessionID: expected.sessionID,
+        var normalized = WorkoutSessionSnapshot(workoutID: expected.workoutID, sessionID: expected.sessionID,
             version: incoming.version, phase: expected.phase, coveredOperationIDs: incoming.coveredOperationIDs,
             title: expected.title, comment: expected.comment, start: expected.start, end: expected.end,
             isCurrentWorkout: expected.isCurrentWorkout, restStart: expected.restStart,
             restDuration: expected.restDuration, exercises: expected.exercises)
-        return normalized == incoming
+        normalized.resolvedOperationIDs = expected.resolvedOperationIDs
+        return normalized.domainSnapshot == incoming.domainSnapshot
     }
     private static func project(_ mutation: WorkoutMutation, date: Date, into s: inout WorkoutSessionSnapshot) throws {
         switch mutation {
@@ -185,6 +196,7 @@ public final class WorkoutReplicaStore {
                   let e = s.exercises.firstIndex(where: { $0.id == exerciseID }),
                   let i = s.exercises[e].sets.firstIndex(where: { $0.id == setID }) else { throw Failure.invalidMutation }
             let completing = complete && !s.exercises[e].sets[i].isCompleted
+            for index in s.exercises[e].sets.indices { s.exercises[e].sets[index].isPersonalRecord = nil }
             s.exercises[e].sets[i].result = draft
             if completing {
                 s.exercises[e].sets[i].isCompleted = true
@@ -218,7 +230,42 @@ public final class WorkoutReplicaStore {
             s.restStart = start; s.restDuration = duration
         case .requestFinish: s.phase = .pendingFinish
         case .requestCancel: s.phase = .pendingCancel
-        case .addExercise, .removeExercises, .addSet, .removeSets: throw Failure.invalidMutation
+        case .addExercise, .removeExercises, .addSet, .removeSets, .resolveConflict: throw Failure.invalidMutation
         }
+    }
+}
+
+extension WorkoutReplicaStore {
+    /// A join response proves local persistence, not permission to edit yet.
+    public func receiveSync(_ message: WorkoutSyncMessage) throws -> WorkoutSyncMessage? {
+        let incoming: WorkoutSessionSnapshot
+        switch message {
+        case let .snapshot(snapshot): incoming = snapshot
+        case let .update(snapshot, receipts):
+            incoming = snapshot
+            for receipt in receipts where state.operations.contains(where: { $0.id == receipt.operationID }) {
+                try receive(receipt: receipt)
+            }
+        default: throw Failure.invalidMutation
+        }
+        try adopt(snapshot: incoming)
+        guard let sessionID = incoming.sessionID else { throw Failure.wrongSession }
+        if incoming.phase == .joining {
+            return .joined(workoutID: incoming.workoutID, sessionID: sessionID)
+        }
+        if incoming.phase == .agreed && !state.agreed { try agree(sessionID: sessionID) }
+        return nil
+    }
+}
+
+
+extension WorkoutReplicaStore {
+    public func allowsTrackingStart(workoutID: UUID) -> Bool {
+        let state = state
+        if let current = state.snapshot {
+            if current.workoutID == workoutID { return !current.phase.isTerminal }
+            if current.phase.occupiesSharedSlot { return false }
+        }
+        return !state.archivedSessions.contains { $0.acceptedSnapshot.workoutID == workoutID }
     }
 }

@@ -129,7 +129,6 @@
 		8A82AB9222DDDB7E007C0293 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82AB9122DDDB7E007C0293 /* SettingsStore.swift */; };
 		8A857E3E237B63490065BEBE /* WatchSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A857E3D237B63490065BEBE /* WatchSettingsView.swift */; };
 		8A861922236DAB7000C1E96C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A861921236DAB7000C1E96C /* Assets.xcassets */; };
-		8A861929236DAB7000C1E96C /* WatchIron Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8A861928236DAB7000C1E96C /* WatchIron Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8A86192E236DAB7000C1E96C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A86192D236DAB7000C1E96C /* ContentView.swift */; };
 		8A861934236DAB7100C1E96C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A861933236DAB7100C1E96C /* Assets.xcassets */; };
 		8A861937236DAB7100C1E96C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A861936236DAB7100C1E96C /* Preview Assets.xcassets */; };
@@ -465,13 +464,6 @@
 			remoteGlobalIDString = 8A7D6E93200BF92E00AA0FA7;
 			remoteInfo = "Rhino Fit";
 		};
-		8A86192A236DAB7000C1E96C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8A7D6E8C200BF92E00AA0FA7 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8A861927236DAB7000C1E96C;
-			remoteInfo = "WatchIron Extension";
-		};
 		8A861939236DAB7100C1E96C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8A7D6E8C200BF92E00AA0FA7 /* Project object */;
@@ -545,17 +537,6 @@
 				8A86193B236DAB7100C1E96C /* WatchIron.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8A86193F236DAB7100C1E96C /* Embed Foundation Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				8A861929236DAB7000C1E96C /* WatchIron Extension.appex in Embed Foundation Extensions */,
-			);
-			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8AB5211723992ABC008064B2 /* Embed Frameworks */ = {
@@ -676,7 +657,6 @@
 		8A857E3D237B63490065BEBE /* WatchSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSettingsView.swift; sourceTree = "<group>"; };
 		8A86191C236DAB6E00C1E96C /* WatchIron.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WatchIron.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A861921236DAB7000C1E96C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		8A861928236DAB7000C1E96C /* WatchIron Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "WatchIron Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A86192D236DAB7000C1E96C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8A861933236DAB7100C1E96C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8A861936236DAB7100C1E96C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -1277,7 +1257,6 @@
 				"8A7D6E94200BF92E00AA0FA7",
 				"8A7D6EAB200BF92E00AA0FA7",
 				"8A86191C236DAB6E00C1E96C",
-				"8A861928236DAB7000C1E96C",
 				"8AB5210E23992ABC008064B2",
 				"8A604382239C4DBB00CFB7C0",
 				"8A60438B239C4DBB00CFB7C0",
@@ -1736,23 +1715,6 @@
 			buildRules = (
 			);
 		};
-		8A861927236DAB7000C1E96C /* WatchIron Extension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8A861942236DAB7100C1E96C /* Build configuration list for PBXNativeTarget "WatchIron Extension" */;
-			buildPhases = (
-				8A861924236DAB7000C1E96C /* Sources */,
-				8A861925236DAB7000C1E96C /* Frameworks */,
-				8A861926236DAB7000C1E96C /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "WatchIron Extension";
-			productName = "WatchIron Extension";
-			productReference = 8A861928236DAB7000C1E96C /* WatchIron Extension.appex */;
-			productType = "com.apple.product-type.watchkit2-extension";
-		};
 		8AAFE3412534AB3800CF03E5 /* IronWidgetExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8AAFE3522534AB3900CF03E5 /* Build configuration list for PBXNativeTarget "IronWidgetExtension" */;
@@ -1932,20 +1894,6 @@
 				"8A861934236DAB7100C1E96C",
 			);
 			runOnlyForDeploymentPostprocessing = "0";
-		};
-		8A861926236DAB7000C1E96C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				7171000000000000000000D1 /* AppIntentVocabulary.plist in Resources */,
-				717100000000000000000083 /* InfoPlist.strings in Resources */,
-				717100000000000000000078 /* Intents.strings in Resources */,
-				71710000000000000000006D /* Localizable.stringsdict in Resources */,
-				717100000000000000000015 /* Localizable.strings in Resources */,
-				8A861937236DAB7100C1E96C /* Preview Assets.xcassets in Resources */,
-				8A861934236DAB7100C1E96C /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8AAFE3402534AB3800CF03E5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
@@ -2400,11 +2348,6 @@
 			target = 8A7D6E93200BF92E00AA0FA7 /* Iron */;
 			targetProxy = 8A7D6EAC200BF92E00AA0FA7 /* PBXContainerItemProxy */;
 		};
-		8A86192B236DAB7000C1E96C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8A861927236DAB7000C1E96C /* WatchIron Extension */;
-			targetProxy = 8A86192A236DAB7000C1E96C /* PBXContainerItemProxy */;
-		};
 		8A86193A236DAB7100C1E96C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8A86191B236DAB6E00C1E96C /* WatchIron */;
@@ -2462,7 +2405,7 @@
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = 2L6CX7XT2U;
 				INFOPLIST_FILE = IronIntents/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2489,7 +2432,7 @@
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = 2L6CX7XT2U;
 				INFOPLIST_FILE = IronIntents/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2515,7 +2458,7 @@
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = 2L6CX7XT2U;
 				INFOPLIST_FILE = IronIntentsUI/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2542,7 +2485,7 @@
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = 2L6CX7XT2U;
 				INFOPLIST_FILE = IronIntentsUI/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2610,7 +2553,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -2665,7 +2608,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -2685,7 +2628,7 @@
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = 2L6CX7XT2U;
 				INFOPLIST_FILE = Iron/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2710,7 +2653,7 @@
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = 2L6CX7XT2U;
 				INFOPLIST_FILE = Iron/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2781,7 +2724,7 @@
 				TARGETED_DEVICE_FAMILY = "4";
 				CODE_SIGN_STYLE = "Automatic";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon";
-				WATCHOS_DEPLOYMENT_TARGET = "27.0";
+				WATCHOS_DEPLOYMENT_TARGET = "26.0";
 				SDKROOT = "watchos";
 				SWIFT_VERSION = "5.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2817,7 +2760,7 @@
 				TARGETED_DEVICE_FAMILY = "4";
 				CODE_SIGN_STYLE = "Automatic";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon";
-				WATCHOS_DEPLOYMENT_TARGET = "27.0";
+				WATCHOS_DEPLOYMENT_TARGET = "26.0";
 				SDKROOT = "watchos";
 				SWIFT_VERSION = "5.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2839,75 +2782,6 @@
 			};
 			name = "Release";
 		};
-		8A861940236DAB7100C1E96C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_ENTITLEMENTS = "WatchIron Extension/WatchIron Extension.entitlements";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
-				DEVELOPMENT_ASSET_PATHS = "\"WatchIron Extension/Preview Content\"";
-				DEVELOPMENT_TEAM = 2L6CX7XT2U;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "WatchIron Extension/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "WatchIron Extension";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Iron can display your heart rate and burned calories during a workout.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Iron can save your finished workouts to Apple Health.";
-				INFOPLIST_KEY_WKExtensionDelegateClassName = "$(PRODUCT_MODULE_NAME).ExtensionDelegate";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.6;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kabouzeid.Iron.watchkitapp.watchkitextension;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 27.0;
-			};
-			name = Debug;
-		};
-		8A861941236DAB7100C1E96C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_ENTITLEMENTS = "WatchIron Extension/WatchIron Extension.entitlements";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
-				DEVELOPMENT_ASSET_PATHS = "\"WatchIron Extension/Preview Content\"";
-				DEVELOPMENT_TEAM = 2L6CX7XT2U;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "WatchIron Extension/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "WatchIron Extension";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Iron can display your heart rate and burned calories during a workout.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Iron can save your finished workouts to Apple Health.";
-				INFOPLIST_KEY_WKExtensionDelegateClassName = "$(PRODUCT_MODULE_NAME).ExtensionDelegate";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.6;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kabouzeid.Iron.watchkitapp.watchkitextension;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 27.0;
-			};
-			name = Release;
-		};
 		8AAFE3502534AB3900CF03E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2920,7 +2794,7 @@
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = 2L6CX7XT2U;
 				INFOPLIST_FILE = IronWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2949,7 +2823,7 @@
 				CURRENT_PROJECT_VERSION = 36;
 				DEVELOPMENT_TEAM = 2L6CX7XT2U;
 				INFOPLIST_FILE = IronWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2981,7 +2855,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = WorkoutDataKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3016,7 +2890,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = WorkoutDataKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3077,15 +2951,6 @@
 			buildConfigurations = (
 				8A7D6EB8200BF92E00AA0FA7 /* Debug */,
 				8A7D6EB9200BF92E00AA0FA7 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		8A861942236DAB7100C1E96C /* Build configuration list for PBXNativeTarget "WatchIron Extension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8A861940236DAB7100C1E96C /* Debug */,
-				8A861941236DAB7100C1E96C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -3259,7 +3124,7 @@
 				CODE_SIGN_STYLE = "Automatic";
 				DEVELOPMENT_TEAM = "2L6CX7XT2U";
 				GENERATE_INFOPLIST_FILE = "YES";
-				IPHONEOS_DEPLOYMENT_TARGET = "27.0";
+				IPHONEOS_DEPLOYMENT_TARGET = "26.0";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kabouzeid.Iron.e2etests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = "iphoneos";
@@ -3275,7 +3140,7 @@
 				CODE_SIGN_STYLE = "Automatic";
 				DEVELOPMENT_TEAM = "2L6CX7XT2U";
 				GENERATE_INFOPLIST_FILE = "YES";
-				IPHONEOS_DEPLOYMENT_TARGET = "27.0";
+				IPHONEOS_DEPLOYMENT_TARGET = "26.0";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kabouzeid.Iron.e2etests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = "iphoneos";

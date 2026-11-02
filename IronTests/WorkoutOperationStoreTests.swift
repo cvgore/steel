@@ -68,6 +68,192 @@ final class WorkoutOperationStoreTests: XCTestCase {
             date: date, restDuration: 90)
     }
 
+    func testTransportJoinRetriesUseOneDurableSession() throws {
+        let joining = try store.beginJoining(workoutID: workout.uuid!)
+        let message = WorkoutSyncMessage.joined(workoutID: workout.uuid!, sessionID: joining.sessionID!)
+        let reply = try XCTUnwrap(store.receiveSync(message))
+        guard case let .snapshot(agreed) = reply else { return XCTFail("Expected snapshot") }
+        XCTAssertEqual(agreed.phase, .agreed)
+        XCTAssertEqual(agreed.sessionID, joining.sessionID)
+        XCTAssertEqual(try store.receiveSync(message), reply)
+        let reopened = try open()
+        defer { for persistent in reopened.persistentStoreCoordinator.persistentStores { try? reopened.persistentStoreCoordinator.remove(persistent) } }
+        XCTAssertEqual(try WorkoutOperationStore(coordinator: reopened.persistentStoreCoordinator).receiveSync(message), reply)
+    }
+
+    func testTransportReplaysOutOfOrderOfflineChainWithoutLosingResults() throws {
+        let replicaURL = directory.appendingPathComponent("watch.json")
+        let watch = try WorkoutReplicaStore(url: replicaURL)
+        let joining = try store.beginJoining(workoutID: workout.uuid!)
+        let join = try XCTUnwrap(watch.receiveSync(.snapshot(joining)))
+        _ = try watch.receiveSync(XCTUnwrap(store.receiveSync(join)))
+        let one = try watch.submit(.saveSet(exerciseID: exercise.uuid!, setID: set.uuid!,
+            draft: .init(weight: 42, repetitions: 5, tag: nil, rpe: 8, comment: "offline"), complete: true, restDuration: 90), date: date)
+        let two = try watch.submit(.saveSet(exerciseID: exercise.uuid!, setID: set.uuid!,
+            draft: .init(weight: 44, repetitions: 6, tag: nil, rpe: 8, comment: "correction"), complete: true, restDuration: 90), date: date.addingTimeInterval(30))
+        _ = try store.receiveSync(.operation(two))
+        let reply = try XCTUnwrap(store.receiveSync(.operation(one)))
+        let reopened = try WorkoutReplicaStore(url: replicaURL)
+        _ = try reopened.receiveSync(reply)
+        XCTAssertTrue(reopened.pendingOperations.isEmpty)
+        XCTAssertTrue(reopened.state.conflicts.isEmpty)
+        XCTAssertEqual(reopened.snapshot?.exercises.last?.sets.first?.result.weight, 44)
+        XCTAssertEqual(reopened.snapshot?.restStart, date)
+        XCTAssertEqual(reopened.snapshot?.restDuration, 90)
+        XCTAssertEqual(try store.receiveSync(.operation(one)), reply)
+        XCTAssertEqual(try store.snapshot(workoutID: workout.uuid!).version, joining.version + 3)
+    }
+
+    func testConflictResolutionPreservesInputsAndRetriesDurably() throws {
+        let joining = try store.beginJoining(workoutID: workout.uuid!)
+        let agreed = try store.recordSessionAgreement(workoutID: workout.uuid!, sessionID: joining.sessionID!, phase: .agreed)
+        let remote = WorkoutOperation(workoutID: workout.uuid!, sessionID: agreed.sessionID, originID: "watch",
+            sequence: 1, expectedVersion: agreed.version, mutation: .saveSet(exerciseID: exercise.uuid!, setID: set.uuid!,
+                draft: .init(weight: 44, repetitions: 6, tag: nil, rpe: 8, comment: "Watch candidate"), complete: true, restDuration: 90), date: date)
+        _ = try store.apply(operation: operation(version: agreed.version))
+        XCTAssertEqual(try store.apply(operation: remote).disposition, .conflict)
+        let version = try store.snapshot(workoutID: workout.uuid!).version
+        let decision = WorkoutOperation(workoutID: workout.uuid!, sessionID: agreed.sessionID, expectedVersion: version,
+            mutation: .resolveConflict(operationID: remote.id, useCandidate: true))
+        let receipt = try store.apply(operation: decision)
+        XCTAssertEqual(receipt.disposition, .applied)
+        XCTAssertEqual(try store.snapshot(workoutID: workout.uuid!).exercises.last?.sets.first?.result.weight, 44)
+        XCTAssertEqual(try store.snapshot(workoutID: workout.uuid!).resolvedOperationIDs, [remote.id])
+        XCTAssertEqual(try store.operations(workoutID: workout.uuid!, disposition: .conflict).first?.operation, remote)
+        XCTAssertEqual(try store.apply(operation: decision), receipt)
+        let reopened = try open()
+        defer { for persistent in reopened.persistentStoreCoordinator.persistentStores { try? reopened.persistentStoreCoordinator.remove(persistent) } }
+        XCTAssertEqual(try WorkoutOperationStore(coordinator: reopened.persistentStoreCoordinator).apply(operation: decision), receipt)
+    }
+
+    func testKeepingPhoneConflictResultRemovesOverlayButPreservesWatchInput() throws {
+        let watchURL = directory.appendingPathComponent("watch.json")
+        let watch = try WorkoutReplicaStore(url: watchURL)
+        let joining = try store.beginJoining(workoutID: workout.uuid!)
+        let join = try XCTUnwrap(watch.receiveSync(.snapshot(joining)))
+        _ = try watch.receiveSync(XCTUnwrap(store.receiveSync(join)))
+        let remote = try watch.submit(.saveSet(exerciseID: exercise.uuid!, setID: set.uuid!,
+            draft: .init(weight: 99, repetitions: 8, tag: nil, rpe: 8, comment: "conflicting Watch input"), complete: true, restDuration: 90))
+        _ = try store.apply(operation: operation(version: joining.version + 1))
+        _ = try watch.receiveSync(XCTUnwrap(store.receiveSync(.operation(remote))))
+        let current = try store.snapshot(workoutID: workout.uuid!)
+        let decision = WorkoutOperation(workoutID: workout.uuid!, sessionID: joining.sessionID, expectedVersion: current.version,
+            mutation: .resolveConflict(operationID: remote.id, useCandidate: false))
+        _ = try store.apply(operation: decision)
+        _ = try watch.receiveSync(.snapshot(store.snapshot(workoutID: workout.uuid!)))
+        let reopened = try WorkoutReplicaStore(url: watchURL)
+        XCTAssertEqual(reopened.snapshot?.exercises.last?.sets.first?.result.weight, 42.5)
+        XCTAssertEqual(reopened.state.operations, [remote])
+        XCTAssertEqual(reopened.state.receipts.first?.disposition, .conflict)
+        XCTAssertEqual(reopened.state.acceptedSnapshot?.resolvedOperationIDs, [remote.id])
+        let next = try reopened.submit(.saveSet(exerciseID: exercise.uuid!, setID: set.uuid!,
+            draft: .init(weight: 45, repetitions: 7, tag: nil, rpe: 8, comment: nil), complete: true, restDuration: 90))
+        XCTAssertNil(next.predecessorID)
+        XCTAssertEqual(next.expectedVersion, current.version + 1)
+    }
+
+    func testSnapshotUsesExistingPersonalRecordRule() throws {
+        exercise.exerciseUuid = UUID()
+        try container.viewContext.save()
+        _ = try store.apply(operation: operation(), mergingInto: container.viewContext)
+        let projected = try store.snapshot(workoutID: workout.uuid!)
+        XCTAssertEqual(projected.exercises.last?.sets.first?.isPersonalRecord, false)
+        XCTAssertEqual(projected.exercises.last?.sets.first?.isPersonalRecord, set.isPersonalRecord)
+    }
+
+    func testDelayedOldSessionReplyDoesNotSelectItAsActiveSession() throws {
+        let oldID = workout.uuid!
+        let joining = try store.beginJoining(workoutID: oldID)
+        let agreed = try store.recordSessionAgreement(workoutID: oldID, sessionID: joining.sessionID!, phase: .agreed)
+        _ = try store.apply(operation: .init(workoutID: oldID, sessionID: agreed.sessionID, expectedVersion: agreed.version, mutation: .requestFinish))
+        _ = try store.recordSessionAgreement(workoutID: oldID, sessionID: agreed.sessionID!, phase: .finished)
+        set.isCompleted = true
+        workout.isCurrentWorkout = false
+        workout.end = date.addingTimeInterval(300)
+        let next = Workout.create(context: container.viewContext)
+        next.isCurrentWorkout = true
+        next.start = date.addingTimeInterval(600)
+        try container.viewContext.save()
+        let current = try store.beginJoining(workoutID: next.uuid!)
+        guard case let .snapshot(terminal)? = try store.receiveSync(.joined(workoutID: oldID, sessionID: joining.sessionID!)) else {
+            return XCTFail("Late join must return the terminal marker")
+        }
+        XCTAssertEqual(terminal.phase, .finished)
+        _ = try store.receiveSync(.request(workoutID: oldID, sessionID: joining.sessionID))
+        XCTAssertEqual(try store.activeSharedSnapshot()?.workoutID, next.uuid)
+        XCTAssertEqual(try store.activeSharedSnapshot()?.sessionID, current.sessionID)
+    }
+
+    func testTransportedRecordFlagsRecalculateLaterSetsAndTies() throws {
+        let catalogID = UUID()
+        exercise.exerciseUuid = catalogID
+        let history = Workout.create(context: container.viewContext)
+        history.start = date.addingTimeInterval(-3600); history.end = date.addingTimeInterval(-3500)
+        let historicalExercise = WorkoutExercise.create(context: container.viewContext)
+        historicalExercise.workout = history; historicalExercise.exerciseUuid = catalogID
+        let previous = WorkoutSet.create(context: container.viewContext)
+        previous.workoutExercise = historicalExercise; previous.isCompleted = true
+        previous.weightValue = 40; previous.repetitionsValue = 5
+        let later = WorkoutSet.create(context: container.viewContext)
+        later.workoutExercise = exercise
+        try container.viewContext.save()
+        _ = try store.apply(operation: operation())
+        _ = try store.apply(operation: .init(workoutID: workout.uuid!, exerciseID: exercise.uuid!, setID: later.uuid!, expectedVersion: 1,
+            draft: .init(weight: 42.5, repetitions: 6, tag: nil, rpe: 0, comment: nil), restDuration: 90))
+        XCTAssertEqual(try store.snapshot(workoutID: workout.uuid!).exercises.last?.sets.map(\.isPersonalRecord), [true, false])
+        _ = try store.apply(operation: operation(version: 2, draft: .init(weight: 41, repetitions: 5, tag: nil, rpe: 0, comment: nil)))
+        XCTAssertEqual(try store.snapshot(workoutID: workout.uuid!).exercises.last?.sets.map(\.isPersonalRecord), [true, true])
+        _ = try store.apply(operation: operation(version: 3, draft: .init(weight: 40, repetitions: 5, tag: nil, rpe: 0, comment: nil)))
+        XCTAssertEqual(try store.snapshot(workoutID: workout.uuid!).exercises.last?.sets.map(\.isPersonalRecord), [false, true])
+    }
+
+    func testConcurrentCorrectionAndFinishRequireDurableResolutionBeforeAgreement() throws {
+        _ = try store.apply(operation: operation())
+        let joining = try store.beginJoining(workoutID: workout.uuid!)
+        let agreed = try store.recordSessionAgreement(workoutID: workout.uuid!, sessionID: joining.sessionID!, phase: .agreed)
+        let watch = try WorkoutReplicaStore(url: directory.appendingPathComponent("watch.json"))
+        _ = try watch.receiveSync(.snapshot(agreed))
+        let correction = try watch.submit(.saveSet(exerciseID: exercise.uuid!, setID: set.uuid!,
+            draft: .init(weight: 48, repetitions: 7, tag: nil, rpe: 8, comment: "offline correction"), complete: true, restDuration: 180))
+        _ = try store.apply(operation: .init(workoutID: workout.uuid!, sessionID: agreed.sessionID,
+            expectedVersion: agreed.version, mutation: .requestFinish))
+        _ = try watch.receiveSync(XCTUnwrap(store.receiveSync(.operation(correction))))
+        XCTAssertThrowsError(try store.recordSessionAgreement(workoutID: workout.uuid!, sessionID: agreed.sessionID!, phase: .finished))
+        let before = try store.snapshot(workoutID: workout.uuid!)
+        _ = try store.apply(operation: .init(workoutID: workout.uuid!, sessionID: agreed.sessionID,
+            expectedVersion: before.version, mutation: .resolveConflict(operationID: correction.id, useCandidate: true)))
+        let resolved = try store.snapshot(workoutID: workout.uuid!)
+        XCTAssertEqual(resolved.phase, .pendingFinish)
+        XCTAssertEqual(resolved.restStart, date)
+        XCTAssertEqual(resolved.restDuration, 90)
+        let terminal = try store.recordSessionAgreement(workoutID: workout.uuid!, sessionID: agreed.sessionID!, phase: .finished)
+        _ = try watch.receiveSync(.snapshot(terminal))
+        XCTAssertEqual(watch.snapshot?.phase, .finished)
+        XCTAssertEqual(watch.snapshot?.exercises.last?.sets.first?.result.weight, 48)
+        XCTAssertNil(watch.snapshot?.restStart)
+        XCTAssertEqual(watch.state.operations, [correction])
+    }
+
+    func testPhoneDraftConflictIsAdvertisedInSharedSnapshotAndClearedByDecision() throws {
+        _ = try store.apply(operation: operation())
+        let stale = operation()
+        XCTAssertEqual(try store.apply(operation: stale).disposition, .conflict)
+        let snapshot = try store.snapshot(workoutID: workout.uuid!)
+        XCTAssertEqual(snapshot.unresolvedConflictIDs, [stale.id])
+        _ = try store.apply(operation: .init(workoutID: workout.uuid!, sessionID: snapshot.sessionID,
+            expectedVersion: snapshot.version, mutation: .resolveConflict(operationID: stale.id, useCandidate: false)))
+        XCTAssertNil(try store.snapshot(workoutID: workout.uuid!).unresolvedConflictIDs)
+        // Other stale phone edits can be explicitly dismissed before repeating them in their editor.
+        let metadata = WorkoutOperation(workoutID: workout.uuid!, sessionID: snapshot.sessionID,
+            expectedVersion: 0, mutation: .workoutMetadata(title: "Stale title", comment: "Retained input"))
+        XCTAssertEqual(try store.apply(operation: metadata).disposition, .conflict)
+        let current = try store.snapshot(workoutID: workout.uuid!)
+        _ = try store.apply(operation: .init(workoutID: workout.uuid!, sessionID: current.sessionID,
+            expectedVersion: current.version, mutation: .resolveConflict(operationID: metadata.id, useCandidate: false)))
+        XCTAssertNil(try store.snapshot(workoutID: workout.uuid!).unresolvedConflictIDs)
+        XCTAssertEqual(try store.operations(workoutID: workout.uuid!, disposition: .conflict).last(where: { $0.operation.id == metadata.id })?.operation, metadata)
+    }
+
     func testAtomicCompletionAndReceiptSurviveReopen() throws {
         // Put the selected exercise before the begun exercise to prove the ordering rule.
         workout.removeFromWorkoutExercises(exercise)
@@ -157,7 +343,8 @@ final class WorkoutOperationStoreTests: XCTestCase {
         XCTAssertEqual(receipt.reason, .staleVersion)
         XCTAssertEqual(try store.operations(workoutID: first.workoutID, disposition: .conflict).first?.operation, stale)
         XCTAssertThrowsError(try store.apply(operation: operation(version: 1, id: first.id)))
-        XCTAssertEqual(try store.snapshot(workoutID: first.workoutID), snapshot)
+        XCTAssertEqual(try store.snapshot(workoutID: first.workoutID).domainSnapshot, snapshot.domainSnapshot)
+        XCTAssertEqual(try store.snapshot(workoutID: first.workoutID).unresolvedConflictIDs, [stale.id])
     }
 
     func testInvalidPayloadAndForeignParentLeaveNoSession() throws {
@@ -363,7 +550,8 @@ final class WorkoutOperationStoreTests: XCTestCase {
         let receipt = try store.apply(operation: candidate)
         XCTAssertEqual(receipt.disposition, .conflict)
         XCTAssertEqual(receipt.reason, .staleVersion)
-        XCTAssertEqual(try store.snapshot(workoutID: workout.uuid!), accepted)
+        XCTAssertEqual(try store.snapshot(workoutID: workout.uuid!).domainSnapshot, accepted.domainSnapshot)
+        XCTAssertEqual(try store.snapshot(workoutID: workout.uuid!).unresolvedConflictIDs, [candidate.id])
         let reopened = try open()
         defer { for row in reopened.persistentStoreCoordinator.persistentStores { try? reopened.persistentStoreCoordinator.remove(row) } }
         let conflicts = try WorkoutOperationStore(coordinator: reopened.persistentStoreCoordinator).operations(workoutID: workout.uuid!, disposition: .conflict)

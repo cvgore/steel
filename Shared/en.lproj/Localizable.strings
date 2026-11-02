@@ -310,3 +310,43 @@
 
 "Could not save changes" = "Could not save changes";
 "Please try again." = "Please try again.";
+
+"Watch synchronization" = "Watch synchronization";
+
+"Waiting for Watch agreement" = "Waiting for Watch agreement";
+
+"Shared workout with Watch" = "Shared workout with Watch";
+
+"Retry synchronization" = "Retry synchronization";
+
+"Conflicting changes" = "Conflicting changes";
+
+
+
+"Reload changes before resolving the conflict." = "Reload changes before resolving the conflict.";
+
+"iPhone" = "iPhone";
+
+"Watch" = "Watch";
+
+"Waiting for iPhone agreement" = "Waiting for iPhone agreement";
+
+"Resolve conflicts on iPhone" = "Resolve conflicts on iPhone";
+
+"Changes pending synchronization" = "Changes pending synchronization";
+
+"Could not load workout synchronization" = "Could not load workout synchronization";
+
+"Saved changes" = "Saved changes";
+
+"Proposed changes" = "Proposed changes";
+
+"Keep saved changes" = "Keep saved changes";
+
+"Use proposed changes" = "Use proposed changes";
+
+"Finish requested; waiting for agreement" = "Finish requested; waiting for agreement";
+
+"Cancel requested; waiting for agreement" = "Cancel requested; waiting for agreement";
+
+"Could not synchronize workout. Please retry." = "Could not synchronize workout. Please retry.";

@@ -22,14 +22,21 @@ import os.log
 ///     I think this is a bug, because when the app was already in background before that, this doesn't happen.
 ///     Tested on iOS 13.4, watchOS 6.2, Xcode 11.
 
-class WatchConnectionManager: NSObject {
+class WatchConnectionManager: NSObject, ObservableObject {
     static let shared = WatchConnectionManager()
     
     private let session = WCSession.default
     private var languageObserver: NSObjectProtocol?
+    private var workoutObserver: NSObjectProtocol?
+    @Published private(set) var workoutSyncError: String?
+    @Published private(set) var workoutSyncSnapshot: WorkoutSessionSnapshot?
+    @Published private(set) var workoutSyncConflicts: [WorkoutOperationConflict] = []
 
     override init() {
         super.init()
+        workoutObserver = NotificationCenter.default.addObserver(forName: WorkoutCommandWriter.didCommit, object: nil, queue: .main) { [weak self] _ in
+            self?.publishSharedWorkout()
+        }
         languageObserver = NotificationCenter.default.addObserver(forName: .appLanguageChanged, object: nil, queue: .main) { [weak self] _ in
             self?.sendLanguagePreference()
         }
@@ -82,6 +89,7 @@ class WatchConnectionManager: NSObject {
 extension WatchConnectionManager: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         sendLanguagePreference()
+        publishSharedWorkout()
         os_log("Session activation completed isActivated=%@ error=%@", log: .watch, type: .info, String(describing: activationState == .activated), error?.localizedDescription ?? "nil") // printing activationState directly doesn't work
     }
     
@@ -122,6 +130,7 @@ extension WatchConnectionManager: WCSessionDelegate {
     
     func sessionReachabilityDidChange(_ session: WCSession) {
         sendLanguagePreference()
+        publishSharedWorkout()
         os_log("Session reachability did change isReachable=%@", log: .watch, type: .debug, String(describing: session.isReachable))
     }
 
@@ -134,6 +143,9 @@ extension WatchConnectionManager: WCSessionDelegate {
 
 extension WatchConnectionManager {
     private func receive(message: [String : Any]) {
+        if let data = message[WorkoutSyncMessage.payloadKey] as? Data {
+            DispatchQueue.main.async { self.receiveWorkoutSync(data) }
+        }
         if let prepared = message[PayloadKey.preparedWorkoutSession] as? Bool, prepared {
             handlePreparedWorkoutSessionMessage()
         }
@@ -206,15 +218,16 @@ extension WatchConnectionManager {
     func startWatchWorkout(start: Date, uuid: UUID) {
         os_log("Starting watch workout", log: .watch, type: .default)
         
+        if currentWatchWorkoutUuid != nil {
+            os_log("Reusing phone-created Watch workout", log: .watch, type: .info)
+        }
+        currentWatchWorkoutUuid = uuid
+        publishSharedWorkout(beginJoining: true)
         guard isActivated else {
             os_log("Session is not activated, skip starting watch workout", log: .watch, type: .info)
             return
         }
-        if currentWatchWorkoutUuid != nil {
-            os_log("Overwriting currentWatchWorkoutUuid", log: .watch, type: .error)
-        }
         sendUserInfo(userInfo: [PayloadKey.startWorkoutSession : [PayloadKey.Arg.start : start, PayloadKey.Arg.uuid : uuid.uuidString]])
-        currentWatchWorkoutUuid = uuid
     }
     
     func updateWatchWorkoutStart(start: Date, uuid: UUID) {
@@ -330,6 +343,14 @@ extension WatchConnectionManager {
 
 extension WatchConnectionManager {
     func prepareAndStartWatchWorkout(workout: Workout, startWatchCompanionErrorHandler: StartWatchCompanionErrorHandler? = nil) {
+        // Journal joining must not depend on HealthKit preparation/permission succeeding.
+        workout.managedObjectContext?.perform {
+            guard workout.isCurrentWorkout, let id = workout.uuid else { return }
+            DispatchQueue.main.async {
+                self.currentWatchWorkoutUuid = id
+                self.publishSharedWorkout(beginJoining: true)
+            }
+        }
         prepareWatchWorkout(startWatchCompanionErrorHandler: startWatchCompanionErrorHandler) {
             self.startWatchWorkout(workout: workout)
         }
@@ -380,5 +401,132 @@ extension WatchConnectionManager {
         selectedSetCancellable = workoutSet?.objectWillChange
             .map { _ in (workoutSet, uuid) }
             .subscribe(selectedSetChangePublisher)
+    }
+}
+
+
+extension WatchConnectionManager {
+    private var operationStore: WorkoutOperationStore {
+        WorkoutOperationStore(coordinator: WorkoutDataStorage.shared.persistentContainer.persistentStoreCoordinator)
+    }
+    private func sharedSnapshot() throws -> WorkoutSessionSnapshot? {
+        try operationStore.activeSharedSnapshot()
+    }
+    func publishSharedWorkout(beginJoining: Bool = false) {
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async { self.publishSharedWorkout(beginJoining: beginJoining) }; return
+        }
+        do {
+            let snapshot: WorkoutSessionSnapshot?
+            if beginJoining, let id = currentWatchWorkoutUuid {
+                snapshot = try operationStore.beginJoining(workoutID: id,
+                    mergingInto: WorkoutDataStorage.shared.persistentContainer.viewContext)
+            } else { snapshot = try sharedSnapshot() }
+            if let snapshot = snapshot {
+                try refreshWorkoutSyncState(snapshot)
+                try sendWorkoutSync(.snapshot(snapshot))
+            }
+        } catch { reportWorkoutSyncError(error) }
+    }
+    private func receiveWorkoutSync(_ data: Data) {
+        do {
+            let message = try WorkoutSyncMessage.decode(data)
+            let reply: WorkoutSyncMessage?
+            if case .request(nil, _) = message {
+                reply = try sharedSnapshot().map { .snapshot($0) }
+            } else {
+                reply = try operationStore.receiveSync(message,
+                    mergingInto: WorkoutDataStorage.shared.persistentContainer.viewContext)
+            }
+            if let reply = reply {
+                // A valid reply to an old session must not change current presentation.
+                if let current = try sharedSnapshot() { try refreshWorkoutSyncState(current) }
+                try sendWorkoutSync(reply)
+            }
+            workoutSyncError = nil
+        } catch { reportWorkoutSyncError(error) }
+    }
+    private func snapshotForWatch(_ original: WorkoutSessionSnapshot) throws -> WorkoutSessionSnapshot {
+        var snapshot = original
+        let context = WorkoutDataStorage.shared.persistentContainer.viewContext
+        let request: NSFetchRequest<Workout> = Workout.fetchRequest()
+        request.predicate = NSPredicate(format: "uuid == %@", snapshot.workoutID as CVarArg)
+        guard let workout = try context.fetch(request).first else { throw WorkoutOperationError.missingObject }
+        let settings = SettingsStore.shared
+        let exercises = ExerciseStore.shared.exercises
+        snapshot.editorContext = WorkoutEditorContext(weightUnit: settings.weightUnit.rawValue,
+            keepRestTimerRunning: settings.keepRestTimerRunning,
+            exercises: try (workout.workoutExercises?.array as? [WorkoutExercise] ?? []).map { exercise in
+                guard let id = exercise.uuid else { throw WorkoutOperationError.missingObject }
+                let catalog = exercise.exercise(in: exercises)
+                let duration: TimeInterval
+                switch catalog?.type {
+                case .barbell: duration = settings.defaultRestTimeBarbellBased
+                case .dumbbell: duration = settings.defaultRestTimeDumbbellBased
+                default: duration = settings.defaultRestTime
+                }
+                let plannedCount = exercise.workoutSets?.count ?? 0
+                var history: [[WorkoutNumericResult]] = []
+                for previous in try context.fetch(exercise.historyFetchRequest) {
+                    let numeric = (previous.workoutSets?.array as? [WorkoutSet] ?? []).prefix(plannedCount).map {
+                        WorkoutNumericResult(weight: $0.weightValue, repetitions: $0.repetitionsValue)
+                    }
+                    if !history.contains(numeric) { history.append(numeric) }
+                }
+                return .init(id: id, title: catalog?.title ?? "", restDuration: duration,
+                    barbellWeight: catalog?.type == .barbell
+                        ? WeightUnit.convert(weight: settings.weightUnit.barbellWeight, from: settings.weightUnit, to: .metric) : nil,
+                    numericHistory: history)
+            })
+        return snapshot
+    }
+    private func reportWorkoutSyncError(_ error: Error) {
+        os_log("Workout synchronization failed: %@", log: .watch, type: .error, error.localizedDescription)
+        workoutSyncError = L10n.string("Could not synchronize workout. Please retry.")
+    }
+    private func refreshWorkoutSyncState(_ snapshot: WorkoutSessionSnapshot) throws {
+        workoutSyncSnapshot = snapshot
+        let rest = RestTimerStore.shared
+        let context = WorkoutDataStorage.shared.persistentContainer.viewContext
+        let currentID = try context.fetch(Workout.currentWorkoutFetchRequest).first?.uuid
+        if currentID == snapshot.workoutID,
+           rest.restTimerStart != snapshot.restStart || rest.restTimerDuration != snapshot.restDuration {
+            rest.presentCommittedRest(start: snapshot.restStart, duration: snapshot.restDuration)
+        }
+        workoutSyncConflicts = try operationStore.operations(workoutID: snapshot.workoutID, disposition: .conflict)
+            .filter { !(snapshot.resolvedOperationIDs ?? []).contains($0.operation.id) }
+    }
+    func resolveWorkoutConflict(_ id: UUID, expectedVersion: Int64, useCandidate: Bool) throws {
+        guard let snapshot = workoutSyncSnapshot else { throw WorkoutOperationError.invalidSession }
+        let decision = WorkoutOperation(workoutID: snapshot.workoutID, sessionID: snapshot.sessionID,
+            expectedVersion: expectedVersion, mutation: .resolveConflict(operationID: id, useCandidate: useCandidate))
+        _ = try WorkoutCommandWriter(context: WorkoutDataStorage.shared.persistentContainer.viewContext).apply(decision)
+        publishSharedWorkout()
+    }
+    private func sendWorkoutSync(_ message: WorkoutSyncMessage) throws {
+        guard isActivated else { return } // Activation retries from the durable store.
+        let outgoing: WorkoutSyncMessage
+        switch message {
+        case let .snapshot(snapshot): outgoing = .snapshot(try snapshotForWatch(snapshot))
+        case let .update(snapshot, receipts): outgoing = .update(snapshot: try snapshotForWatch(snapshot), receipts: receipts)
+        default: outgoing = message
+        }
+        let payload = [WorkoutSyncMessage.payloadKey: try outgoing.encoded()]
+        let snapshot: WorkoutSessionSnapshot?
+        switch outgoing {
+        case let .snapshot(value), let .update(value, _): snapshot = value
+        default: snapshot = nil
+        }
+        if let snapshot = snapshot, let current = try sharedSnapshot(),
+           snapshot.workoutID == current.workoutID, snapshot.sessionID == current.sessionID {
+            var context = session.applicationContext
+            context.merge(payload) { _, new in new }
+            try session.updateApplicationContext(context)
+        }
+        if isReachable {
+            session.sendMessage(payload, replyHandler: nil) { _ in self.session.transferUserInfo(payload) }
+        } else if !session.outstandingUserInfoTransfers.contains(where: {
+            ($0.userInfo[WorkoutSyncMessage.payloadKey] as? Data) == payload[WorkoutSyncMessage.payloadKey]
+        }) { session.transferUserInfo(payload) }
     }
 }

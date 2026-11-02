@@ -310,3 +310,43 @@
 
 "Could not save changes" = "Nie udało się zapisać zmian";
 "Please try again." = "Spróbuj ponownie.";
+
+"Watch synchronization" = "Synchronizacja z Watch";
+
+"Waiting for Watch agreement" = "Oczekiwanie na potwierdzenie Watch";
+
+"Shared workout with Watch" = "Trening współdzielony z Watch";
+
+"Retry synchronization" = "Ponów synchronizację";
+
+"Conflicting changes" = "Sprzeczne zmiany";
+
+
+
+"Reload changes before resolving the conflict." = "Odśwież zmiany przed rozstrzygnięciem konfliktu.";
+
+"iPhone" = "iPhone";
+
+"Watch" = "Watch";
+
+"Waiting for iPhone agreement" = "Oczekiwanie na potwierdzenie iPhone’a";
+
+"Resolve conflicts on iPhone" = "Rozstrzygnij konflikty na iPhonie";
+
+"Changes pending synchronization" = "Zmiany oczekują na synchronizację";
+
+"Could not load workout synchronization" = "Nie można wczytać synchronizacji treningu";
+
+"Saved changes" = "Zapisane zmiany";
+
+"Proposed changes" = "Proponowane zmiany";
+
+"Keep saved changes" = "Zachowaj zapisane zmiany";
+
+"Use proposed changes" = "Użyj proponowanych zmian";
+
+"Finish requested; waiting for agreement" = "Zażądano zakończenia; oczekiwanie na uzgodnienie";
+
+"Cancel requested; waiting for agreement" = "Zażądano anulowania; oczekiwanie na uzgodnienie";
+
+"Could not synchronize workout. Please retry." = "Nie można zsynchronizować treningu. Spróbuj ponownie.";

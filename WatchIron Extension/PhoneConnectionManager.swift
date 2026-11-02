@@ -16,6 +16,8 @@ class PhoneConnectionManager: NSObject, ObservableObject {
     static let shared = PhoneConnectionManager()
     
     private let session = WCSession.default
+    @Published private(set) var workoutSyncError: String?
+    private var workoutRetry: DispatchWorkItem?
     
     var objectWillChange = ObservableObjectPublisher() // called when something with the connection changes
     
@@ -55,6 +57,7 @@ extension PhoneConnectionManager: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         if activationState == .activated {
             receive(message: session.receivedApplicationContext)
+            synchronizeWorkout()
         }
         print(#function + " \(activationState)")
         
@@ -89,6 +92,7 @@ extension PhoneConnectionManager: WCSessionDelegate {
     
     func sessionReachabilityDidChange(_ session: WCSession) {
         print(#function + " \(session.isReachable)")
+        synchronizeWorkout()
         
         DispatchQueue.main.async {
             self.objectWillChange.send()
@@ -103,7 +107,9 @@ extension PhoneConnectionManager {
         if let rawLanguage = message[L10n.preferenceKey] as? String,
            let language = AppLanguage(rawValue: rawLanguage) {
             DispatchQueue.main.async { L10n.language = language }
-            if message.count == 1 { return }
+        }
+        if let data = message[WorkoutSyncMessage.payloadKey] as? Data {
+            receiveWorkoutSync(data)
         }
         if let startMessage = message[PayloadKey.startWorkoutSession] as? [String : Any] {
             handleStartWorkoutSessionMessage(message: startMessage)
@@ -122,7 +128,8 @@ extension PhoneConnectionManager {
         } else if let unprepare = message[PayloadKey.ignoredPreparedWorkoutSession] as? Bool, unprepare {
             handleIgnoredPreparedWorkoutSession()
         } else {
-            assertionFailure("Unrecognized message: \(message)")
+            // Context can combine language and workout state; future keys are harmless.
+            os_log("No legacy tracking command in received payload", type: .debug)
         }
     }
     
@@ -141,7 +148,13 @@ extension PhoneConnectionManager {
             return
         }
         
-        WorkoutSessionManagerStore.shared.startWorkoutSession(start: start, uuid: uuid)
+        do {
+            let replica = try WorkoutSessionManagerStore.shared.workoutReplica.get()
+            guard replica.allowsTrackingStart(workoutID: uuid) else { return }
+            let committedStart = replica.snapshot.flatMap { $0.workoutID == uuid ? $0.start : nil }
+            WorkoutSessionManagerStore.shared.startWorkoutSession(start: committedStart ?? start, uuid: uuid)
+            WorkoutSessionManagerStore.shared.presentReplicaRest()
+        } catch { reportWorkoutSync(error) }
     }
     
     private func handleEndWorkoutSessionMessage(message: [String : Any]) {
@@ -161,6 +174,7 @@ extension PhoneConnectionManager {
             return
         }
         
+        guard !hasSharedWorkout(uuid) else { synchronizeWorkout(); return }
         WorkoutSessionManagerStore.shared.endWorkoutSession(start: start, end: end, title: title, uuid: uuid)
     }
     
@@ -176,6 +190,7 @@ extension PhoneConnectionManager {
             return
         }
 
+        if hasSharedWorkout(uuid) { WorkoutSessionManagerStore.shared.presentReplicaRest(); return }
         WorkoutSessionManagerStore.shared.updateWorkoutSessionStart(start: start, uuid: uuid)
     }
     
@@ -188,6 +203,7 @@ extension PhoneConnectionManager {
             return
         }
         
+        if hasSharedWorkout(uuid) { WorkoutSessionManagerStore.shared.presentReplicaRest(); return }
         WorkoutSessionManagerStore.shared.updateWorkoutSessionEnd(end: end, uuid: uuid)
     }
     
@@ -201,6 +217,10 @@ extension PhoneConnectionManager {
             return
         }
         
+        if hasSharedWorkout(uuid) {
+            WorkoutSessionManagerStore.shared.presentReplicaRest()
+            return
+        }
         WorkoutSessionManagerStore.shared.updateWorkoutSessionRestTimer(end: end, keepRunning: keepRunning, uuid: uuid)
     }
     
@@ -224,6 +244,7 @@ extension PhoneConnectionManager {
             return
         }
         
+        guard !hasSharedWorkout(uuid) else { synchronizeWorkout(); return }
         WorkoutSessionManagerStore.shared.discardWorkoutSession(uuid: uuid)
     }
     
@@ -275,5 +296,73 @@ extension PhoneConnectionManager {
     func sendPreparedWorkoutSession() {
         os_log("Sending prepared message")
         sendUserInfo(userInfo: [PayloadKey.preparedWorkoutSession : true])
+    }
+}
+
+
+extension PhoneConnectionManager {
+    private func hasSharedWorkout(_ workoutID: UUID) -> Bool {
+        do {
+            let state = try WorkoutSessionManagerStore.shared.workoutReplica.get().state
+            return state.snapshot?.workoutID == workoutID || state.archivedSessions.contains { $0.acceptedSnapshot.workoutID == workoutID }
+        } catch { reportWorkoutSync(error); return true }
+    }
+    func synchronizeWorkout() {
+        defer { scheduleWorkoutRetry() }
+        do {
+            let replica = try WorkoutSessionManagerStore.shared.workoutReplica.get()
+            if let snapshot = replica.state.acceptedSnapshot, let sessionID = snapshot.sessionID {
+                if snapshot.phase == .joining {
+                    try sendWorkoutSync(.joined(workoutID: snapshot.workoutID, sessionID: sessionID))
+                }
+                try sendWorkoutSync(.request(workoutID: snapshot.workoutID, sessionID: sessionID))
+                for operation in replica.pendingOperations.sorted(by: { $0.sequence < $1.sequence }) {
+                    try sendWorkoutSync(.operation(operation))
+                }
+            } else { try sendWorkoutSync(.request(workoutID: nil, sessionID: nil)) }
+        } catch { reportWorkoutSync(error) }
+    }
+    private func receiveWorkoutSync(_ data: Data) {
+        defer { scheduleWorkoutRetry() }
+        do {
+            let replica = try WorkoutSessionManagerStore.shared.workoutReplica.get()
+            if let reply = try replica.receiveSync(WorkoutSyncMessage.decode(data)) { try sendWorkoutSync(reply) }
+            WorkoutSessionManagerStore.shared.presentReplicaRest()
+            DispatchQueue.main.async {
+                self.workoutSyncError = nil
+                WorkoutSessionManagerStore.shared.objectWillChange.send()
+            }
+            // An agreed snapshot releases existing durable operations for replay.
+            for operation in replica.pendingOperations.sorted(by: { $0.sequence < $1.sequence }) {
+                try sendWorkoutSync(.operation(operation))
+            }
+        } catch { reportWorkoutSync(error) }
+    }
+    private func scheduleWorkoutRetry() {
+        DispatchQueue.main.async {
+            self.workoutRetry?.cancel()
+            guard self.isReachable,
+                  let state = try? WorkoutSessionManagerStore.shared.workoutReplica.get().state,
+                  state.snapshot != nil else { return }
+            let covered = state.acceptedSnapshot?.coveredOperationIDs ?? []
+            let awaitingCoverage = state.receipts.contains { $0.disposition == .applied && !covered.contains($0.operationID) }
+            guard !state.agreed || !state.pendingOperations.isEmpty || awaitingCoverage else { return }
+            let retry = DispatchWorkItem { [weak self] in self?.synchronizeWorkout() }
+            self.workoutRetry = retry
+            DispatchQueue.main.asyncAfter(deadline: .now() + 15, execute: retry)
+        }
+    }
+    private func reportWorkoutSync(_ error: Error) {
+        os_log("Workout synchronization failed: %@", type: .error, error.localizedDescription)
+        DispatchQueue.main.async { self.workoutSyncError = L10n.string("Could not synchronize workout. Please retry.") }
+    }
+    private func sendWorkoutSync(_ message: WorkoutSyncMessage) throws {
+        guard isActivated else { return }
+        let payload = [WorkoutSyncMessage.payloadKey: try message.encoded()]
+        if isReachable {
+            session.sendMessage(payload, replyHandler: nil) { _ in self.session.transferUserInfo(payload) }
+        } else if !session.outstandingUserInfoTransfers.contains(where: {
+            ($0.userInfo[WorkoutSyncMessage.payloadKey] as? Data) == payload[WorkoutSyncMessage.payloadKey]
+        }) { session.transferUserInfo(payload) }
     }
 }
