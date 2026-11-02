@@ -339,6 +339,11 @@
 "Resolve conflicts on iPhone" = "Resolve conflicts on iPhone";
 
 "Changes pending synchronization" = "Changes pending synchronization";
+"Sync error" = "Sync error";
+"Waiting for iPhone" = "Waiting for iPhone";
+"Conflict" = "Conflict";
+"Sync pending" = "Pending sync";
+"Health warning" = "Health alert";
 
 "Could not load workout synchronization" = "Could not load workout synchronization";
 
