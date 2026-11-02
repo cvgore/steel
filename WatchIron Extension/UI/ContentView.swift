@@ -21,6 +21,8 @@ struct ContentView: View {
     }
 }
 
+private enum EditorField { case weight, repetitions }
+
 private struct _ContentView: View {
     @EnvironmentObject var owner: WorkoutSessionManagerStore
     @AppStorage("watchWorkoutNavigation.v1") private var savedNavigation = Data()
@@ -33,8 +35,6 @@ private struct _ContentView: View {
     @State private var correctionConflict = false
     @State private var weightPrecision = 0
     @FocusState private var crownFocused: Bool
-
-    private enum EditorField { case weight, repetitions }
 
     private var replicaState: WorkoutReplicaStore.State? { try? owner.workoutReplica.get().state }
     private var snapshot: WorkoutSessionSnapshot? { replicaState?.snapshot }
@@ -53,7 +53,10 @@ private struct _ContentView: View {
                     NavigationStack(path: path) {
                         exerciseList(snapshot)
                             .navigationDestination(for: WatchWorkoutNavigation.Route.self) { route in
-                                destination(route, snapshot: snapshot)
+                                WorkoutDestinationView(route: route, navigation: $navigation,
+                                    selectedField: $selectedField, saveLocked: $saveLocked,
+                                    saveError: $saveError, correctionConflict: $correctionConflict,
+                                    weightPrecision: $weightPrecision, crownFocused: $crownFocused)
                             }
                     }
                     .tag(WatchWorkoutNavigation.Page.workout)
@@ -121,10 +124,6 @@ private struct _ContentView: View {
         return nil
     }
 
-    private func title(_ exercise: WorkoutSessionSnapshot.Exercise, snapshot: WorkoutSessionSnapshot) -> String {
-        snapshot.editorContext?.exercises.first { $0.id == exercise.id }?.title ?? L10n.string("Exercise")
-    }
-
     private func exerciseList(_ snapshot: WorkoutSessionSnapshot) -> some View {
         List {
             if snapshot.exercises.isEmpty { Text("No exercises") }
@@ -139,7 +138,7 @@ private struct _ContentView: View {
                     } catch { saveError = true }
                 } label: {
                     VStack(alignment: .leading) {
-                        Text(title(exercise, snapshot: snapshot))
+                        Text(exerciseTitle(exercise, snapshot: snapshot))
                         HStack {
                             Text("\(exercise.sets.filter(\.isCompleted).count)/\(exercise.sets.count)")
                             if WorkoutEditingRules.isComplete(exercise) {
@@ -151,6 +150,28 @@ private struct _ContentView: View {
             }
         }
         .navigationTitle(Text("Workout"))
+    }
+}
+
+/// NavigationStack retains destinations while the route stays stable. Read the live
+/// replica and navigation here rather than capturing the root's snapshot in its builder.
+private struct WorkoutDestinationView: View {
+    @EnvironmentObject var owner: WorkoutSessionManagerStore
+    let route: WatchWorkoutNavigation.Route
+    @Binding var navigation: WatchWorkoutNavigation
+    @Binding var selectedField: EditorField
+    @Binding var saveLocked: Bool
+    @Binding var saveError: Bool
+    @Binding var correctionConflict: Bool
+    @Binding var weightPrecision: Int
+    @FocusState.Binding var crownFocused: Bool
+
+    private var replicaState: WorkoutReplicaStore.State? { try? owner.workoutReplica.get().state }
+
+    var body: some View {
+        if let snapshot = replicaState?.snapshot {
+            destination(route, snapshot: snapshot)
+        }
     }
 
     @ViewBuilder private func destination(_ route: WatchWorkoutNavigation.Route, snapshot: WorkoutSessionSnapshot) -> some View {
@@ -174,7 +195,7 @@ private struct _ContentView: View {
                     } else { Text("No sets") }
                     NavigationLink("Exercise Sets", value: WatchWorkoutNavigation.Route.sets(id))
                 }
-                .navigationTitle(title(exercise, snapshot: snapshot))
+                .navigationTitle(exerciseTitle(exercise, snapshot: snapshot))
             }
         case .sets(let id):
             if let exercise = snapshot.exercises.first(where: { $0.id == id }) {
@@ -270,18 +291,6 @@ private struct _ContentView: View {
                     }
                 }
             } else if saveError { Text("Could not save set. Please retry.").font(.caption).foregroundStyle(.red) }
-        }
-    }
-
-    @ViewBuilder private func replicaRest(_ snapshot: WorkoutSessionSnapshot?) -> some View {
-        if let start = snapshot?.restStart, let duration = snapshot?.restDuration {
-            TimelineView(.periodic(from: Date(), by: 1)) { context in
-                HStack {
-                    Image(systemName: "timer")
-                    RestTimerView(date: context.date, end: start.addingTimeInterval(duration),
-                                  keepRunning: snapshot?.editorContext?.keepRestTimerRunning ?? false)
-                }.font(.caption.monospacedDigit())
-            }
         }
     }
 
@@ -386,6 +395,22 @@ private struct _ContentView: View {
             Text(draft.repetitions.map(String.init) ?? "–") + Text(" ") + Text("reps")
         }
         .font(.body.monospacedDigit())
+    }
+}
+
+private func exerciseTitle(_ exercise: WorkoutSessionSnapshot.Exercise, snapshot: WorkoutSessionSnapshot) -> String {
+    snapshot.editorContext?.exercises.first { $0.id == exercise.id }?.title ?? L10n.string("Exercise")
+}
+
+@ViewBuilder private func replicaRest(_ snapshot: WorkoutSessionSnapshot?) -> some View {
+    if let start = snapshot?.restStart, let duration = snapshot?.restDuration {
+        TimelineView(.periodic(from: Date(), by: 1)) { context in
+            HStack {
+                Image(systemName: "timer")
+                RestTimerView(date: context.date, end: start.addingTimeInterval(duration),
+                              keepRunning: snapshot?.editorContext?.keepRestTimerRunning ?? false)
+            }.font(.caption.monospacedDigit())
+        }
     }
 }
 
