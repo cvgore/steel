@@ -472,12 +472,12 @@ extension WorkoutSessionManagerStore {
 extension WorkoutSessionManagerStore {
     /// Watch editors commit locally first; transport always reuses the durable operation ID.
     @discardableResult
-    func submitWorkoutMutation(_ mutation: WorkoutMutation, id: UUID = UUID(), date: Date = Date()) throws -> WorkoutOperation {
+    func submitWorkoutMutation(_ mutation: WorkoutMutation, id: UUID = UUID(), date: Date = Date(), expectedSetResult: WorkoutSetDraft? = nil, trackCompletion: Bool = false, navigation: WatchWorkoutNavigation? = nil) throws -> WorkoutOperation {
         switch mutation {
         case .saveSet, .requestFinish, .requestCancel: break
         default: throw WorkoutReplicaStore.Failure.invalidMutation
         }
-        let operation = try workoutReplica.get().submit(mutation, id: id, date: date)
+        let operation = try workoutReplica.get().submit(mutation, id: id, date: date, expectedSetResult: expectedSetResult, trackCompletion: trackCompletion, navigation: navigation)
         presentReplicaRest()
         DispatchQueue.main.async {
             self.objectWillChange.send()

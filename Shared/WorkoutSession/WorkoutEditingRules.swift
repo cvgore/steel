@@ -85,6 +85,15 @@ public struct WatchWorkoutNavigation: Codable, Equatable {
     public private(set) var workingSets: [UUID: UUID] = [:]
     public var drafts: [UUID: WorkoutSetDraft] = [:]
     public var correctionDraft: WorkoutSetDraft?
+    public var correctionOriginal: WorkoutSetDraft?
+    public struct PendingCompletion: Codable, Equatable {
+        public let operationID: UUID
+        public let exerciseID: UUID
+        public let setID: UUID
+        public init(operationID: UUID, exerciseID: UUID, setID: UUID) {
+            self.operationID = operationID; self.exerciseID = exerciseID; self.setID = setID
+        }
+    }
 
     public init() {}
 
@@ -115,6 +124,8 @@ public struct WatchWorkoutNavigation: Codable, Equatable {
             if case .currentSet(let id)? = path.first { return id }
             return nil
         }()
+        if currentExerciseID == nil, let id = openExerciseID,
+           snapshot.exercises.contains(where: { $0.id == id }) { currentExerciseID = id }
         for exercise in snapshot.exercises where workingSets[exercise.id] == nil && openExerciseID == exercise.id {
             if let set = exercise.sets.first(where: { !$0.isCompleted }) ?? exercise.sets.last {
                 selectWorkingSet(exerciseID: exercise.id, setID: set.id, snapshot: snapshot)
@@ -145,6 +156,25 @@ public struct WatchWorkoutNavigation: Codable, Equatable {
         setPath([.currentSet(id)])
     }
 
+    /// Resume only a completion actually committed to the local outbox.
+    public mutating func resumePendingCompletion(_ pending: PendingCompletion?, snapshot: WorkoutSessionSnapshot, operations: [WorkoutOperation]) {
+        guard let pending = pending else { return }
+        guard operations.contains(where: { operation in
+            guard operation.id == pending.operationID,
+                  case let .saveSet(exerciseID, setID, _, complete, _) = operation.mutation else { return false }
+            return complete && exerciseID == pending.exerciseID && setID == pending.setID
+        }), snapshot.exercises.contains(where: { exercise in
+            exercise.id == pending.exerciseID && exercise.sets.contains { $0.id == pending.setID && $0.isCompleted }
+        }) else { return }
+        advanceIfStillSelected(exerciseID: pending.exerciseID, setID: pending.setID, snapshot: snapshot)
+    }
+
+    /// Progress data even while the user visits the set list, without changing the stack.
+    public mutating func advanceIfStillSelected(exerciseID: UUID, setID: UUID, snapshot: WorkoutSessionSnapshot) {
+        guard currentExerciseID == exerciseID, workingSets[exerciseID] == setID else { return }
+        advanceAfterCompletion(exerciseID: exerciseID, snapshot: snapshot)
+    }
+
     /// Advance only after a locally committed first completion. Remote updates never navigate.
     public mutating func advanceAfterCompletion(exerciseID: UUID, snapshot: WorkoutSessionSnapshot) {
         guard let index = snapshot.exercises.firstIndex(where: { $0.id == exerciseID }) else { return }
@@ -168,12 +198,13 @@ public struct WatchWorkoutNavigation: Codable, Equatable {
         guard let exercise = snapshot.exercises.first(where: { $0.id == exerciseID }),
               let set = exercise.sets.first(where: { $0.id == setID && $0.isCompleted }) else { return }
         correctionDraft = set.result
+        correctionOriginal = set.result
         path = [.currentSet(exerciseID), .sets(exerciseID), .correction(exerciseID: exerciseID, setID: setID)]
     }
 
     /// Native Back discards a correction; paging never changes the path or drafts.
     public mutating func setPath(_ newPath: [Route]) {
-        if path.last != newPath.last { correctionDraft = nil }
+        if path.last != newPath.last { correctionDraft = nil; correctionOriginal = nil }
         path = newPath
     }
 }

@@ -367,3 +367,10 @@
 "Set Details" = "Szczegóły serii";
 
 "Set %lld" = "Seria %lld";
+"Save Correction" = "Zapisz poprawkę";
+"Not completed" = "Nieukończona";
+"Record pending confirmation" = "Rekord oczekuje na potwierdzenie";
+"This set changed on iPhone. Your draft is kept here." = "Ta seria zmieniła się na iPhonie. Twój szkic pozostaje tutaj.";
+"Current result" = "Aktualny wynik";
+"Use my correction" = "Użyj mojej poprawki";
+"Review saved draft" = "Sprawdź zapisany szkic";

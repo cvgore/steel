@@ -7,7 +7,7 @@ import WorkoutDataKit
 public final class WorkoutReplicaStore {
     /// The app retains one owner. A load failure is exposed, never replaced with an empty outbox.
     public static let shared: Result<WorkoutReplicaStore, Error> = Result { try WorkoutReplicaStore() }
-    public enum Failure: Error { case unavailable, wrongSession, terminalRegression, invalidMutation, duplicateID }
+    public enum Failure: Error { case unavailable, wrongSession, terminalRegression, invalidMutation, duplicateID, changedSet }
     public struct SnapshotConflict: Codable, Equatable {
         public let accepted: WorkoutSessionSnapshot
         public let candidate: WorkoutSessionSnapshot
@@ -26,6 +26,8 @@ public final class WorkoutReplicaStore {
         public var operations: [WorkoutOperation] = []
         public var receipts: [WorkoutOperationReceipt] = []
         public var conflicts: [SnapshotConflict] = []
+        public var pendingCompletion: WatchWorkoutNavigation.PendingCompletion?
+        public var localNavigation: WatchWorkoutNavigation?
         public var localRevision: Int64 = 0
         public var nextSequence: Int64 = 1
         public var agreed = false
@@ -94,7 +96,7 @@ public final class WorkoutReplicaStore {
                     state.archivedSessions.append(.init(acceptedSnapshot: current, snapshot: projected,
                         operations: state.operations, receipts: state.receipts, conflicts: state.conflicts))
                     state.acceptedSnapshot = nil; state.snapshot = nil
-                    state.operations = []; state.receipts = []; state.conflicts = []
+                    state.operations = []; state.receipts = []; state.conflicts = []; state.pendingCompletion = nil; state.localNavigation = nil
                     state.nextSequence = 1; state.localRevision = 0; state.agreed = false
                 } else {
                     if current.phase.isTerminal && !incoming.phase.isTerminal { throw Failure.terminalRegression }
@@ -135,13 +137,23 @@ public final class WorkoutReplicaStore {
             state.acceptedSnapshot = incoming; state.snapshot = projected
         }
     }
-    @discardableResult public func submit(_ mutation: WorkoutMutation, id: UUID = UUID(), date: Date = Date()) throws -> WorkoutOperation {
+    @discardableResult public func submit(_ mutation: WorkoutMutation, id: UUID = UUID(), date: Date = Date(), expectedSetResult: WorkoutSetDraft? = nil, trackCompletion: Bool = false, navigation: WatchWorkoutNavigation? = nil) throws -> WorkoutOperation {
         try transaction { state in
             if let existing = state.operations.first(where: { $0.id == id }) {
                 guard existing.mutation == mutation else { throw Failure.duplicateID }; return existing
             }
             guard state.agreed, var snapshot = state.snapshot, snapshot.phase == .agreed,
                   let session = snapshot.sessionID, let accepted = state.acceptedSnapshot else { throw Failure.unavailable }
+            if trackCompletion {
+                guard case let .saveSet(exerciseID, setID, _, true, _) = mutation,
+                      let set = snapshot.exercises.first(where: { $0.id == exerciseID })?.sets.first(where: { $0.id == setID }),
+                      !set.isCompleted else { throw Failure.changedSet }
+            }
+            if let expected = expectedSetResult {
+                guard case let .saveSet(exerciseID, setID, _, _, _) = mutation,
+                      let set = snapshot.exercises.first(where: { $0.id == exerciseID })?.sets.first(where: { $0.id == setID }),
+                      set.isCompleted, set.result == expected else { throw Failure.changedSet }
+            }
             guard date.timeIntervalSinceReferenceDate.isFinite,
                   state.nextSequence > 0, state.nextSequence < Int64.max,
                   state.localRevision < Int64.max else { throw Failure.invalidMutation }
@@ -152,8 +164,19 @@ public final class WorkoutReplicaStore {
                 expectedVersion: predecessor?.expectedVersion ?? accepted.version, mutation: mutation, date: date)
             try Self.project(mutation, date: date, into: &snapshot)
             state.snapshot = snapshot; state.operations.append(op)
+            if trackCompletion {
+                guard case let .saveSet(exerciseID, setID, _, true, _) = mutation else { throw Failure.invalidMutation }
+                state.pendingCompletion = .init(operationID: id, exerciseID: exerciseID, setID: setID)
+                if let navigation = navigation { state.localNavigation = navigation }
+            }
             state.nextSequence += 1; state.localRevision += 1
             return op
+        }
+    }
+    public func saveNavigation(_ navigation: WatchWorkoutNavigation, clearingCompletion: Bool = false) throws {
+        try transaction { state in
+            state.localNavigation = navigation
+            if clearingCompletion { state.pendingCompletion = nil }
         }
     }
     public func receive(receipt: WorkoutOperationReceipt) throws {
