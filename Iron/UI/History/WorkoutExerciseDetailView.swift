@@ -249,7 +249,9 @@ struct WorkoutExerciseDetailView : View {
                 do {
                     try WorkoutCommandWriter(context: self.managedObjectContext).write(workout: workout,
                         mutation: .addSet(exerciseID: exerciseID, set: WorkoutPlannedSet()))
-                    self.select(set: self.firstUncompletedSet)
+                    if self.selectedWorkoutSet != self.firstUncompletedSet {
+                        self.select(set: self.firstUncompletedSet)
+                    }
                 } catch { self.operationError = true }
                 return
             }

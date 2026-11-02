@@ -135,10 +135,11 @@ public final class WorkoutReplicaStore {
             guard date.timeIntervalSinceReferenceDate.isFinite,
                   state.nextSequence > 0, state.nextSequence < Int64.max,
                   state.localRevision < Int64.max else { throw Failure.invalidMutation }
-            let predecessor = state.operations.last.flatMap { accepted.coveredOperationIDs.contains($0.id) ? nil : $0.id }
+            // Partial coverage advances the snapshot without rebasing its uncovered suffix.
+            let predecessor = state.operations.last.flatMap { accepted.coveredOperationIDs.contains($0.id) ? nil : $0 }
             let op = WorkoutOperation(id: id, workoutID: snapshot.workoutID, sessionID: session, originID: state.originID,
-                sequence: state.nextSequence, predecessorID: predecessor,
-                expectedVersion: accepted.version, mutation: mutation, date: date)
+                sequence: state.nextSequence, predecessorID: predecessor?.id,
+                expectedVersion: predecessor?.expectedVersion ?? accepted.version, mutation: mutation, date: date)
             try Self.project(mutation, date: date, into: &snapshot)
             state.snapshot = snapshot; state.operations.append(op)
             state.nextSequence += 1; state.localRevision += 1

@@ -244,6 +244,34 @@ final class WorkoutOperationStoreTests: XCTestCase {
         XCTAssertEqual(try WorkoutReplicaStore(url: directory.appendingPathComponent("watch.json")).snapshot, final)
     }
 
+    func testEditAfterPartialCoverageKeepsOfflineChainAcrossRestart() throws {
+        let replica = try joinedReplica()
+        let base = try store.snapshot(workoutID: workout.uuid!)
+        let first = try replica.submit(.workoutMetadata(title: "First", comment: nil))
+        let second = try replica.submit(.workoutMetadata(title: "Second", comment: nil))
+        let firstReceipt = try store.apply(operation: first)
+        try replica.adopt(snapshot: store.snapshot(workoutID: workout.uuid!))
+
+        let reopenedWatch = try WorkoutReplicaStore(url: directory.appendingPathComponent("watch.json"))
+        let third = try reopenedWatch.submit(.workoutMetadata(title: "Third", comment: "After partial coverage"))
+        XCTAssertEqual(third.predecessorID, second.id)
+        XCTAssertEqual(try store.apply(operation: third).disposition, .waitingForPredecessor)
+        let secondReceipt = try store.apply(operation: second)
+        XCTAssertEqual(secondReceipt.disposition, .applied)
+        let thirdReceipt = try store.apply(operation: third)
+        XCTAssertEqual(thirdReceipt.disposition, .applied)
+        XCTAssertEqual(thirdReceipt.version, base.version + 3)
+        XCTAssertEqual(try store.apply(operation: third), thirdReceipt)
+        for receipt in [firstReceipt, secondReceipt, thirdReceipt] { try reopenedWatch.receive(receipt: receipt) }
+        let accepted = try store.snapshot(workoutID: workout.uuid!)
+        try reopenedWatch.adopt(snapshot: accepted)
+        XCTAssertEqual(accepted.title, "Third")
+        XCTAssertEqual(accepted.comment, "After partial coverage")
+        XCTAssertEqual(reopenedWatch.snapshot, accepted)
+        XCTAssertTrue(reopenedWatch.pendingOperations.isEmpty)
+        XCTAssertTrue(reopenedWatch.state.conflicts.isEmpty)
+    }
+
     func testConcurrentPhoneCorrectionRetainsWatchCandidateAndConflictedSuccessor() throws {
         let replica = try joinedReplica()
         let first = try replica.submit(.saveSet(exerciseID: exercise.uuid!, setID: set.uuid!,

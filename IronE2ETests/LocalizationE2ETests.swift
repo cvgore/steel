@@ -177,6 +177,19 @@ final class LocalizationE2ETests: XCTestCase {
         app.buttons["Anuluj"].firstMatch.tap()
         app.buttons["Zamknij"].firstMatch.tap()
         XCTAssertTrue(complete.waitForExistence(timeout: 10))
+        // Adding a planned set must retain the draft of the still-selected first set.
+        app.buttons["Oznaczenie"].firstMatch.tap()
+        let draftComment = "Draft survives Add Set"
+        let setComment = app.textFields["Komentarz"].firstMatch
+        XCTAssertTrue(setComment.waitForExistence(timeout: 10), app.debugDescription)
+        setComment.tap()
+        setComment.typeText(draftComment + "\n")
+        app.buttons["Zamknij"].firstMatch.tap()
+        app.buttons["Dodaj serię"].firstMatch.tap()
+        app.buttons["Oznaczenie"].firstMatch.tap()
+        XCTAssertTrue(setComment.waitForExistence(timeout: 10), app.debugDescription)
+        XCTAssertEqual(setComment.value as? String, draftComment, "Add Set must preserve the selected set's draft")
+        app.buttons["Zamknij"].firstMatch.tap()
         complete.tap()
         authorizeHealthIfPresented()
         let completed = app.images["Ukończono"].firstMatch
