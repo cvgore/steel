@@ -24,6 +24,13 @@ private struct _ContentView: View {
     @AppStorage("watchWorkoutNavigation.v1") private var savedNavigation = Data()
     @State private var navigation = WatchWorkoutNavigation()
     @State private var restored = false
+    @State private var selectedField: EditorField = .weight
+    @State private var saveLocked = false
+    @State private var saveError = false
+    @State private var weightPrecision = 0
+    @FocusState private var crownFocused: Bool
+
+    private enum EditorField { case weight, repetitions }
 
     private var replicaState: WorkoutReplicaStore.State? { try? owner.workoutReplica.get().state }
     private var snapshot: WorkoutSessionSnapshot? { replicaState?.snapshot }
@@ -79,8 +86,11 @@ private struct _ContentView: View {
         if let manager = owner.workoutSessionManager {
             WorkoutSessionView(workoutSessionManager: manager)
         } else {
-            Text(measurementError ?? L10n.string("Waiting for workout measurements"))
-                .multilineTextAlignment(.center).scenePadding()
+            VStack {
+                replicaRest(snapshot)
+                Text(measurementError ?? L10n.string("Waiting for workout measurements"))
+                    .multilineTextAlignment(.center)
+            }.scenePadding()
         }
     }
 
@@ -118,11 +128,12 @@ private struct _ContentView: View {
 
     @ViewBuilder private func destination(_ route: WatchWorkoutNavigation.Route, snapshot: WorkoutSessionSnapshot) -> some View {
         switch route {
-        case .currentSet(let id):
+        case .currentSet(let routeID):
+            let id = navigation.currentExerciseID ?? routeID
             if let exercise = snapshot.exercises.first(where: { $0.id == id }) {
                 List {
                     if let setID = navigation.workingSets[id], let set = exercise.sets.first(where: { $0.id == setID }) {
-                        setSummary(navigation.drafts[setID] ?? set.result, unit: snapshot.editorContext?.weightUnit)
+                        editor(exercise: exercise, set: set, snapshot: snapshot)
                     } else { Text("No sets") }
                     NavigationLink("Exercise Sets", value: WatchWorkoutNavigation.Route.sets(id))
                 }
@@ -147,6 +158,94 @@ private struct _ContentView: View {
             List {
                 if let draft = navigation.correctionDraft { setSummary(draft, unit: snapshot.editorContext?.weightUnit) }
             }.navigationTitle(Text("Set Details"))
+        }
+    }
+
+    private func editor(exercise: WorkoutSessionSnapshot.Exercise, set: WorkoutSessionSnapshot.Set,
+                        snapshot: WorkoutSessionSnapshot) -> some View {
+        let unit = WeightUnit(rawValue: snapshot.editorContext?.weightUnit ?? "") ?? .metric
+        let draft = navigation.drafts[set.id] ?? set.result
+        let crown = Binding<Double>(get: {
+            let value = navigation.drafts[set.id] ?? set.result
+            return selectedField == .weight
+                ? WeightUnit.convert(weight: value.weight ?? 0, from: .metric, to: unit)
+                : Double(value.repetitions ?? 0)
+        }, set: { value in
+            var edited = navigation.drafts[set.id] ?? set.result
+            if selectedField == .weight {
+                edited.weight = min(WorkoutEditingRules.maximumWeight, max(0, WeightUnit.convert(weight: value, from: unit, to: .metric)))
+            } else {
+                edited.repetitions = Int16(max(0, min(value.rounded(), Double(WorkoutEditingRules.maximumRepetitions))))
+            }
+            navigation.drafts[set.id] = edited
+        })
+        return VStack(spacing: 8) {
+            replicaRest(snapshot)
+            HStack {
+                Button { selectedField = .weight; crownFocused = true } label: {
+                    Text(draft.weight.map { WeightUnit.format(weight: $0, from: .metric, to: unit) } ?? "–")
+                        .frame(maxWidth: .infinity).padding(4)
+                        .background(selectedField == .weight ? Color.accentColor : Color.secondary.opacity(0.2))
+                }.accessibilityLabel(Text("Weight"))
+                Button { selectedField = .repetitions; crownFocused = true } label: {
+                    Text(draft.repetitions.map(String.init) ?? "–")
+                        .frame(maxWidth: .infinity).padding(4)
+                        .background(selectedField == .repetitions ? Color.accentColor : Color.secondary.opacity(0.2))
+                }.accessibilityLabel(Text("Repetitions"))
+            }.font(.title3.monospacedDigit()).buttonStyle(.plain)
+            .focusable(!set.isCompleted)
+            .focused($crownFocused)
+            .digitalCrownRotation(crown, from: 0,
+                through: selectedField == .weight ? WeightUnit.convert(weight: WorkoutEditingRules.maximumWeight, from: .metric, to: unit) : Double(WorkoutEditingRules.maximumRepetitions),
+                by: selectedField == .repetitions ? 1 : (weightPrecision == 1 ? 0.1 : (weightPrecision == 2 ? 0.001 : (snapshot.editorContext?.exercises.first(where: { $0.id == exercise.id })?.barbellWeight != nil ? unit.barbellIncrement : 1))),
+                sensitivity: .low, isContinuous: false, isHapticFeedbackEnabled: true)
+            .onAppear { crownFocused = !set.isCompleted }
+            if selectedField == .weight && !set.isCompleted {
+                Button {
+                    weightPrecision = (weightPrecision + 1) % 3
+                    crownFocused = true
+                } label: {
+                    Text(LocalizedStringKey(weightPrecision == 0 ? "Weight step: standard" : (weightPrecision == 1 ? "Weight step: 0.1" : "Weight step: 0.001")))
+                        .font(.caption)
+                }
+            }
+            Button("Save Set") { saveSet(exerciseID: exercise.id, setID: set.id) }
+                .disabled(set.isCompleted || saveLocked || snapshot.phase != .agreed || snapshot.editorContext?.exercises.first(where: { $0.id == exercise.id }) == nil)
+            if saveError { Text("Could not save set. Please retry.").font(.caption).foregroundStyle(.red) }
+        }
+    }
+
+    @ViewBuilder private func replicaRest(_ snapshot: WorkoutSessionSnapshot?) -> some View {
+        if let start = snapshot?.restStart, let duration = snapshot?.restDuration {
+            TimelineView(.periodic(from: Date(), by: 1)) { context in
+                HStack {
+                    Image(systemName: "timer")
+                    RestTimerView(date: context.date, end: start.addingTimeInterval(duration),
+                                  keepRunning: snapshot?.editorContext?.keepRestTimerRunning ?? false)
+                }.font(.caption.monospacedDigit())
+            }
+        }
+    }
+
+    private func saveSet(exerciseID: UUID, setID: UUID) {
+        guard !saveLocked else { return }
+        do {
+            let replica = try owner.workoutReplica.get()
+            guard let current = replica.snapshot, current.phase == .agreed,
+                  let exercise = current.exercises.first(where: { $0.id == exerciseID }),
+                  let set = exercise.sets.first(where: { $0.id == setID }), !set.isCompleted,
+                  let context = current.editorContext?.exercises.first(where: { $0.id == exerciseID }) else { return }
+            let draft = navigation.drafts[setID] ?? set.result
+            guard WorkoutEditingRules.isValid(draft) else { saveError = true; return }
+            saveLocked = true
+            _ = try owner.submitWorkoutMutation(.saveSet(exerciseID: exerciseID, setID: setID, draft: draft,
+                                                         complete: true, restDuration: context.restDuration))
+            saveError = false
+            if let updated = replica.snapshot { navigation.advanceAfterCompletion(exerciseID: exerciseID, snapshot: updated) }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { saveLocked = false }
+        } catch {
+            saveLocked = false
+            saveError = true
         }
     }
 

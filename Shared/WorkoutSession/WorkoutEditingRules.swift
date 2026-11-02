@@ -81,6 +81,7 @@ public struct WatchWorkoutNavigation: Codable, Equatable {
     public private(set) var sessionID: UUID?
     public var page: Page = .workout
     public var path: [Route] = []
+    public private(set) var currentExerciseID: UUID?
     public private(set) var workingSets: [UUID: UUID] = [:]
     public var drafts: [UUID: WorkoutSetDraft] = [:]
     public var correctionDraft: WorkoutSetDraft?
@@ -109,7 +110,12 @@ public struct WatchWorkoutNavigation: Codable, Equatable {
             snapshot.exercises.contains { $0.id == exerciseID && $0.sets.contains { $0.id == setID } }
         }
         // Keep an open exercise usable when its selected set disappears or its first set arrives.
-        for exercise in snapshot.exercises where workingSets[exercise.id] == nil && path.contains(.currentSet(exercise.id)) {
+        let openExerciseID: UUID? = {
+            if let currentExerciseID = currentExerciseID { return currentExerciseID }
+            if case .currentSet(let id)? = path.first { return id }
+            return nil
+        }()
+        for exercise in snapshot.exercises where workingSets[exercise.id] == nil && openExerciseID == exercise.id {
             if let set = exercise.sets.first(where: { !$0.isCompleted }) ?? exercise.sets.last {
                 selectWorkingSet(exerciseID: exercise.id, setID: set.id, snapshot: snapshot)
             }
@@ -117,7 +123,8 @@ public struct WatchWorkoutNavigation: Codable, Equatable {
         // A remote reorder or result update does not navigate. Only removed identities trim the stack.
         let valid = path.prefix { route in
             switch route {
-            case .currentSet(let id), .sets(let id): return snapshot.exercises.contains { $0.id == id }
+            case .currentSet(let id): return snapshot.exercises.contains { $0.id == (currentExerciseID ?? id) }
+            case .sets(let id): return snapshot.exercises.contains { $0.id == id }
             case let .correction(exerciseID, setID):
                 return snapshot.exercises.contains { $0.id == exerciseID && $0.sets.contains { $0.id == setID } }
             }
@@ -127,13 +134,34 @@ public struct WatchWorkoutNavigation: Codable, Equatable {
 
     public mutating func selectExercise(_ id: UUID, snapshot: WorkoutSessionSnapshot) {
         guard let exercise = snapshot.exercises.first(where: { $0.id == id }) else { return }
-        if workingSets[id] == nil, let set = exercise.sets.first(where: { !$0.isCompleted }) ?? exercise.sets.last {
+        currentExerciseID = id
+        let selected = workingSets[id].flatMap { selectedID in exercise.sets.first { $0.id == selectedID } }
+        if (selected == nil || selected?.isCompleted == true), let set = exercise.sets.first(where: { !$0.isCompleted }) ?? selected ?? exercise.sets.last {
             workingSets[id] = set.id
         }
         if let setID = workingSets[id], drafts[setID] == nil {
             drafts[setID] = snapshot.editorDraft(exerciseID: id, setID: setID)
         }
         setPath([.currentSet(id)])
+    }
+
+    /// Advance only after a locally committed first completion. Remote updates never navigate.
+    public mutating func advanceAfterCompletion(exerciseID: UUID, snapshot: WorkoutSessionSnapshot) {
+        guard let index = snapshot.exercises.firstIndex(where: { $0.id == exerciseID }) else { return }
+        if let next = snapshot.exercises[index].sets.first(where: { !$0.isCompleted }) {
+            selectWorkingSet(exerciseID: exerciseID, setID: next.id, snapshot: snapshot)
+            return
+        }
+        let count = snapshot.exercises.count
+        guard count > 1 else { return }
+        for offset in 1..<count {
+            let exercise = snapshot.exercises[(index + offset) % count]
+            if let next = exercise.sets.first(where: { !$0.isCompleted }) {
+                selectWorkingSet(exerciseID: exercise.id, setID: next.id, snapshot: snapshot)
+                currentExerciseID = exercise.id
+                return
+            }
+        }
     }
 
     public mutating func showCorrection(exerciseID: UUID, setID: UUID, snapshot: WorkoutSessionSnapshot) {
