@@ -31,6 +31,11 @@ public class WorkoutDataStorage {
             assert(storeDescription.shouldAddStoreAsynchronously == false) // this is the default value
             persistentContainer.persistentStoreDescriptions = [storeDescription]
         }
+        for description in persistentContainer.persistentStoreDescriptions {
+            do { try Self.prepareSessionMigration(description) }
+            catch { fatalError("Could not migrate workout store: \(error)") }
+        }
+        persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
         os_log("Loading persistent store", log: .workoutDataStorage, type: .default)
         loadPersistentStores(tryToRecoverFromFailedMigration: true) { storeDescription in
             os_log("Successfully loaded persistent store: %@", log: .workoutDataStorage, type: .info, storeDescription)
@@ -119,6 +124,8 @@ import os.signpost
 extension WorkoutDataStorage {
     public static func sendObjectsWillChange(changes: NSManagedObjectContext.ObjectChanges) {
         for changedObject in changes.inserted.union(changes.updated).union(changes.deleted) {
+            // Operation metadata has no graph-facing UI observation to propagate.
+            if ["WorkoutSessionState", "WorkoutAppliedOperation"].contains(changedObject.entity.name ?? "") { continue }
             // instruments debugging
             let signPostID = OSSignpostID(log: .coreDataMonitor)
             let signPostName: StaticString = "process single workout data change"

@@ -304,3 +304,9 @@
 "t-bar machine" = "t-bar machine";
 "v-bar" = "v-bar";
 "wide bar" = "wide bar";
+
+"Could not save set" = "Could not save set";
+"Your changes are still in the editor. Please try again." = "Your changes are still in the editor. Please try again.";
+
+"Could not save changes" = "Could not save changes";
+"Please try again." = "Please try again.";

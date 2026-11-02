@@ -42,7 +42,7 @@ public class Workout: NSManagedObject, Codable {
     }
     
     public class func create(context: NSManagedObjectContext) -> Workout {
-        let workout = Workout(context: context)
+        let workout = Workout(entity: NSEntityDescription.entity(forEntityName: "Workout", in: context)!, insertInto: context)
         workout.uuid = UUID()
         return workout
     }

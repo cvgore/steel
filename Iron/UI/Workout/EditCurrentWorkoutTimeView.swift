@@ -10,35 +10,42 @@ import SwiftUI
 import WorkoutDataKit
 
 struct EditCurrentWorkoutTimeView: View {
+    @Environment(\.managedObjectContext) var managedObjectContext
     @ObservedObject var workout: Workout
-    
-    var automaticTimeTracking: Binding<Bool> {
-        Binding(
-            get: {
-                self.workout.end == nil
-            },
-            set: { enabled in
-                if enabled {
-                    precondition(self.workout.isCurrentWorkout)
-                    self.workout.end = nil
-                } else {
-                    self.workout.end = self.workout.safeEnd
-                }
-            }
-        )
+    @State private var operationError = false
+
+    private func commit(_ change: (WorkoutSessionSnapshot) -> (Date, Date?)) {
+        do {
+            let writer = WorkoutCommandWriter(context: managedObjectContext)
+            let base = try writer.snapshot(workout: workout)
+            guard base.start == workout.start, base.end == workout.end else { throw WorkoutCommandWriter.Failure.notApplied }
+            let (start, end) = change(base)
+            try writer.write(workout: workout, mutation: .workoutTime(start: start, end: end), expectedVersion: base.version)
+        } catch { operationError = true }
+    }
+    private var start: Binding<Date> {
+        Binding(get: { workout.safeStart }, set: { value in commit { (value, $0.end) } })
+    }
+    private var end: Binding<Date> {
+        Binding(get: { workout.safeEnd }, set: { value in commit { ($0.start ?? workout.safeStart, value) } })
+    }
+    private var automaticTimeTracking: Binding<Bool> {
+        Binding(get: { workout.end == nil }, set: { enabled in
+            commit { base in (base.start ?? workout.safeStart, enabled ? nil : max(base.start ?? Date(), Date())) }
+        })
     }
 
     var body: some View {
         List {
             Section {
-                DatePicker(selection: $workout.safeStart, in: ...min(workout.safeEnd, Date())) {
+                DatePicker(selection: start, in: ...min(workout.safeEnd, Date())) {
                     Text("Start")
                 }
                 
                 Toggle("Automatic Time Tracking", isOn: automaticTimeTracking)
 
                 if !automaticTimeTracking.wrappedValue {
-                    DatePicker(selection: $workout.safeEnd, in: workout.safeStart...Date()) {
+                    DatePicker(selection: end, in: workout.safeStart...Date()) {
                         Text("End")
                     }
                 }
@@ -46,15 +53,15 @@ struct EditCurrentWorkoutTimeView: View {
             
             Section {
                 Button("Reset Start Time") {
-                    let newStart = Date()
-                    if let end = self.workout.end, end < newStart {
-                        self.workout.end = newStart
-                    }
-                    self.workout.start = newStart
+                    let now = Date()
+                    commit { base in (now, base.end.map { max($0, now) }) }
                 }
             }
         }
         .listStyleCompat_InsetGroupedListStyle()
+        .alert(isPresented: $operationError) {
+            Alert(title: Text("Could not save changes"), message: Text("Please try again."), dismissButton: .default(Text("Ok")))
+        }
     }
 }
 

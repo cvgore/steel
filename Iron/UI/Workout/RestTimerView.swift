@@ -65,9 +65,9 @@ struct RestTimerView: View {
                 guard let duration = self.restTimerStore.restTimerDuration else { return }
                 let newDuration = duration - 10
                 if newDuration > 0 {
-                    self.restTimerStore.restTimerDuration = newDuration
+                    self.restTimerStore.setRest(start: self.restTimerStore.restTimerStart, duration: newDuration)
                 } else {
-                    self.restTimerStore.restTimerDuration = nil
+                    self.restTimerStore.cancel()
                 }
             }) {
                 Text("-10s")
@@ -75,14 +75,13 @@ struct RestTimerView: View {
 
             CircleButton(action: {
                 guard let duration = self.restTimerStore.restTimerDuration else { return }
-                self.restTimerStore.restTimerDuration = duration + 10
+                self.restTimerStore.setRest(start: self.restTimerStore.restTimerStart, duration: duration + 10)
             }) {
                 Text("+10s")
             }
 
             CircleButton(color: Color.red.opacity(0.9), action: {
-                self.restTimerStore.restTimerStart = nil
-                self.restTimerStore.restTimerDuration = nil
+                self.restTimerStore.cancel()
             }) {
                 Text("Cancel").fontWeight(.semibold).foregroundColor(.white)
             }
@@ -99,8 +98,7 @@ struct RestTimerView: View {
     }
     
     private func startTimer(duration: TimeInterval) {
-        restTimerStore.restTimerStart = Date()
-        restTimerStore.restTimerDuration = duration
+        guard restTimerStore.setRest(start: Date(), duration: duration) else { return }
         
         restTimerStore.recentRestTimes.removeAll { $0 == duration }
         restTimerStore.recentRestTimes.insert(duration, at: 0)
@@ -175,6 +173,9 @@ struct RestTimerView: View {
             } else {
                 stoppedTimerView.animation(.default)
             }
+        }
+        .alert(isPresented: $restTimerStore.operationError) {
+            Alert(title: Text("Could not save changes"), message: Text("Please try again."), dismissButton: .default(Text("Ok")))
         }
     }
 }

@@ -156,10 +156,52 @@ final class LocalizationE2ETests: XCTestCase {
         authorizeHealthIfPresented()
         let complete = app.buttons["Zakończ serię"].firstMatch
         XCTAssertTrue(complete.waitForExistence(timeout: 10), app.debugDescription)
+        let duration = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Czas treningu")).firstMatch
+        XCTAssertTrue(duration.waitForExistence(timeout: 10), app.debugDescription)
+        duration.tap()
+        let resetStart = app.buttons["Ustaw początek na teraz"].firstMatch
+        XCTAssertTrue(resetStart.waitForExistence(timeout: 10), app.debugDescription)
+        resetStart.tap()
+        app.buttons["Zamknij"].firstMatch.tap()
+        // Known local rest commits must not make the already-open set draft stale.
+        let rest = app.buttons["Czas przerwy"].firstMatch
+        XCTAssertTrue(rest.waitForExistence(timeout: 10), app.debugDescription)
+        rest.tap()
+        XCTAssertTrue(app.navigationBars["Czas przerwy"].waitForExistence(timeout: 10))
+        let minute = app.buttons["01:00"].firstMatch
+        XCTAssertTrue(minute.waitForExistence(timeout: 10), app.debugDescription)
+        minute.tap()
+        let increase = app.buttons["+10 s"].firstMatch
+        XCTAssertTrue(increase.waitForExistence(timeout: 10), app.debugDescription)
+        increase.tap()
+        app.buttons["Anuluj"].firstMatch.tap()
+        app.buttons["Zamknij"].firstMatch.tap()
+        XCTAssertTrue(complete.waitForExistence(timeout: 10))
+        // Adding a planned set must retain the draft of the still-selected first set.
+        app.buttons["Oznaczenie"].firstMatch.tap()
+        let draftComment = "Draft survives Add Set"
+        let setComment = app.textFields["Komentarz"].firstMatch
+        XCTAssertTrue(setComment.waitForExistence(timeout: 10), app.debugDescription)
+        setComment.tap()
+        setComment.typeText(draftComment + "\n")
+        app.buttons["Zamknij"].firstMatch.tap()
+        app.buttons["Dodaj serię"].firstMatch.tap()
+        app.buttons["Oznaczenie"].firstMatch.tap()
+        XCTAssertTrue(setComment.waitForExistence(timeout: 10), app.debugDescription)
+        XCTAssertEqual(setComment.value as? String, draftComment, "Add Set must preserve the selected set's draft")
+        app.buttons["Zamknij"].firstMatch.tap()
         complete.tap()
         authorizeHealthIfPresented()
         let completed = app.images["Ukończono"].firstMatch
         XCTAssertTrue(completed.waitForExistence(timeout: 10), app.debugDescription)
+        // Correcting a completed set must keep the same editor, without advancing
+        // to the next unfinished set or presenting a new completion action.
+        completed.tap()
+        let correction = app.buttons["OK"].firstMatch
+        XCTAssertTrue(correction.waitForExistence(timeout: 10), app.debugDescription)
+        correction.tap()
+        XCTAssertTrue(correction.waitForExistence(timeout: 10), "Correction must preserve the selected set")
+        XCTAssertFalse(complete.exists, "Correction must not advance to a new completion")
         app.navigationBars.buttons.element(boundBy: 0).tap()
         app.buttons["Zakończ trening"].tap()
         let finish = app.navigationBars.buttons["Zakończ"]

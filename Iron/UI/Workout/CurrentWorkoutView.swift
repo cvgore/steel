@@ -22,6 +22,20 @@ struct CurrentWorkoutView: View {
     @ObservedObject var workout: Workout
     
     @State private var showingCancelActionSheet = false
+    @State private var operationError = false
+
+    @discardableResult
+    private func commit(_ mutation: WorkoutMutation, expectedVersion: Int64? = nil) -> Bool {
+        do {
+            try WorkoutCommandWriter(context: managedObjectContext).write(workout: workout, mutation: mutation, expectedVersion: expectedVersion)
+            return true
+        } catch { operationError = true; return false }
+    }
+
+    private func captureMetadataBase() -> WorkoutSessionSnapshot? {
+        do { return try WorkoutCommandWriter(context: managedObjectContext).snapshot(workout: workout) }
+        catch { operationError = true; return nil }
+    }
     @State private var activeSheet: SheetType?
     
     private enum SheetType: Identifiable {
@@ -39,13 +53,9 @@ struct CurrentWorkoutView: View {
                 recentExercises: AddExercisesSheet.loadRecentExercises(context: managedObjectContext, exercises: exerciseStore.shownExercises),
                 onAdd: { selection in
                     for exercise in selection {
-                        let workoutExercise = WorkoutExercise.create(context: self.managedObjectContext)
-                        self.workout.addToWorkoutExercises(workoutExercise)
-                        workoutExercise.exerciseUuid = exercise.uuid
-                        precondition(self.workout.isCurrentWorkout == true)
-                        workoutExercise.addToWorkoutSets(self.createDefaultWorkoutSets(workoutExercise: workoutExercise))
+                        commit(.addExercise(id: UUID(), exerciseID: exercise.uuid,
+                            sets: createDefaultWorkoutSets(exerciseID: exercise.uuid)))
                     }
-                    self.managedObjectContext.saveOrCrash()
                 }
             ).typeErased
         case .finish:
@@ -53,10 +63,10 @@ struct CurrentWorkoutView: View {
         }
     }
     
-    private func createDefaultWorkoutSets(workoutExercise: WorkoutExercise) -> NSOrderedSet {
+    private func createDefaultWorkoutSets(exerciseID: UUID) -> [WorkoutPlannedSet] {
         var numberOfSets = 3
         // try to guess the number of sets
-        if let history = try? managedObjectContext.fetch(workoutExercise.historyFetchRequest), history.count >= 3 {
+        if let history = try? managedObjectContext.fetch(WorkoutExercise.historyFetchRequest(of: exerciseID, until: workout.start)), history.count >= 3 {
             // one month since last workout and at least three workouts
             if let firstHistoryStart = history[0].workout?.start, let thirdHistoryStart = history[2].workout?.start {
                 let cutoff = min(thirdHistoryStart, Calendar.current.date(byAdding: .month, value: -1, to: firstHistoryStart)!)
@@ -74,12 +84,7 @@ struct CurrentWorkoutView: View {
                 numberOfSets = median.workoutSets?.count ?? numberOfSets
             }
         }
-        var workoutSets = [WorkoutSet]()
-        for _ in 0..<numberOfSets {
-            let workoutSet = WorkoutSet.create(context: managedObjectContext)
-            workoutSets.append(workoutSet)
-        }
-        return NSOrderedSet(array: workoutSets)
+        return (0..<numberOfSets).map { _ in WorkoutPlannedSet() }
     }
 
     private var workoutExercises: [WorkoutExercise] {
@@ -87,12 +92,14 @@ struct CurrentWorkoutView: View {
     }
     
     @State private var workoutCommentInput: String? = nil
+    @State private var commentBase: WorkoutSessionSnapshot?
     private var workoutComment: Binding<String> {
         Binding(
             get: {
                 self.workoutCommentInput ?? self.workout.comment ?? ""
         },
             set: { newValue in
+                if self.commentBase == nil { self.commentBase = self.captureMetadataBase() }
                 self.workoutCommentInput = newValue
         }
         )
@@ -100,18 +107,23 @@ struct CurrentWorkoutView: View {
     private func adjustAndSaveWorkoutCommentInput() {
         guard let newValue = workoutCommentInput?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
         workoutCommentInput = newValue
-        workout.comment = newValue.isEmpty ? nil : newValue
-        self.managedObjectContext.saveOrCrash()
+        guard let base = commentBase else { operationError = true; return }
+        if commit(.workoutMetadata(title: base.title, comment: newValue.isEmpty ? nil : newValue), expectedVersion: base.version) {
+            commentBase = nil
+            workoutCommentInput = nil
+        }
 
     }
     
     @State private var workoutTitleInput: String? = nil
+    @State private var titleBase: WorkoutSessionSnapshot?
     private var workoutTitle: Binding<String> {
         Binding(
             get: {
                 self.workoutTitleInput ?? self.workout.title ?? ""
             },
             set: { newValue in
+                if self.titleBase == nil { self.titleBase = self.captureMetadataBase() }
                 self.workoutTitleInput = newValue
             }
         )
@@ -119,8 +131,11 @@ struct CurrentWorkoutView: View {
     private func adjustAndSaveWorkoutTitleInput() {
         guard let newValue = workoutTitleInput?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
         workoutTitleInput = newValue
-        workout.title = newValue.isEmpty ? nil : newValue
-        self.managedObjectContext.saveOrCrash()
+        guard let base = titleBase else { operationError = true; return }
+        if commit(.workoutMetadata(title: newValue.isEmpty ? nil : newValue, comment: base.comment), expectedVersion: base.version) {
+            titleBase = nil
+            workoutTitleInput = nil
+        }
     }
     
     private func currentWorkoutExerciseDetailView(workoutExercise: WorkoutExercise) -> some View {
@@ -274,16 +289,16 @@ struct CurrentWorkoutView: View {
                         }
                         .onDelete { offsets in
                             let workoutExercises = self.workoutExercises
-                            for i in offsets {
-                                let workoutExercise = workoutExercises[i]
-                                self.managedObjectContext.delete(workoutExercise)
-                                workoutExercise.workout?.removeFromWorkoutExercises(workoutExercise)
-                            }
+                            commit(.removeExercises(offsets.compactMap { workoutExercises[$0].uuid }))
                         }
                         .onMove { source, destination in
-                            var workoutExercises = self.workoutExercises
-                            workoutExercises.move(fromOffsets: source, toOffset: destination)
-                            self.workout.workoutExercises = NSOrderedSet(array: workoutExercises)
+                            do {
+                                let base = try WorkoutCommandWriter(context: managedObjectContext).snapshot(workout: workout)
+                                var ids = base.exercises.map(\.id)
+                                guard ids == workoutExercises.compactMap(\.uuid) else { operationError = true; return }
+                                ids.move(fromOffsets: source, toOffset: destination)
+                                commit(.reorderExercises(ids), expectedVersion: base.version)
+                            } catch { operationError = true }
                         }
                         
                         Button(action: {
@@ -318,6 +333,9 @@ struct CurrentWorkoutView: View {
         .sheet(item: $activeSheet) { type in
             self.sheetView(type: type)
         }
+        .alert(isPresented: $operationError) {
+            Alert(title: Text("Could not save changes"), message: Text("Please try again."), dismissButton: .default(Text("Ok")))
+        }
         .actionSheet(isPresented: $showingCancelActionSheet, content: {
             ActionSheet(title: Text("This cannot be undone."), message: nil, buttons: [
                 .destructive(Text("Discard Workout"), action: {
@@ -333,8 +351,7 @@ struct CurrentWorkoutView: View {
 struct WorkoutView_Previews: PreviewProvider {
     static var previews: some View {
         if RestTimerStore.shared.restTimerRemainingTime == nil {
-            RestTimerStore.shared.restTimerStart = Date()
-            RestTimerStore.shared.restTimerDuration = 10
+            RestTimerStore.shared.presentCommittedRest(start: Date(), duration: 10)
         }
         return CurrentWorkoutView(workout: MockWorkoutData.metricRandom.currentWorkout)
             .mockEnvironment(weightUnit: .metric)

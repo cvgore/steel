@@ -304,3 +304,9 @@
 "t-bar machine" = "maszyna typu T";
 "v-bar" = "uchwyt V";
 "wide bar" = "szeroki drążek";
+
+"Could not save set" = "Nie udało się zapisać serii";
+"Your changes are still in the editor. Please try again." = "Twoje zmiany pozostały w edytorze. Spróbuj ponownie.";
+
+"Could not save changes" = "Nie udało się zapisać zmian";
+"Please try again." = "Spróbuj ponownie.";

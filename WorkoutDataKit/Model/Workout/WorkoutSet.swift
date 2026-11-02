@@ -14,11 +14,11 @@ extension WorkoutSet {
 }
 
 public class WorkoutSet: NSManagedObject, Codable {
-    public static var MAX_REPETITIONS: Int16 = 9999
-    public static var MAX_WEIGHT: Double = 99999
+    public static var MAX_REPETITIONS: Int16 = WorkoutEditingRules.maximumRepetitions
+    public static var MAX_WEIGHT: Double = WorkoutEditingRules.maximumWeight
     
     public class func create(context: NSManagedObjectContext) -> WorkoutSet {
-        let workoutSet = WorkoutSet(context: context)
+        let workoutSet = WorkoutSet(entity: NSEntityDescription.entity(forEntityName: "WorkoutSet", in: context)!, insertInto: context)
         workoutSet.uuid = UUID()
         return workoutSet
     }
@@ -128,9 +128,11 @@ public class WorkoutSet: NSManagedObject, Codable {
     private enum CodingKeys: String, CodingKey {
         case uuid
         case repetitions
+        case repetitionsWereNil
         case minTargetRepetitions
         case maxTargetRepetitions
         case weight
+        case weightWasNil
         case rpe
         case tag
         case comment
@@ -149,6 +151,9 @@ public class WorkoutSet: NSManagedObject, Codable {
         uuid = try container.decodeIfPresent(UUID.self, forKey: .uuid) ?? UUID() // make sure we always have an UUID
         repetitionsValue = try container.decode(Int16.self, forKey: .repetitions)
         weightValue = try container.decode(Double.self, forKey: .weight)
+        // Keep legacy scalar keys readable by older versions while preserving missing results.
+        if try container.decodeIfPresent(Bool.self, forKey: .repetitionsWereNil) == true { repetitions = nil }
+        if try container.decodeIfPresent(Bool.self, forKey: .weightWasNil) == true { weight = nil }
         rpeValue = try container.decodeIfPresent(Double.self, forKey: .rpe)
         tagValue = WorkoutSetTag(rawValue: try container.decodeIfPresent(String.self, forKey: .tag) ?? "")
         comment = try container.decodeIfPresent(String.self, forKey: .comment)
@@ -162,6 +167,8 @@ public class WorkoutSet: NSManagedObject, Codable {
         try container.encode(uuid ?? UUID(), forKey: .uuid)
         try container.encode(repetitionsValue, forKey: .repetitions)
         try container.encode(weightValue, forKey: .weight)
+        if repetitions == nil { try container.encode(true, forKey: .repetitionsWereNil) }
+        if weight == nil { try container.encode(true, forKey: .weightWasNil) }
         try container.encodeIfPresent(rpeValue, forKey: .rpe)
         try container.encodeIfPresent(tagValue?.rawValue, forKey: .tag)
         try container.encodeIfPresent(comment, forKey: .comment)

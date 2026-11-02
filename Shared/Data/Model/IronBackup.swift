@@ -119,6 +119,9 @@ enum IronBackup {
         let workoutRequest: NSFetchRequest<Workout> = Workout.fetchRequest()
         workoutRequest.predicate = NSPredicate(format: "\(#keyPath(Workout.isCurrentWorkout)) != %@", NSNumber(booleanLiteral: true))
         let workouts = try context.fetch(workoutRequest)
+        // A graph backup carries history only. Do not let old receipts/session identity
+        // attach to replacement history objects with the same stable workout IDs.
+        try WorkoutOperationStore.discardSessionMetadata(workoutIDs: Set(workouts.compactMap(\.uuid)), in: context)
         for workout in workouts {
             context.delete(workout)
         }

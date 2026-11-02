@@ -91,6 +91,92 @@ class IronBackupTests: XCTestCase {
         XCTAssertNoThrow(try IronBackup.createBackupData(managedObjectContext: context, exerciseStore: exerciseStore))
     }
 
+    func testBackupRestoresHistoryGraphWithoutSessionStateAndPreservesActiveSession() throws {
+        let context = persistenContainer.viewContext
+        let store = WorkoutOperationStore(coordinator: persistenContainer.persistentStoreCoordinator)
+        func makeWorkout(title: String) -> Workout {
+            let workout = Workout.create(context: context)
+            workout.title = title
+            workout.comment = "Workout metadata"
+            workout.start = Date(timeIntervalSince1970: 1_800_000_000)
+            workout.isCurrentWorkout = true
+            for index in 0..<2 {
+                let exercise = WorkoutExercise.create(context: context)
+                exercise.exerciseUuid = UUID()
+                exercise.comment = "Exercise \(index)"
+                workout.addToWorkoutExercises(exercise)
+                for setIndex in 0..<2 {
+                    let set = WorkoutSet.create(context: context)
+                    set.isCompleted = true
+                    if setIndex == 1 { set.weightValue = 0; set.repetitionsValue = 0 }
+                    set.comment = "Set metadata"
+                    set.minTargetRepetitionsValue = 4
+                    set.maxTargetRepetitionsValue = 8
+                    exercise.addToWorkoutSets(set)
+                }
+            }
+            return workout
+        }
+        let history = makeWorkout(title: "History")
+        try context.save()
+        let historyID = try XCTUnwrap(history.uuid)
+        let historyOperation = WorkoutOperation(workoutID: historyID, expectedVersion: 0,
+            mutation: .rest(start: Date(timeIntervalSince1970: 1_800_000_100), duration: 90))
+        let historyReceipt = try store.apply(operation: historyOperation, mergingInto: context)
+        XCTAssertEqual(historyReceipt.disposition, .applied)
+        history.isCurrentWorkout = false
+        history.end = history.start!.addingTimeInterval(600)
+        let active = makeWorkout(title: "Active")
+        try context.save()
+        let activeID = try XCTUnwrap(active.uuid)
+        let activeOperation = WorkoutOperation(workoutID: activeID, expectedVersion: 0,
+            mutation: .rest(start: Date(timeIntervalSince1970: 1_800_000_200), duration: 120))
+        let activeReceipt = try store.apply(operation: activeOperation, mergingInto: context)
+        XCTAssertEqual(activeReceipt.disposition, .applied)
+        let expectedHistory = try store.snapshot(workoutID: historyID)
+        let expectedActive = try store.snapshot(workoutID: activeID)
+        XCTAssertNotNil(expectedHistory.sessionID)
+        XCTAssertFalse(expectedHistory.coveredOperationIDs.isEmpty)
+
+        let data = try IronBackup.createBackupData(managedObjectContext: context, exerciseStore: exerciseStore)
+        let payload = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+        XCTAssertEqual(payload["version"] as? Int, 3)
+        XCTAssertEqual(Set(payload.keys), Set(["version", "date", "customExercises", "workoutPlans", "workouts"]))
+        let exportedWorkouts = try XCTUnwrap(payload["workouts"] as? [[String: Any]])
+        XCTAssertEqual(exportedWorkouts.count, 1)
+        let forbidden: Set<String> = ["sessionID", "sessionId", "version", "coveredOperationIDs", "operationID",
+            "originID", "sequence", "predecessorID", "restStart", "restDuration", "phase", "transport"]
+        func checkGraphKeys(_ value: Any) {
+            if let object = value as? [String: Any] {
+                XCTAssertTrue(Set(object.keys).isDisjoint(with: forbidden))
+                object.values.forEach(checkGraphKeys)
+            } else if let array = value as? [Any] { array.forEach(checkGraphKeys) }
+        }
+        checkGraphKeys(exportedWorkouts)
+
+        history.title = "Changed after export"
+        try context.save()
+        try IronBackup.restoreBackupData(data: data, managedObjectContext: context, exerciseStore: exerciseStore)
+        try context.save()
+        let restoredHistory = try store.snapshot(workoutID: historyID)
+        XCTAssertEqual(restoredHistory.title, expectedHistory.title)
+        XCTAssertEqual(restoredHistory.comment, expectedHistory.comment)
+        XCTAssertEqual(restoredHistory.start, expectedHistory.start)
+        XCTAssertEqual(restoredHistory.end, expectedHistory.end)
+        XCTAssertEqual(restoredHistory.exercises, expectedHistory.exercises)
+        XCTAssertFalse(restoredHistory.isCurrentWorkout)
+        XCTAssertNil(restoredHistory.sessionID)
+        XCTAssertEqual(restoredHistory.version, 0)
+        XCTAssertTrue(restoredHistory.coveredOperationIDs.isEmpty)
+        XCTAssertNil(restoredHistory.restStart)
+        XCTAssertNil(restoredHistory.restDuration)
+        XCTAssertEqual(try store.snapshot(workoutID: activeID), expectedActive)
+        // A retry still resolves to the active session's original durable receipt.
+        XCTAssertEqual(try store.apply(operation: activeOperation, mergingInto: context), activeReceipt)
+        let allWorkouts = try context.fetch(Workout.fetchRequest())
+        XCTAssertEqual(Set(allWorkouts.compactMap(\.uuid)), Set([historyID, activeID]))
+    }
+
     func testBackupAndWorkoutJSONKeepCanonicalNamesAcrossLanguages() throws {
         let previousLanguage = WorkoutDataKit.L10n.language
         defer { WorkoutDataKit.L10n.language = previousLanguage }
