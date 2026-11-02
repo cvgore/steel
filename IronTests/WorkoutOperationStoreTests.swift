@@ -205,6 +205,9 @@ final class WorkoutOperationStoreTests: XCTestCase {
         XCTAssertEqual(try store.snapshot(workoutID: workout.uuid!).exercises.last?.sets.map(\.isPersonalRecord), [true, true])
         _ = try store.apply(operation: operation(version: 3, draft: .init(weight: 40, repetitions: 5, tag: nil, rpe: 0, comment: nil)))
         XCTAssertEqual(try store.snapshot(workoutID: workout.uuid!).exercises.last?.sets.map(\.isPersonalRecord), [false, true])
+        // A stronger correction to the earlier set removes the later set's record.
+        _ = try store.apply(operation: operation(version: 4, draft: .init(weight: 50, repetitions: 8, tag: nil, rpe: 0, comment: nil)))
+        XCTAssertEqual(try store.snapshot(workoutID: workout.uuid!).exercises.last?.sets.map(\.isPersonalRecord), [true, false])
     }
 
     func testConcurrentCorrectionAndFinishRequireDurableResolutionBeforeAgreement() throws {

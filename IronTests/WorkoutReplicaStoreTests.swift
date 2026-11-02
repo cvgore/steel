@@ -53,6 +53,72 @@ final class WorkoutReplicaStoreTests: XCTestCase {
         XCTAssertNoThrow(try reopened.submit(save))
     }
 
+    func testCorrectionRejectsChangedResultWithoutLosingEitherValue() throws {
+        var initial = snapshot()
+        initial.exercises[0].sets[0].isCompleted = true
+        let original = WorkoutSetDraft(weight: 40, repetitions: 5, tag: nil, rpe: 0, comment: nil)
+        initial.exercises[0].sets[0].result = original
+        let store = try WorkoutReplicaStore(url: url)
+        try store.adopt(snapshot: initial); try store.agree(sessionID: session)
+        var phone = snapshot(1); phone.exercises = initial.exercises
+        phone.exercises[0].sets[0].result.weight = 50
+        try store.adopt(snapshot: phone)
+        var draft = original; draft.weight = 45
+        let correction = WorkoutMutation.saveSet(exerciseID: exercise, setID: set, draft: draft, complete: true, restDuration: 0)
+        XCTAssertThrowsError(try store.submit(correction, expectedSetResult: original))
+        XCTAssertEqual(store.snapshot?.exercises[0].sets[0].result.weight, 50)
+        XCTAssertTrue(store.pendingOperations.isEmpty)
+        XCTAssertEqual(draft.weight, 45)
+    }
+
+    func testPhoneCompletionBeforeLocalSubmitCannotBeSilentlyCorrected() throws {
+        let store = try joined()
+        var phone = snapshot(1)
+        phone.exercises[0].sets[0].isCompleted = true
+        phone.exercises[0].sets[0].result.weight = 60
+        try store.adopt(snapshot: phone)
+        let before = store.state
+        XCTAssertThrowsError(try store.submit(save, trackCompletion: true))
+        XCTAssertEqual(store.state, before)
+        XCTAssertEqual(try WorkoutReplicaStore(url: url).snapshot?.exercises[0].sets[0].result.weight, 60)
+        XCTAssertTrue(store.pendingOperations.isEmpty)
+    }
+
+    func testCompletionRecoveryMarkerIsAtomicWithOutboxAndSurvivesReopen() throws {
+        let store = try joined()
+        let operation = try store.submit(save, trackCompletion: true)
+        let reopened = try WorkoutReplicaStore(url: url)
+        XCTAssertEqual(reopened.state.pendingCompletion?.operationID, operation.id)
+        XCTAssertEqual(reopened.state.pendingCompletion?.setID, set)
+        XCTAssertEqual(reopened.pendingOperations, [operation])
+        try reopened.saveNavigation(.init(), clearingCompletion: true)
+        XCTAssertNil(try WorkoutReplicaStore(url: url).state.pendingCompletion)
+        XCTAssertEqual(try WorkoutReplicaStore(url: url).pendingOperations, [operation])
+    }
+
+    func testCompletionAndManualSelectionCheckpointNavigationAtomically() throws {
+        var initial = snapshot()
+        let next = UUID()
+        initial.exercises[0].sets.append(.init(id: next, result: .empty, isCompleted: false, minTargetRepetitions: nil, maxTargetRepetitions: nil))
+        let store = try WorkoutReplicaStore(url: url)
+        try store.adopt(snapshot: initial); try store.agree(sessionID: session)
+        var navigation = WatchWorkoutNavigation()
+        navigation.reconcile(snapshot: initial); navigation.selectExercise(exercise, snapshot: initial)
+        _ = try store.submit(save, trackCompletion: true, navigation: navigation)
+        navigation.advanceAfterCompletion(exerciseID: exercise, snapshot: try XCTUnwrap(store.snapshot))
+        let second = WorkoutMutation.saveSet(exerciseID: exercise, setID: next, draft: .empty, complete: true, restDuration: 90)
+        let secondOperation = try store.submit(second, trackCompletion: true, navigation: navigation)
+        let reopened = try WorkoutReplicaStore(url: url)
+        XCTAssertEqual(reopened.state.localNavigation?.workingSets[exercise], next)
+        XCTAssertEqual(reopened.state.pendingCompletion?.operationID, secondOperation.id)
+        var selected = navigation
+        selected.selectExercise(exercise, snapshot: try XCTUnwrap(reopened.snapshot))
+        try reopened.saveNavigation(selected, clearingCompletion: true)
+        let afterSelection = try WorkoutReplicaStore(url: url)
+        XCTAssertEqual(afterSelection.state.localNavigation, selected)
+        XCTAssertNil(afterSelection.state.pendingCompletion)
+    }
+
     func testOfflineResultInvalidatesConfirmedRecordsForAffectedExercise() throws {
         var initial = snapshot()
         initial.exercises[0].sets[0].isPersonalRecord = true
@@ -160,7 +226,7 @@ final class WorkoutReplicaStoreTests: XCTestCase {
         let original = try joined().state
         enum DiskError: Error { case full }
         let store = try WorkoutReplicaStore(url: url, write: { _, _ in throw DiskError.full })
-        XCTAssertThrowsError(try store.submit(save))
+        XCTAssertThrowsError(try store.submit(save, trackCompletion: true))
         XCTAssertEqual(store.state, original)
         XCTAssertEqual(try WorkoutReplicaStore(url: url).state, original)
     }
@@ -381,6 +447,75 @@ final class WatchWorkoutNavigationTests: XCTestCase {
                 .init(id: set, result: .init(weight: 42, repetitions: 7, tag: nil, rpe: 0, comment: nil),
                       isCompleted: completed, minTargetRepetitions: nil, maxTargetRepetitions: nil)])])
     }
+    func testLegacyCorrectionDraftWithoutOriginalSurvivesReopen() throws {
+        let value = snapshot(completed: true)
+        var navigation = WatchWorkoutNavigation()
+        navigation.reconcile(snapshot: value); navigation.selectExercise(exercise, snapshot: value)
+        navigation.showCorrection(exerciseID: exercise, setID: set, snapshot: value)
+        navigation.correctionDraft?.weight = 55
+        var legacy = try XCTUnwrap(JSONSerialization.jsonObject(with: JSONEncoder().encode(navigation)) as? [String: Any])
+        legacy.removeValue(forKey: "correctionOriginal")
+        var restored = try JSONDecoder().decode(WatchWorkoutNavigation.self, from: JSONSerialization.data(withJSONObject: legacy))
+        restored.reconcile(snapshot: value)
+        XCTAssertEqual(restored.correctionDraft?.weight, 55)
+        XCTAssertNil(restored.correctionOriginal)
+        XCTAssertEqual(restored.path.last, .correction(exerciseID: exercise, setID: set))
+    }
+
+    func testLegacyNavigationRestoresSelectionAndProgressesWithoutLosingDraft() throws {
+        var value = snapshot()
+        let next = UUID()
+        value.exercises[0].sets.append(.init(id: next, result: .empty, isCompleted: false, minTargetRepetitions: nil, maxTargetRepetitions: nil))
+        var navigation = WatchWorkoutNavigation()
+        navigation.reconcile(snapshot: value); navigation.selectExercise(exercise, snapshot: value)
+        navigation.drafts[set]?.weight = 55
+        let encoded = try JSONEncoder().encode(navigation)
+        var legacy = try XCTUnwrap(JSONSerialization.jsonObject(with: encoded) as? [String: Any])
+        legacy.removeValue(forKey: "currentExerciseID")
+        var restored = try JSONDecoder().decode(WatchWorkoutNavigation.self, from: JSONSerialization.data(withJSONObject: legacy))
+        restored.reconcile(snapshot: value)
+        XCTAssertEqual(restored.currentExerciseID, exercise)
+        XCTAssertEqual(restored.drafts[set]?.weight, 55)
+        value.exercises[0].sets[0].isCompleted = true
+        restored.advanceIfStillSelected(exerciseID: exercise, setID: set, snapshot: value)
+        XCTAssertEqual(restored.workingSets[exercise], next)
+    }
+
+    func testRestartResumesOnlyDurablyCommittedLocalCompletion() throws {
+        var value = snapshot()
+        let next = UUID(), operationID = UUID()
+        value.exercises[0].sets.append(.init(id: next, result: .empty, isCompleted: false, minTargetRepetitions: nil, maxTargetRepetitions: nil))
+        var navigation = WatchWorkoutNavigation()
+        navigation.reconcile(snapshot: value); navigation.selectExercise(exercise, snapshot: value)
+        let pending = WatchWorkoutNavigation.PendingCompletion(operationID: operationID, exerciseID: exercise, setID: set)
+        let saved = try JSONEncoder().encode(navigation)
+        value.exercises[0].sets[0].isCompleted = true
+        let operation = WorkoutOperation(id: operationID, workoutID: workout, sessionID: session, expectedVersion: 0,
+            mutation: .saveSet(exerciseID: exercise, setID: set, draft: .empty, complete: true, restDuration: 0))
+        var reopened = try JSONDecoder().decode(WatchWorkoutNavigation.self, from: saved)
+        reopened.reconcile(snapshot: value)
+        reopened.resumePendingCompletion(pending, snapshot: value, operations: [operation])
+        XCTAssertEqual(reopened.workingSets[exercise], next)
+        var uncommitted = try JSONDecoder().decode(WatchWorkoutNavigation.self, from: saved)
+        uncommitted.reconcile(snapshot: value)
+        uncommitted.resumePendingCompletion(pending, snapshot: value, operations: [])
+        XCTAssertEqual(uncommitted.workingSets[exercise], set)
+    }
+
+    func testCompletionAdvancesBehindOpenSetListWithoutChangingPath() {
+        var value = snapshot()
+        let next = UUID()
+        value.exercises[0].sets.append(.init(id: next, result: .empty, isCompleted: false, minTargetRepetitions: nil, maxTargetRepetitions: nil))
+        var navigation = WatchWorkoutNavigation()
+        navigation.reconcile(snapshot: value)
+        navigation.selectExercise(exercise, snapshot: value)
+        navigation.setPath([.currentSet(exercise), .sets(exercise)])
+        value.exercises[0].sets[0].isCompleted = true
+        navigation.advanceIfStillSelected(exerciseID: exercise, setID: set, snapshot: value)
+        XCTAssertEqual(navigation.workingSets[exercise], next)
+        XCTAssertEqual(navigation.path, [.currentSet(exercise), .sets(exercise)])
+    }
+
     func testCompletionAdvancesWithinExerciseThenWrapsUsingCurrentOrder() {
         var value = snapshot()
         let second = UUID(), earlier = UUID(), earlierSet = UUID(), later = UUID(), laterSet = UUID()
