@@ -245,6 +245,11 @@ private struct WorkoutDestinationView: View {
             }
             if correction { navigation.correctionDraft = edited } else { navigation.drafts[set.id] = edited }
         })
+        let step = selectedField == .repetitions ? 1 : (weightPrecision == 1 ? 0.1 : (weightPrecision == 2 ? 0.001 : (snapshot.editorContext?.exercises.first(where: { $0.id == exercise.id })?.barbellWeight != nil ? unit.barbellIncrement : 1)))
+        let maximum = selectedField == .weight
+            ? WeightUnit.convert(weight: WorkoutEditingRules.maximumWeight, from: .metric, to: unit)
+            : Double(WorkoutEditingRules.maximumRepetitions)
+        let range = WorkoutEditingRules.crownRange(around: crown.wrappedValue, step: step, maximum: maximum)
         return VStack(spacing: 8) {
             replicaRest(snapshot)
             HStack {
@@ -261,9 +266,7 @@ private struct WorkoutDestinationView: View {
             }.font(.title3.monospacedDigit()).buttonStyle(.plain)
             .focusable(correction || !set.isCompleted)
             .focused($crownFocused)
-            .digitalCrownRotation(crown, from: 0,
-                through: selectedField == .weight ? WeightUnit.convert(weight: WorkoutEditingRules.maximumWeight, from: .metric, to: unit) : Double(WorkoutEditingRules.maximumRepetitions),
-                by: selectedField == .repetitions ? 1 : (weightPrecision == 1 ? 0.1 : (weightPrecision == 2 ? 0.001 : (snapshot.editorContext?.exercises.first(where: { $0.id == exercise.id })?.barbellWeight != nil ? unit.barbellIncrement : 1))),
+            .digitalCrownRotation(crown, from: range.lowerBound, through: range.upperBound, by: step,
                 sensitivity: .low, isContinuous: false, isHapticFeedbackEnabled: true)
             .onAppear { crownFocused = correction || !set.isCompleted }
             if selectedField == .weight && (correction || !set.isCompleted) {
@@ -292,6 +295,9 @@ private struct WorkoutDestinationView: View {
                 }
             } else if saveError { Text("Could not save set. Please retry.").font(.caption).foregroundStyle(.red) }
         }
+        // The editor is one List row; automatic buttons share the row's activation.
+        // Keep precision, save, and conflict actions independently tappable.
+        .buttonStyle(.borderless)
     }
 
     private func saveSet(exerciseID: UUID, setID: UUID) {

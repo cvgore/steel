@@ -73,6 +73,19 @@ Use `-only-testing:IronE2ETests/LocalizationE2ETests/<test-method>` to select a 
 
 ## Watch and Siri integration checks
 
+### Watch editor button isolation
+
+Use a generated workout with at least two unfinished sets and a valid weight/repetition draft. Keep the existing paired-device data; coordinate simulator access before installing or running a candidate. Capture the Watch replica and screenshots before and after each step so an accidental save cannot be hidden by the delayed progression to the next set.
+
+1. In the current-set editor, tap the weight-step control through standard, 0.1 and 0.001, then back to standard. Each tap must change only the precision label/focus: no new `saveSet` operation, completed result, rest start, or selected set. Verify the rest timer keeps updating and the buttons respond immediately in both fine modes. Rotate the Crown repeatedly in both directions at each precision; editing must continue as its bounded notch window follows the current value. Repeat near zero and the supported weight/repetition limits. Tap Weight and Repetitions separately and verify they only select the Crown field.
+2. Tap **Save Set** explicitly. Verify exactly one new `saveSet` operation for the selected set, one completion, rest starting once, and progression to the next unfinished set. Repeat precision taps on that next set and verify it remains unfinished.
+3. Open a completed set through **Exercise Sets**, change its draft with the Crown, then cycle precision and select each field. Verify the correction draft and screen remain open, with no new operation or saved-result/rest change. Tap **Save Correction** explicitly and verify exactly one correction for the same set without restarting rest or completing another set.
+4. When a phone edit creates a correction conflict, verify precision/field taps preserve the conflict and draft without submitting it. Only **Use my correction** may submit that draft. Relaunch and verify saved results and the unfinished selection persist.
+
+This checks actual touch routing in the production Watch UI. The iPhone unit suite does not exercise SwiftUI Watch `List` row hit testing; builds alone do not establish this behavior.
+
+### Paired-device lifecycle
+
 The iPhone UI suite does not cover the complete Watch workout lifecycle. Use a paired iPhone and Watch for the following checks, with Health access granted on both:
 
 1. Change language on the phone and verify Watch updates without a Watch-specific launch override. Repeat with Watch offline, then reconnect it.
