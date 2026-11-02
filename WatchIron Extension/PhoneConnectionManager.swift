@@ -150,10 +150,13 @@ extension PhoneConnectionManager {
         
         do {
             let replica = try WorkoutSessionManagerStore.shared.workoutReplica.get()
-            guard replica.allowsTrackingStart(workoutID: uuid) else { return }
-            let committedStart = replica.snapshot.flatMap { $0.workoutID == uuid ? $0.start : nil }
-            WorkoutSessionManagerStore.shared.startWorkoutSession(start: committedStart ?? start, uuid: uuid)
-            WorkoutSessionManagerStore.shared.presentReplicaRest()
+            try replica.retainTrackingStart(workoutID: uuid, start: start)
+            let owner = WorkoutSessionManagerStore.shared
+            owner.reconcileSharedHealthEffect()
+            if replica.snapshot == nil, replica.allowsTrackingStart(workoutID: uuid) {
+                owner.startWorkoutSession(start: start, uuid: uuid)
+            } else { owner.resumePendingTrackingStart() }
+            owner.presentReplicaRest()
         } catch { reportWorkoutSync(error) }
     }
     
@@ -308,7 +311,12 @@ extension PhoneConnectionManager {
         } catch { reportWorkoutSync(error); return true }
     }
     func synchronizeWorkout() {
-        defer { scheduleWorkoutRetry() }
+        WorkoutSessionManagerStore.shared.recoverActiveSession()
+        defer {
+            scheduleWorkoutRetry()
+            WorkoutSessionManagerStore.shared.reconcileSharedHealthEffect()
+            WorkoutSessionManagerStore.shared.resumePendingTrackingStart()
+        }
         do {
             let replica = try WorkoutSessionManagerStore.shared.workoutReplica.get()
             if let snapshot = replica.state.acceptedSnapshot, let sessionID = snapshot.sessionID {
@@ -316,6 +324,7 @@ extension PhoneConnectionManager {
                     try sendWorkoutSync(.joined(workoutID: snapshot.workoutID, sessionID: sessionID))
                 }
                 try sendWorkoutSync(.request(workoutID: snapshot.workoutID, sessionID: sessionID))
+                if let ready = replica.terminalReadiness { try sendWorkoutSync(ready) }
                 for operation in replica.pendingOperations.sorted(by: { $0.sequence < $1.sequence }) {
                     try sendWorkoutSync(.operation(operation))
                 }
@@ -323,7 +332,11 @@ extension PhoneConnectionManager {
         } catch { reportWorkoutSync(error) }
     }
     private func receiveWorkoutSync(_ data: Data) {
-        defer { scheduleWorkoutRetry() }
+        defer {
+            scheduleWorkoutRetry()
+            WorkoutSessionManagerStore.shared.reconcileSharedHealthEffect()
+            WorkoutSessionManagerStore.shared.resumePendingTrackingStart()
+        }
         do {
             let replica = try WorkoutSessionManagerStore.shared.workoutReplica.get()
             if let reply = try replica.receiveSync(WorkoutSyncMessage.decode(data)) { try sendWorkoutSync(reply) }
@@ -346,7 +359,7 @@ extension PhoneConnectionManager {
                   state.snapshot != nil else { return }
             let covered = state.acceptedSnapshot?.coveredOperationIDs ?? []
             let awaitingCoverage = state.receipts.contains { $0.disposition == .applied && !covered.contains($0.operationID) }
-            guard !state.agreed || !state.pendingOperations.isEmpty || awaitingCoverage else { return }
+            guard !state.agreed || state.deferredSnapshot != nil || !state.pendingOperations.isEmpty || awaitingCoverage || [.pendingFinish, .pendingCancel].contains(state.acceptedSnapshot?.phase) else { return }
             let retry = DispatchWorkItem { [weak self] in self?.synchronizeWorkout() }
             self.workoutRetry = retry
             DispatchQueue.main.asyncAfter(deadline: .now() + 15, execute: retry)

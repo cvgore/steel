@@ -244,6 +244,21 @@ final class WorkoutPhoneWriterTests: XCTestCase {
         XCTAssertNil(timer.restTimerEnd)
     }
 
+    func testTerminalCommitBeforeRestPresentationClearsTimerAfterRestart() throws {
+        let (workout, _, _) = try activeWorkout()
+        let store = WorkoutOperationStore(coordinator: context.persistentStoreCoordinator!)
+        let joining = try store.beginJoining(workoutID: workout.uuid!, mergingInto: context)
+        _ = try store.recordSessionAgreement(workoutID: workout.uuid!, sessionID: joining.sessionID!, phase: .agreed, mergingInto: context)
+        let timer = timer()
+        XCTAssertTrue(timer.setRest(start: Date(), duration: 90))
+        let pending = try WorkoutCommandWriter(context: context).write(workout: workout, mutation: .requestFinish)
+        _ = try store.finalizeSharedWorkout(workoutID: workout.uuid!, sessionID: joining.sessionID!, expectedVersion: pending.version, mergingInto: context)
+        XCTAssertNotNil(timer.restTimerStart)
+        timer.restoreCommittedRest()
+        XCTAssertNil(timer.restTimerStart)
+        XCTAssertNil(timer.restTimerDuration)
+    }
+
     func testManualTimerWithoutActiveWorkoutUsesDefaults() throws {
         let timer = timer()
         let start = Date(timeIntervalSince1970: 2_000)

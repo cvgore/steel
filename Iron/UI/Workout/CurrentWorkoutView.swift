@@ -197,7 +197,10 @@ struct CurrentWorkoutView: View {
     }
     
     private func finishWorkout() {
-        workout.finishOrCrash()
+        do { try workout.finish() }
+        catch { operationError = true; return }
+        activeSheet = nil
+        if workout.isCurrentWorkout { activeSheet = .synchronization; return }
         
         // haptic feedback
         let feedbackGenerator = UINotificationFeedbackGenerator()
@@ -242,7 +245,9 @@ struct CurrentWorkoutView: View {
     }
     
     private func cancelWorkout() {
-        workout.cancelOrCrash()
+        do { try workout.cancel() }
+        catch { operationError = true; return }
+        if !workout.isDeleted && workout.isCurrentWorkout { activeSheet = .synchronization; return }
         
         let feedbackGenerator = UINotificationFeedbackGenerator()
         feedbackGenerator.prepare()

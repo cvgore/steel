@@ -152,6 +152,253 @@ final class WorkoutOperationStoreTests: XCTestCase {
         XCTAssertEqual(next.expectedVersion, current.version + 1)
     }
 
+    func testOfflineFinishReconcilesBeforePruningAndSurvivesLostReply() throws {
+        let watch = try joinedReplica()
+        let id = workout.uuid!
+        let save = try watch.submit(.saveSet(exerciseID: exercise.uuid!, setID: set.uuid!,
+            draft: .init(weight: 50, repetitions: 6, tag: nil, rpe: 0, comment: "retained"), complete: true, restDuration: 90), date: date)
+        let finish = try watch.submit(.requestFinish, date: date.addingTimeInterval(30))
+        XCTAssertEqual(watch.snapshot?.phase, .pendingFinish)
+        XCTAssertNil(watch.terminalReadiness)
+        XCTAssertEqual(try store.snapshot(workoutID: id).phase, .agreed)
+        _ = try store.receiveSync(.operation(finish)) // deliberately reversed transport order
+        let update = try XCTUnwrap(store.receiveSync(.operation(save)))
+        XCTAssertTrue(try store.snapshot(workoutID: id).isCurrentWorkout)
+        let restarted = try WorkoutReplicaStore(url: directory.appendingPathComponent("watch.json"))
+        let ready = try XCTUnwrap(restarted.receiveSync(update))
+        XCTAssertEqual(restarted.snapshot?.exercises.last?.sets.first?.result.weight, 50)
+        let terminalReply = try XCTUnwrap(store.receiveSync(ready)) // pretend reply was lost
+        XCTAssertEqual(try store.receiveSync(ready), terminalReply)
+        _ = try restarted.receiveSync(terminalReply)
+        let terminal = try store.snapshot(workoutID: id)
+        XCTAssertEqual(terminal.phase, .finished)
+        XCTAssertFalse(terminal.isCurrentWorkout)
+        XCTAssertNil(terminal.restStart)
+        XCTAssertEqual(terminal.end, date.addingTimeInterval(30))
+        XCTAssertEqual(terminal.exercises.flatMap(\.sets).count, 2)
+        XCTAssertTrue(terminal.exercises.flatMap(\.sets).allSatisfy(\.isCompleted))
+        XCTAssertEqual(restarted.snapshot?.phase, .finished)
+        XCTAssertEqual(try store.apply(operation: finish).disposition, .applied)
+        XCTAssertTrue(try store.watchOwnedWorkoutIDs().contains(id))
+    }
+
+    func testCancelDeletesGraphButRetainsDurableTombstoneAndReceipts() throws {
+        let watch = try joinedReplica()
+        let id = workout.uuid!
+        let cancel = try watch.submit(.requestCancel)
+        let ready = try XCTUnwrap(watch.receiveSync(XCTUnwrap(store.receiveSync(.operation(cancel)))))
+        let reply = try XCTUnwrap(store.receiveSync(ready, mergingInto: container.viewContext))
+        _ = try watch.receiveSync(reply)
+        XCTAssertTrue(workout.isDeleted || workout.managedObjectContext == nil)
+        XCTAssertEqual(try container.viewContext.fetch(Workout.fetchRequest()).count, 0)
+        let reopened = try open()
+        defer { for persistent in reopened.persistentStoreCoordinator.persistentStores { try? reopened.persistentStoreCoordinator.remove(persistent) } }
+        let recovered = WorkoutOperationStore(coordinator: reopened.persistentStoreCoordinator)
+        XCTAssertEqual(try recovered.snapshot(workoutID: id).phase, .cancelled)
+        XCTAssertEqual(try recovered.receiveSync(ready), reply)
+        XCTAssertEqual(try recovered.apply(operation: cancel).disposition, .applied)
+        let late = WorkoutOperation(workoutID: id, sessionID: cancel.sessionID, originID: cancel.originID,
+            sequence: cancel.sequence + 1, predecessorID: cancel.id, expectedVersion: cancel.expectedVersion,
+            mutation: .requestFinish)
+        XCTAssertEqual(try recovered.apply(operation: late).disposition, .conflict)
+        XCTAssertEqual(try recovered.snapshot(workoutID: id).phase, .cancelled)
+        XCTAssertNil(try recovered.activeSharedSnapshot())
+    }
+
+    func testPhoneFinishWaitsForOfflineCorrectionAndExplicitDecision() throws {
+        let watch = try joinedReplica()
+        let local = try watch.submit(.saveSet(exerciseID: exercise.uuid!, setID: set.uuid!,
+            draft: .init(weight: 77, repetitions: 8, tag: nil, rpe: 0, comment: "offline"), complete: true, restDuration: 90))
+        let base = try store.snapshot(workoutID: workout.uuid!)
+        _ = try store.apply(operation: .init(workoutID: base.workoutID, sessionID: base.sessionID,
+            expectedVersion: base.version, mutation: .requestFinish))
+        _ = try watch.receiveSync(.snapshot(store.snapshot(workoutID: base.workoutID)))
+        XCTAssertNil(watch.terminalReadiness)
+        _ = try watch.receiveSync(XCTUnwrap(store.receiveSync(.operation(local))))
+        XCTAssertNil(watch.terminalReadiness)
+        let pending = try store.snapshot(workoutID: base.workoutID)
+        XCTAssertTrue(pending.isCurrentWorkout)
+        _ = try store.apply(operation: .init(workoutID: base.workoutID, sessionID: base.sessionID,
+            expectedVersion: pending.version, mutation: .resolveConflict(operationID: local.id, useCandidate: true)))
+        let update = try XCTUnwrap(store.receiveSync(.request(workoutID: base.workoutID, sessionID: base.sessionID)))
+        let ready = try XCTUnwrap(watch.receiveSync(update))
+        _ = try watch.receiveSync(XCTUnwrap(store.receiveSync(ready)))
+        XCTAssertEqual(watch.snapshot?.exercises.last?.sets.first?.result.weight, 77)
+        XCTAssertEqual(watch.snapshot?.phase, .finished)
+    }
+
+    func testReadinessCannotFinalizeAfterNewConflictAndTransactionFailureRollsBack() throws {
+        let watch = try joinedReplica()
+        let finish = try watch.submit(.requestFinish)
+        let ready = try XCTUnwrap(watch.receiveSync(XCTUnwrap(store.receiveSync(.operation(finish)))))
+        let pending = try store.snapshot(workoutID: workout.uuid!)
+        let failing = WorkoutOperationStore(coordinator: container.persistentStoreCoordinator) { _ in throw CocoaError(.fileWriteUnknown) }
+        XCTAssertThrowsError(try failing.receiveSync(ready))
+        XCTAssertEqual(try store.snapshot(workoutID: workout.uuid!), pending)
+        let late = WorkoutOperation(workoutID: pending.workoutID, sessionID: pending.sessionID,
+            expectedVersion: pending.version, mutation: .workoutMetadata(title: "racing", comment: nil))
+        XCTAssertEqual(try store.apply(operation: late).disposition, .conflict)
+        let blocked = try XCTUnwrap(store.receiveSync(ready))
+        _ = try watch.receiveSync(blocked)
+        XCTAssertNil(watch.terminalReadiness)
+        XCTAssertTrue(try store.snapshot(workoutID: pending.workoutID).isCurrentWorkout)
+    }
+
+    func testJoiningFinishCommitsRequestPruningAndTombstoneTogether() throws {
+        let id = workout.uuid!
+        let joining = try store.beginJoining(workoutID: id)
+        let finish = WorkoutOperation(workoutID: id, sessionID: joining.sessionID,
+            expectedVersion: joining.version, mutation: .requestFinish, date: date)
+        let failing = WorkoutOperationStore(coordinator: container.persistentStoreCoordinator) { _ in throw CocoaError(.fileWriteUnknown) }
+        XCTAssertThrowsError(try failing.apply(operation: finish))
+        XCTAssertEqual(try store.snapshot(workoutID: id).phase, .joining)
+        XCTAssertTrue(try store.operations(workoutID: id).isEmpty)
+        let receipt = try store.apply(operation: finish)
+        XCTAssertEqual(try store.snapshot(workoutID: id).phase, .finished)
+        XCTAssertFalse(try store.snapshot(workoutID: id).isCurrentWorkout)
+        XCTAssertEqual(try store.apply(operation: finish), receipt)
+    }
+
+    func testTerminalAdoptionSchedulesHealthEffectBeforeNextSessionArchivesIt() throws {
+        let watch = try joinedReplica()
+        let finish = try watch.submit(.requestFinish)
+        let ready = try XCTUnwrap(watch.receiveSync(XCTUnwrap(store.receiveSync(.operation(finish)))))
+        _ = try watch.receiveSync(XCTUnwrap(store.receiveSync(ready)))
+        let id = workout.uuid!
+        XCTAssertEqual(watch.state.healthEffects?[id], .pending)
+        let next = WorkoutSessionSnapshot(workoutID: UUID(), sessionID: UUID(), version: 1, phase: .joining,
+            title: nil, comment: nil, start: date, end: nil, isCurrentWorkout: true,
+            restStart: nil, restDuration: nil, exercises: [])
+        try watch.adopt(snapshot: next)
+        let restarted = try WorkoutReplicaStore(url: directory.appendingPathComponent("watch.json"))
+        XCTAssertEqual(restarted.state.healthEffects?[id], .pending)
+        XCTAssertTrue(try restarted.claimHealthEffect(workoutID: id))
+        XCTAssertFalse(try restarted.claimHealthEffect(workoutID: id))
+        XCTAssertEqual(restarted.snapshot?.workoutID, next.workoutID)
+    }
+
+    func testNextJoinOvertakingLostTerminalReplyRecoversWithoutLosingEitherSession() throws {
+        let watch = try joinedReplica()
+        let finish = try watch.submit(.requestFinish)
+        let ready = try XCTUnwrap(watch.receiveSync(XCTUnwrap(store.receiveSync(.operation(finish)))))
+        let terminal = try XCTUnwrap(store.receiveSync(ready)) // lost reply
+        let next = WorkoutSessionSnapshot(workoutID: UUID(), sessionID: UUID(), version: 1, phase: .joining,
+            title: nil, comment: nil, start: date, end: nil, isCurrentWorkout: true,
+            restStart: nil, restDuration: nil, exercises: [])
+        XCTAssertEqual(try watch.receiveSync(.snapshot(next)), .request(workoutID: workout.uuid!, sessionID: finish.sessionID))
+        try watch.retainTrackingStart(workoutID: next.workoutID, start: date.addingTimeInterval(20))
+        XCTAssertNil(watch.trackingStartToResume, "Do not replace unresolved A measurements")
+        XCTAssertEqual(watch.snapshot?.workoutID, workout.uuid!)
+        let restarted = try WorkoutReplicaStore(url: directory.appendingPathComponent("watch.json"))
+        XCTAssertEqual(restarted.state.deferredSnapshot, next)
+        XCTAssertEqual(try restarted.receiveSync(terminal), .joined(workoutID: next.workoutID, sessionID: next.sessionID!))
+        XCTAssertEqual(restarted.snapshot?.workoutID, next.workoutID)
+        XCTAssertNil(restarted.state.deferredSnapshot)
+        XCTAssertEqual(restarted.state.archivedSessions.first?.operations, [finish])
+        XCTAssertEqual(restarted.state.healthEffects?[workout.uuid!], .pending)
+        XCTAssertEqual(restarted.trackingStartToResume?.workoutID, next.workoutID)
+        XCTAssertEqual(restarted.trackingStartToResume?.start, next.start, "Use the agreed journal date")
+        let resumed = try WorkoutReplicaStore(url: directory.appendingPathComponent("watch.json"))
+        XCTAssertEqual(resumed.trackingStartToResume?.workoutID, next.workoutID)
+        try resumed.acknowledgeTrackingStart(workoutID: next.workoutID)
+        XCTAssertNil(try WorkoutReplicaStore(url: directory.appendingPathComponent("watch.json")).trackingStartToResume)
+        try resumed.retainTrackingStart(workoutID: workout.uuid!, start: date)
+        XCTAssertNil(resumed.state.deferredTrackingStarts?[workout.uuid!], "Late starts cannot restart terminal A")
+    }
+
+    func testHealthRecoveryProbesLaterEffectsDespiteAnUnreadableOrBlockedOlderEffect() throws {
+        let watch = try joinedReplica()
+        let blocked = UUID(), hidden = UUID(), found = UUID(), active = UUID()
+        try watch.recordHealthEffect(.blocked, workoutID: blocked)
+        try watch.recordHealthEffect(.uncertain, workoutID: hidden)
+        try watch.recordHealthEffect(.uncertain, workoutID: found)
+        try watch.recordHealthEffect(.saving, workoutID: active)
+        var queried = Set<UUID>()
+        var completed = Set<UUID>()
+        watch.recoverHealthEffects(excluding: [active], findSaved: { id, reply in
+            queried.insert(id); reply(id == found)
+        }, completion: { id, result in
+            if case .failure(let error) = result { XCTFail("Unexpected recovery failure: \(error)") }
+            completed.insert(id)
+        })
+        XCTAssertEqual(queried, [hidden, found])
+        XCTAssertEqual(completed, queried)
+        XCTAssertEqual(watch.state.healthEffects?[blocked], .blocked)
+        XCTAssertEqual(watch.state.healthEffects?[hidden], .uncertain)
+        XCTAssertEqual(watch.state.healthEffects?[found], .saved)
+        XCTAssertEqual(watch.state.healthEffects?[active], .saving)
+    }
+
+    func testCollectionIntentSurvivesDuplicateStartAndFailedAsynchronousCollection() throws {
+        let watch = try joinedReplica(), id = workout.uuid!
+        try watch.retainTrackingStart(workoutID: id, start: date)
+        var gate = WorkoutMeasurementGate()
+        XCTAssertFalse(gate.beginCollection(workoutID: id))
+        XCTAssertTrue(gate.beginRecovery())
+        gate.finishRecovery(succeeded: true)
+        XCTAssertTrue(gate.beginCollection(workoutID: id))
+        // HKSession can already report running before beginCollection completes.
+        XCTAssertFalse(gate.beginCollection(workoutID: id))
+        XCTAssertFalse(gate.canAcknowledge(workoutID: id))
+        XCTAssertFalse(gate.finishCollection(workoutID: id, succeeded: false))
+        XCTAssertNotNil(try WorkoutReplicaStore(url: directory.appendingPathComponent("watch.json")).trackingStartToResume)
+        XCTAssertTrue(gate.beginCollection(workoutID: id))
+        XCTAssertTrue(gate.finishCollection(workoutID: id, succeeded: true))
+        XCTAssertTrue(gate.canAcknowledge(workoutID: id))
+        try watch.acknowledgeTrackingStart(workoutID: id)
+        XCTAssertNil(watch.trackingStartToResume)
+    }
+
+    func testDelayedRecoveryBlocksPreparationAndRetainedStartUntilOwnerIsAttached() throws {
+        let watch = try joinedReplica(), id = workout.uuid!
+        try watch.retainTrackingStart(workoutID: id, start: date)
+        var gate = WorkoutMeasurementGate()
+        XCTAssertFalse(gate.canPrepare)
+        XCTAssertTrue(gate.beginRecovery())
+        XCTAssertFalse(gate.beginRecovery(), "Repeated lifecycle callbacks must share one recovery")
+        XCTAssertFalse(gate.beginCollection(workoutID: id))
+        XCTAssertNotNil(watch.trackingStartToResume)
+        gate.finishRecovery(succeeded: false)
+        XCTAssertFalse(gate.canPrepare, "Recovery errors do not establish absence of an active workout")
+        XCTAssertTrue(gate.beginRecovery())
+        gate.finishRecovery(succeeded: true, collectingID: id)
+        XCTAssertTrue(gate.canPrepare)
+        XCTAssertTrue(gate.canAcknowledge(workoutID: id), "Recovered collecting builder is reused")
+        try watch.acknowledgeTrackingStart(workoutID: id)
+        XCTAssertNil(watch.trackingStartToResume)
+    }
+
+    func testHealthClaimIsDurableAndNeverRetriesUncertainEffect() throws {
+        let watch = try joinedReplica()
+        let finish = try watch.submit(.requestFinish)
+        let ready = try XCTUnwrap(watch.receiveSync(XCTUnwrap(store.receiveSync(.operation(finish)))))
+        _ = try watch.receiveSync(XCTUnwrap(store.receiveSync(ready)))
+        let id = workout.uuid!
+        XCTAssertTrue(try watch.claimHealthEffect(workoutID: id))
+        let restarted = try WorkoutReplicaStore(url: directory.appendingPathComponent("watch.json"))
+        XCTAssertEqual(restarted.state.healthEffects?[id], .saving)
+        XCTAssertFalse(try restarted.claimHealthEffect(workoutID: id))
+        try restarted.recordHealthEffect(.uncertain, workoutID: id)
+        try restarted.retryBlockedHealthEffect(workoutID: id)
+        XCTAssertFalse(try restarted.claimHealthEffect(workoutID: id))
+        XCTAssertEqual(try store.snapshot(workoutID: id).phase, .finished)
+    }
+
+    func testHealthClaimWriteFailureCannotInvokeEffectAndBlockedCanRetryExplicitly() throws {
+        let watch = try joinedReplica()
+        let finish = try watch.submit(.requestFinish)
+        let ready = try XCTUnwrap(watch.receiveSync(XCTUnwrap(store.receiveSync(.operation(finish)))))
+        _ = try watch.receiveSync(XCTUnwrap(store.receiveSync(ready)))
+        let id = workout.uuid!
+        let failing = try WorkoutReplicaStore(url: directory.appendingPathComponent("watch.json"), write: { _, _ in throw CocoaError(.fileWriteUnknown) })
+        XCTAssertThrowsError(try failing.claimHealthEffect(workoutID: id))
+        XCTAssertEqual(failing.state.healthEffects?[id], .pending)
+        try watch.recordHealthEffect(.blocked, workoutID: id)
+        XCTAssertFalse(try watch.claimHealthEffect(workoutID: id))
+        try watch.retryBlockedHealthEffect(workoutID: id)
+        XCTAssertTrue(try watch.claimHealthEffect(workoutID: id))
+    }
+
     func testSnapshotUsesExistingPersonalRecordRule() throws {
         exercise.exerciseUuid = UUID()
         try container.viewContext.save()
@@ -166,10 +413,7 @@ final class WorkoutOperationStoreTests: XCTestCase {
         let joining = try store.beginJoining(workoutID: oldID)
         let agreed = try store.recordSessionAgreement(workoutID: oldID, sessionID: joining.sessionID!, phase: .agreed)
         _ = try store.apply(operation: .init(workoutID: oldID, sessionID: agreed.sessionID, expectedVersion: agreed.version, mutation: .requestFinish))
-        _ = try store.recordSessionAgreement(workoutID: oldID, sessionID: agreed.sessionID!, phase: .finished)
-        set.isCompleted = true
-        workout.isCurrentWorkout = false
-        workout.end = date.addingTimeInterval(300)
+        _ = try store.recordSessionAgreement(workoutID: oldID, sessionID: agreed.sessionID!, phase: .finished, mergingInto: container.viewContext)
         let next = Workout.create(context: container.viewContext)
         next.isCurrentWorkout = true
         next.start = date.addingTimeInterval(600)
@@ -489,8 +733,8 @@ final class WorkoutOperationStoreTests: XCTestCase {
         XCTAssertEqual(try store.snapshot(workoutID: workout.uuid!).phase, .agreed)
     }
 
-    func testFinishRequestAndAgreementAreDurableAndDoNotFinalizeGraph() throws { try assertTerminal(.requestFinish) }
-    func testCancelRequestAndAgreementAreDurableAndDoNotFinalizeGraph() throws { try assertTerminal(.requestCancel) }
+    func testFinishRequestWaitsAndAgreementDurablyFinalizesGraph() throws { try assertTerminal(.requestFinish) }
+    func testCancelRequestWaitsAndAgreementDurablyDiscardsGraph() throws { try assertTerminal(.requestCancel) }
     private func assertTerminal(_ mutation: WorkoutMutation) throws {
         let replica = try joinedReplica()
         let op = try replica.submit(mutation)
@@ -503,7 +747,7 @@ final class WorkoutOperationStoreTests: XCTestCase {
         let target: WorkoutSessionPhase = pending.phase == .pendingFinish ? .finished : .cancelled
         let terminal = try store.recordSessionAgreement(workoutID: workout.uuid!, sessionID: pending.sessionID!, phase: target)
         XCTAssertTrue(terminal.phase.isTerminal)
-        XCTAssertTrue(terminal.isCurrentWorkout, "STEEL-8 records agreement; STEEL-13 owns graph finalization")
+        XCTAssertFalse(terminal.isCurrentWorkout)
         try replica.adopt(snapshot: terminal)
         XCTAssertFalse(replica.state.occupiesSharedSlot)
         XCTAssertThrowsError(try replica.submit(.requestFinish))

@@ -200,6 +200,7 @@ extension WorkoutOperationReceipt {
 public enum WorkoutSyncMessage: Codable, Equatable {
     case snapshot(WorkoutSessionSnapshot)
     case joined(workoutID: UUID, sessionID: UUID)
+    case terminalReady(workoutID: UUID, sessionID: UUID, version: Int64)
     case request(workoutID: UUID?, sessionID: UUID?)
     case operation(WorkoutOperation)
     case update(snapshot: WorkoutSessionSnapshot, receipts: [WorkoutOperationReceipt])
@@ -245,5 +246,40 @@ extension WorkoutSessionSnapshot {
             for s in copy.exercises[e].sets.indices { copy.exercises[e].sets[s].isPersonalRecord = nil }
         }
         return copy
+    }
+}
+
+
+/// Serial-queue runtime gate shared with deterministic tests; durable start intent stays in the replica.
+public struct WorkoutMeasurementGate {
+    public private(set) var recoveryComplete = false
+    public private(set) var recoveryInFlight = false
+    public private(set) var startingID: UUID?
+    private var collectingIDs = Swift.Set<UUID>()
+    public init() {}
+    public mutating func beginRecovery() -> Bool {
+        guard !recoveryComplete && !recoveryInFlight else { return false }
+        recoveryInFlight = true
+        return true
+    }
+    public mutating func finishRecovery(succeeded: Bool, collectingID: UUID? = nil) {
+        recoveryInFlight = false; recoveryComplete = succeeded
+        if succeeded, let id = collectingID { collectingIDs.insert(id) }
+    }
+    public var canPrepare: Bool { recoveryComplete && startingID == nil }
+    public mutating func beginCollection(workoutID: UUID) -> Bool {
+        guard canPrepare else { return false }
+        startingID = workoutID
+        return true
+    }
+    @discardableResult public mutating func finishCollection(workoutID: UUID, succeeded: Bool) -> Bool {
+        guard startingID == workoutID else { return false }
+        startingID = nil
+        if succeeded { collectingIDs.insert(workoutID) }
+        else { collectingIDs.remove(workoutID) }
+        return succeeded
+    }
+    public func canAcknowledge(workoutID: UUID) -> Bool {
+        recoveryComplete && startingID != workoutID && collectingIDs.contains(workoutID)
     }
 }

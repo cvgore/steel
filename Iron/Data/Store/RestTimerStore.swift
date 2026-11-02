@@ -30,6 +30,7 @@ final class RestTimerStore: ObservableObject {
 
     let objectWillChange = ObservableObjectPublisher()
 
+    private static let restWorkoutIDKey = "restTimerWorkoutID"
     private var userDefaults: UserDefaults
     private var foregroundObserver: NSObjectProtocol?
     private let contextProvider: () -> NSManagedObjectContext
@@ -106,6 +107,9 @@ final class RestTimerStore: ObservableObject {
         objectWillChange.send()
         userDefaults.restTimerStart = start
         userDefaults.restTimerDuration = duration
+        if start != nil, let current = try? contextProvider().fetch(Workout.currentWorkoutFetchRequest).first {
+            userDefaults.set(current.uuid?.uuidString, forKey: Self.restWorkoutIDKey)
+        } else { userDefaults.removeObject(forKey: Self.restWorkoutIDKey) }
         if enableEffects {
             updateNotification()
             updateWatch()
@@ -115,7 +119,15 @@ final class RestTimerStore: ObservableObject {
     func restoreCommittedRest() {
         let context = contextProvider()
         do {
-            guard let workout = try context.fetch(Workout.currentWorkoutFetchRequest).first else { return }
+            guard let workout = try context.fetch(Workout.currentWorkoutFetchRequest).first else {
+                // Recover the crash window after terminal commit but before presentation/notification cleanup.
+                if let raw = userDefaults.string(forKey: Self.restWorkoutIDKey), let id = UUID(uuidString: raw),
+                   let coordinator = context.persistentStoreCoordinator,
+                   try WorkoutOperationStore(coordinator: coordinator).snapshot(workoutID: id).phase.isTerminal {
+                    presentCommittedRest(start: nil, duration: nil)
+                }
+                return
+            }
             let snapshot = try WorkoutCommandWriter(context: context).snapshot(workout: workout)
             guard snapshot.sessionID != nil else { return }
             presentCommittedRest(start: snapshot.restStart, duration: snapshot.restDuration)

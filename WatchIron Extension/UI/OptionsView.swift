@@ -1,46 +1,33 @@
-//
-//  OptionsView.swift
-//  WatchIron Extension
-//
-//  Created by Karim Abou Zeid on 11.11.19.
-//  Copyright © 2019 Karim Abou Zeid Software. All rights reserved.
-//
-
 import SwiftUI
 
 struct OptionsView: View {
     @EnvironmentObject var workoutSessionManagerStore: WorkoutSessionManagerStore
-    
+    @State private var confirmCancel = false
+    @State private var failed = false
+    private var snapshot: WorkoutSessionSnapshot? { try? workoutSessionManagerStore.workoutReplica.get().snapshot }
+
     var body: some View {
-        VStack {
-            Button(action: {
-                guard let start = self.workoutSessionManagerStore.workoutSessionManager?.startDate else { return }
-                guard let uuid = self.workoutSessionManagerStore.workoutSessionManager?.uuid else { return }
-                let end = self.workoutSessionManagerStore.workoutSessionManager?.endDate ?? Date()
-                self.workoutSessionManagerStore.endWorkoutSession(start: start, end: end, title: nil, uuid: uuid)
-            }) {
-                HStack {
-                    Image(systemName: "checkmark")
-                    Text("Finish Tracking")
-                }
+        VStack(spacing: 12) {
+            Button { request(.requestFinish) } label: {
+                Label("Finish Workout", systemImage: "checkmark")
+                    .frame(maxWidth: .infinity, minHeight: 44)
             }
-            
-            Button(action: {
-                if let uuid = self.workoutSessionManagerStore.workoutSessionManager?.uuid {
-                    self.workoutSessionManagerStore.discardWorkoutSession(uuid: uuid)
-                } else {
-                    self.workoutSessionManagerStore.discardWorkoutSession()
-                }
-            }) {
-                HStack {
-                    Image(systemName: "xmark")
-                    Text("Cancel Tracking")
-                }
-                .foregroundColor(.red)
+            Button(role: .destructive) { confirmCancel = true } label: {
+                Label("Cancel Workout", systemImage: "xmark")
+                    .frame(maxWidth: .infinity, minHeight: 44)
             }
-            
-            Text("Use only if something went wrong.")
-                .font(.system(.caption2))
         }
+        .disabled(snapshot?.phase != .agreed)
+        .confirmationDialog("Cancel Workout?", isPresented: $confirmCancel, titleVisibility: .visible) {
+            Button("Cancel Workout", role: .destructive) { request(.requestCancel) }
+            Button("Keep Workout", role: .cancel) {}
+        }
+        .alert("Could not save workout changes. Please retry.", isPresented: $failed) {
+            Button("OK", role: .cancel) {}
+        }
+    }
+    private func request(_ mutation: WorkoutMutation) {
+        do { try workoutSessionManagerStore.submitWorkoutMutation(mutation) }
+        catch { failed = true }
     }
 }

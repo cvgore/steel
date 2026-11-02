@@ -16,6 +16,12 @@ class WorkoutSessionManagerStore: ObservableObject {
     static let shared = WorkoutSessionManagerStore()
     // Persistence is separate from HealthKit tracking; STEEL-9 consumes this same owner.
     let workoutReplica = WorkoutReplicaStore.shared
+    private var measurementGate = WorkoutMeasurementGate()
+    private var pendingPreparations: [(HKWorkoutConfiguration, (Result<Void, Error>) -> Void)] = []
+    private var inFlightHealthEffects = Set<UUID>()
+    var healthEffectError: String? {
+        didSet { DispatchQueue.main.async { self.objectWillChange.send() } }
+    }
     
     let objectWillChange = PassthroughSubject<Void, Never>()
     
@@ -39,23 +45,51 @@ class WorkoutSessionManagerStore: ObservableObject {
 }
 
 extension WorkoutSessionManagerStore {
-    func recoverWorkoutSession(workoutSession: HKWorkoutSession) {
+    func recoverActiveSession() {
         WorkoutSessionManager.perform {
-            assert(self.workoutSessionManager == nil)
-            // TODO: also recover custom start / end dates
-            let workoutSessionManager = WorkoutSessionManager(session: workoutSession) // documentation says this must happen immediately
-            self.workoutSessionManager = workoutSessionManager
-            self.presentReplicaRest()
+            guard self.measurementGate.beginRecovery() else { return }
+            WorkoutSessionManager.healthStore.recoverActiveWorkoutSession { session, error in
+                WorkoutSessionManager.perform {
+                    if let session = session {
+                        // No creation/preparation can pass the gate until recovery attaches its owner.
+                        let manager = WorkoutSessionManager(session: session)
+                        self.workoutSessionManager = manager
+                        let collecting = manager.hasCollectedWorkout && [.running, .paused].contains(manager.state)
+                        self.measurementGate.finishRecovery(succeeded: true, collectingID: collecting ? manager.uuid : nil)
+                    } else if let error = error {
+                        self.measurementGate.finishRecovery(succeeded: false)
+                        self.healthEffectError = L10n.string("Could not recover workout measurements. Please retry.")
+                        os_log("Workout recovery failed: %@", type: .error, error.localizedDescription)
+                        return
+                    } else { self.measurementGate.finishRecovery(succeeded: true) }
+                    self.healthEffectError = nil
+                    self.presentReplicaRest()
+                    self.reconcileSharedHealthEffect()
+                    self.drainPreparations()
+                    self.resumePendingTrackingStart()
+                }
+            }
         }
     }
-    
-    
+    private func drainPreparations() {
+        guard measurementGate.canPrepare else { return }
+        let pending = pendingPreparations; pendingPreparations = []
+        for (configuration, completion) in pending {
+            ensurePreparedWorkoutSession(configuration: configuration, completion: completion)
+        }
+    }
+
     /// - Parameters:
     ///   - completion: When the result is successful, the `workoutSessionManager` is set and the workout session is in a state other than `.ended` or `.notStarted`.
     ///                 If a workout session that is not `.ended` or `.notStarted` existed, nothing is done. Otherwise a new workout session is prepared.
     func ensurePreparedWorkoutSession(configuration: HKWorkoutConfiguration, completion: @escaping (Result<Void, Error>) -> Void) {
         WorkoutSessionManager.perform {
             os_log("Ensuring prepared workout session")
+            guard self.measurementGate.canPrepare else {
+                self.pendingPreparations.append((configuration, completion))
+                self.recoverActiveSession()
+                return
+            }
             // check if there already is a current workout session
             if let workoutSessionManager = self.workoutSessionManager {
                 let state = workoutSessionManager.state
@@ -93,7 +127,16 @@ extension WorkoutSessionManagerStore {
     func startWorkoutSession(start: Date, uuid: UUID) {
         WorkoutSessionManager.perform {
             os_log("Starting workout session start=%@ uuid=%@", start as NSDate, uuid as NSUUID)
+            guard self.measurementGate.canPrepare else { return }
             
+            // A new journal may join while the prior builder finishes asynchronously.
+            // Its completion retains the old manager; never discard that in-flight builder.
+            if let manager = self.workoutSessionManager, let currentID = manager.uuid,
+               self.inFlightHealthEffects.contains(currentID) {
+                guard currentID != uuid else { return }
+                self.workoutSessionManager = nil
+            }
+
             // 1. make sure we have a workout session manager, create it if necessary
             
             var workoutSessionManager: WorkoutSessionManager
@@ -151,6 +194,8 @@ extension WorkoutSessionManagerStore {
                         // the session is not ended and was already started, reuse it
                         os_log("Falling back to just updating the start date for workout session manager")
                         workoutSessionManager.updateStartDate(start)
+                        if self.measurementGate.canAcknowledge(workoutID: uuid) { self.acknowledgeTrackingStart(uuid) }
+                        else { self.healthEffectError = L10n.string("Could not recover workout measurements. Please retry.") }
                         return
                     }
                     
@@ -216,26 +261,33 @@ extension WorkoutSessionManagerStore {
             
             // 4. Start!
             
+            guard self.measurementGate.beginCollection(workoutID: uuid) else { return }
             os_log("Starting workout session manager")
             workoutSessionManager.start(start: start) { result in
-                switch result {
-                case .success:
-                    WKInterfaceDevice.current().play(.start)
-                    // TODO send confirmation to phone
-                    os_log("Successfully started workout session manager")
-                case .failure(let error):
-                    WKInterfaceDevice.current().play(.failure)
-                    os_log("Could not start workout session manager: %@", type: .error, error.localizedDescription)
-                    WorkoutSessionManager.perform {
-                        os_log("Discarding workout session manager", type: .info)
+                WorkoutSessionManager.perform {
+                    switch result {
+                    case .success:
+                        if self.measurementGate.finishCollection(workoutID: uuid, succeeded: true) {
+                            self.acknowledgeTrackingStart(uuid)
+                            self.healthEffectError = nil
+                            WKInterfaceDevice.current().play(.start)
+                        }
+                    case .failure(let error):
+                        self.measurementGate.finishCollection(workoutID: uuid, succeeded: false)
+                        self.healthEffectError = L10n.string("Could not start workout measurements. Please retry.")
+                        os_log("Could not start workout session manager: %@", type: .error, error.localizedDescription)
                         workoutSessionManager.discard()
-                        self.workoutSessionManager = nil
+                        if self.workoutSessionManager === workoutSessionManager { self.workoutSessionManager = nil }
                     }
+                    self.drainPreparations()
+                    self.reconcileSharedHealthEffect()
+                    // A different pending workout may now start; failed same-workout intent waits for retry.
+                    if (try? self.workoutReplica.get().snapshot?.workoutID) != uuid { self.resumePendingTrackingStart() }
                 }
             }
         }
     }
-    
+
     func endWorkoutSession(start: Date, end: Date, title: String?, uuid: UUID) {
         WorkoutSessionManager.perform {
             os_log("Ending workout session start=%@ end=%@ title=%@ uuid=%@", start as NSDate, end as NSDate, title ?? "nil", uuid as NSUUID)
@@ -498,5 +550,131 @@ extension WorkoutSessionManagerStore {
             manager.restTimerEnd = snapshot.restStart.flatMap { start in snapshot.restDuration.map { start.addingTimeInterval($0) } }
             if let keepRunning = snapshot.editorContext?.keepRestTimerRunning { manager.keepRestTimerRunning = keepRunning }
         }
+    }
+}
+
+
+extension WorkoutSessionManagerStore {
+    func resumePendingTrackingStart() {
+        do {
+            let replica = try workoutReplica.get()
+            guard let request = replica.trackingStartToResume else { return }
+            startWorkoutSession(start: request.start, uuid: request.workoutID)
+        } catch { reportHealthEffectError(error) }
+    }
+    private func acknowledgeTrackingStart(_ id: UUID) {
+        do { try workoutReplica.get().acknowledgeTrackingStart(workoutID: id) }
+        catch { reportHealthEffectError(error) }
+    }
+
+    /// Domain completion is already durable. This effect can fail without altering the journal.
+    func reconcileSharedHealthEffect() {
+        WorkoutSessionManager.perform {
+            do {
+                guard self.measurementGate.canPrepare else { return }
+                let replica = try self.workoutReplica.get()
+                let state = replica.state
+                let terminals = (state.acceptedSnapshot.map { [$0] } ?? []) + state.archivedSessions.map(\.acceptedSnapshot)
+                for snapshot in terminals where snapshot.phase.isTerminal {
+                    let id = snapshot.workoutID
+                    if self.inFlightHealthEffects.contains(id) { continue }
+                    if let manager = self.workoutSessionManager, manager.uuid == id {
+                        manager.restTimerEnd = nil; manager.stopMeasurements()
+                    }
+                    if snapshot.phase == .cancelled {
+                        // Recovery can deliver a previously discarded session after the tombstone was loaded.
+                        if let manager = self.workoutSessionManager, manager.uuid == id {
+                            manager.restTimerEnd = nil; manager.discard(); self.workoutSessionManager = nil
+                        }
+                        if replica.state.healthEffects?[id] != .discarded {
+                            try replica.recordHealthEffect(.discarded, workoutID: id)
+                            self.notifyHealthChange()
+                        }
+                        continue
+                    }
+                    if replica.state.healthEffects?[id] == .saving {
+                        try replica.recordHealthEffect(.uncertain, workoutID: id)
+                        self.notifyHealthChange()
+                        continue
+                    }
+                    guard replica.state.healthEffects?[id] == nil || replica.state.healthEffects?[id] == .pending else { continue }
+                    guard let manager = self.workoutSessionManager, manager.uuid == id,
+                          WorkoutSessionManager.healthStore.authorizationStatus(for: .workoutType()) == .sharingAuthorized else {
+                        if let manager = self.workoutSessionManager, manager.uuid == id {
+                            manager.restTimerEnd = nil; manager.stopMeasurements()
+                        }
+                        try replica.recordHealthEffect(.blocked, workoutID: id)
+                        self.notifyHealthChange()
+                        continue
+                    }
+                    manager.restTimerEnd = nil
+                    guard try replica.claimHealthEffect(workoutID: id) else { continue }
+                    self.inFlightHealthEffects.insert(id)
+                    manager.end(end: snapshot.end ?? Date(), allowStartDateReplacement: false) { result in
+                        WorkoutSessionManager.perform {
+                            self.inFlightHealthEffects.remove(id)
+                            do {
+                                switch result {
+                                case .success:
+                                    try replica.recordHealthEffect(.saved, workoutID: id)
+                                    if self.workoutSessionManager === manager { self.workoutSessionManager = nil }
+                                case .failure:
+                                    // HealthKit may have committed before a failure/crash; retain recovery state.
+                                    try replica.recordHealthEffect(.uncertain, workoutID: id)
+                                }
+                                self.notifyHealthChange()
+                            } catch { self.reportHealthEffectError(error) }
+                        }
+                    }
+                }
+            } catch { self.reportHealthEffectError(error) }
+        }
+    }
+
+    func recoverSharedHealthEffect() {
+        WorkoutSessionManager.perform {
+            do {
+                let replica = try self.workoutReplica.get()
+                // Retry only effects that never attempted a save and still have their builder.
+                for (id, effect) in replica.state.healthEffects ?? [:] where effect == .blocked {
+                    if self.workoutSessionManager?.uuid == id, !self.inFlightHealthEffects.contains(id) {
+                        try replica.retryBlockedHealthEffect(workoutID: id)
+                    }
+                }
+                replica.recoverHealthEffects(excluding: self.inFlightHealthEffects, findSaved: { id, found in
+                    let predicate = HKQuery.predicateForObjects(withMetadataKey: HKMetadataKeyExternalUUID, allowedValues: [id.uuidString])
+                    let query = HKSampleQuery(sampleType: .workoutType(), predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
+                        found(error == nil && samples?.isEmpty == false)
+                    }
+                    WorkoutSessionManager.healthStore.execute(query)
+                }, completion: { id, result in
+                    WorkoutSessionManager.perform {
+                        switch result {
+                        case .success:
+                            if replica.state.healthEffects?[id] == .saved, self.workoutSessionManager?.uuid == id {
+                                self.workoutSessionManager = nil
+                            }
+                            self.notifyHealthChange()
+                        case .failure(let error): self.reportHealthEffectError(error)
+                        }
+                    }
+                })
+                self.reconcileSharedHealthEffect()
+            } catch { self.reportHealthEffectError(error) }
+        }
+    }
+    var healthRecovery: (id: UUID, effect: WorkoutReplicaStore.HealthEffect)? {
+        guard let effects = try? workoutReplica.get().state.healthEffects else { return nil }
+        return effects.sorted { $0.key.uuidString < $1.key.uuidString }.first {
+            [.saving, .uncertain, .blocked].contains($0.value)
+        }.map { ($0.key, $0.value) }
+    }
+    private func notifyHealthChange() {
+        healthEffectError = nil
+        DispatchQueue.main.async { self.objectWillChange.send() }
+    }
+    private func reportHealthEffectError(_ error: Error) {
+        os_log("Health effect state could not be saved: %@", type: .error, error.localizedDescription)
+        healthEffectError = L10n.string("Could not save measurement recovery status.")
     }
 }

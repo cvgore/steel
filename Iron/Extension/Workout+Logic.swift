@@ -45,6 +45,8 @@ extension Workout {
             return
         }
         
+        if try requestSharedEnd(cancel: true) { return }
+
         RestTimerStore.shared.cancel()
         
         if WatchConnectionManager.shared.currentWatchWorkoutUuid != nil, let uuid = uuid {
@@ -65,6 +67,8 @@ extension Workout {
             return
         }
         
+        if try requestSharedEnd(cancel: false) { return }
+
         try context.save() // just in case something goes wrong
         
         RestTimerStore.shared.cancel()
@@ -90,6 +94,24 @@ extension Workout {
         }
     }
     
+    /// Phone-only workouts retain their existing behavior; shared sessions wait for Watch reconciliation.
+    private func requestSharedEnd(cancel: Bool) throws -> Bool {
+        guard let context = managedObjectContext, let coordinator = context.persistentStoreCoordinator, let id = uuid else { return false }
+        let store = WorkoutOperationStore(coordinator: coordinator)
+        let snapshot = try store.snapshot(workoutID: id)
+        guard snapshot.phase != .local else { return false }
+        if [.pendingFinish, .pendingCancel].contains(snapshot.phase) {
+            WatchConnectionManager.shared.publishSharedWorkout()
+            return true
+        }
+        guard !snapshot.phase.isTerminal else { return true }
+        _ = try WorkoutCommandWriter(context: context).write(workout: self, mutation: cancel ? .requestCancel : .requestFinish)
+        let updated = try store.snapshot(workoutID: id)
+        if updated.phase.isTerminal { WatchConnectionManager.shared.publishTerminalWorkout(updated) }
+        else { WatchConnectionManager.shared.publishSharedWorkout() }
+        return true
+    }
+
     func delete() throws {
         guard let context = managedObjectContext else {
             os_log("Attempt to delete workout without context", log: .workoutData, type: .error)

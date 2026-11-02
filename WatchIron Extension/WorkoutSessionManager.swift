@@ -145,6 +145,8 @@ class WorkoutSessionManager: NSObject, ObservableObject {
         workoutSession.workoutConfiguration
     }
     
+    var hasCollectedWorkout: Bool { workoutBuilder.startDate != nil }
+
     var uuid: UUID? {
         guard let uuidString = workoutBuilder.metadata[HKMetadataKeyExternalUUID] as? String else { return nil }
         return UUID(uuidString: uuidString)
@@ -250,6 +252,11 @@ class WorkoutSessionManager: NSObject, ObservableObject {
         })
     }
     
+    func stopMeasurements() {
+        dispatchPrecondition(condition: DispatchPredicate.onQueue(Self.accessQueue))
+        if workoutSession.state != .ended { workoutSession.end() }
+    }
+
     func discard() {
         print(#function)
         dispatchPrecondition(condition: DispatchPredicate.onQueue(Self.accessQueue))
@@ -264,7 +271,7 @@ class WorkoutSessionManager: NSObject, ObservableObject {
         workoutBuilder.discardWorkout()
     }
     
-    func end(end: Date, completion: @escaping (Result<HKWorkout, Error>) -> Void) {
+    func end(end: Date, allowStartDateReplacement: Bool = true, completion: @escaping (Result<HKWorkout, Error>) -> Void) {
         print(#function)
         dispatchPrecondition(condition: DispatchPredicate.onQueue(Self.accessQueue))
         
@@ -274,7 +281,7 @@ class WorkoutSessionManager: NSObject, ObservableObject {
             }
         }
         
-        workoutSession.end()
+        stopMeasurements()
         
         let endCollectionSemaphore = DispatchSemaphore(value: 0)
         var endCollectionError: Error?
@@ -306,7 +313,7 @@ class WorkoutSessionManager: NSObject, ObservableObject {
                 return
             }
 
-            if let _startDate = self._startDate, _startDate != workout.startDate {
+            if allowStartDateReplacement, let _startDate = self._startDate, _startDate != workout.startDate {
                 print("replacing saved workout because saved workout has startDate \(workout.startDate) but startDate has been updated to \(_startDate)")
                 // the start date was updated while the workout was already running
                 // replace the saved workout with a copy that has the correct start date

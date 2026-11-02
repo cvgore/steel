@@ -374,3 +374,23 @@
 "Current result" = "Aktualny wynik";
 "Use my correction" = "Użyj mojej poprawki";
 "Review saved draft" = "Sprawdź zapisany szkic";
+
+"Cancel Workout" = "Anuluj trening";
+
+"Cancel Workout?" = "Anulować trening?";
+
+"Keep Workout" = "Kontynuuj trening";
+
+"Could not save workout changes. Please retry." = "Nie udało się zapisać zmian treningu. Spróbuj ponownie.";
+
+"Could not save measurement recovery status." = "Nie udało się zapisać stanu odzyskiwania pomiarów.";
+
+"Workout saved. Measurements need Health permission or session recovery." = "Trening zapisany. Pomiary wymagają dostępu do Zdrowia lub odzyskania sesji.";
+
+"Workout saved. Health save is unconfirmed; it will not be repeated." = "Trening zapisany. Zapis w Zdrowiu niepotwierdzony; nie zostanie powtórzony.";
+
+"Check measurements" = "Sprawdź pomiary";
+
+"Could not recover workout measurements. Please retry." = "Nie udało się odzyskać pomiarów treningu. Spróbuj ponownie.";
+
+"Could not start workout measurements. Please retry." = "Nie udało się rozpocząć pomiarów treningu. Spróbuj ponownie.";
