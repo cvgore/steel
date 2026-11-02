@@ -741,4 +741,33 @@ extension WatchWorkoutNavigationTests {
         navigation.selectWorkingSet(exerciseID: exercise, setID: next, snapshot: snapshot)
         XCTAssertEqual(navigation.drafts[next]?.weight, 83)
     }
+
+    func testCrownFinePrecisionBoundsNotchConstructionWithoutReducingDomain() {
+        let cases: [(value: Double, step: Double, maximum: Double, lower: Double, upper: Double)] = [
+            (50, 0.1, 99999, 40, 60),
+            (50, 0.001, 99999, 49.9, 50.1),
+            (0, 0.001, 99999, 0, 0.1),
+            (99999, 0.001, 99999, 99998.9, 99999),
+            (220460, 0.001, 220460.0571, 220459.9, 220460.0571),
+            (1000.125, 2.5, 99999, 750, 1250),
+            (9999, 1, 9999, 9899, 9999)
+        ]
+        for item in cases {
+            let range = WorkoutEditingRules.crownRange(around: item.value, step: item.step, maximum: item.maximum)
+            XCTAssertEqual(range.lowerBound, item.lower, accuracy: 0.00000001)
+            XCTAssertEqual(range.upperBound, item.upper, accuracy: 0.00000001)
+            XCTAssertTrue(range.contains(item.value))
+            XCTAssertLessThanOrEqual((range.upperBound - range.lowerBound) / item.step, 200.0000001)
+        }
+    }
+
+    func testCrownWindowRecentersToContinueEditingInEitherDirection() {
+        let first = WorkoutEditingRules.crownRange(around: 50, step: 0.001, maximum: 99999)
+        let higher = WorkoutEditingRules.crownRange(around: first.upperBound, step: 0.001, maximum: 99999)
+        let lower = WorkoutEditingRules.crownRange(around: first.lowerBound, step: 0.001, maximum: 99999)
+        XCTAssertGreaterThan(higher.upperBound, first.upperBound)
+        XCTAssertLessThan(lower.lowerBound, first.lowerBound)
+        XCTAssertEqual(higher.upperBound, 50.2, accuracy: 0.00000001)
+        XCTAssertEqual(lower.lowerBound, 49.8, accuracy: 0.00000001)
+    }
 }

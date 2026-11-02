@@ -6,6 +6,12 @@ public enum WorkoutEditingRules {
     public static let maximumRepetitions: Int16 = 9999
     public static let defaultRepetitions: Int16 = 5
     public static let allowedRPE = Array(stride(from: 7.0, through: 10.0, by: 0.5))
+    /// SwiftUI constructs a notch for each step. Follow the current value so fine
+    /// precision stays responsive without imposing a smaller editable domain.
+    public static func crownRange(around value: Double, step: Double, maximum: Double) -> ClosedRange<Double> {
+        let index = (min(maximum, max(0, value)) / step).rounded()
+        return max(0, (index - 100) * step)...min(maximum, (index + 100) * step)
+    }
     public static func isValid(_ draft: WorkoutSetDraft) -> Bool {
         (draft.weight.map { $0.isFinite && $0 >= 0 && $0 <= maximumWeight } ?? true) &&
         (draft.repetitions.map { $0 >= 0 && $0 <= maximumRepetitions } ?? true) &&
