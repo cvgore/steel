@@ -16,7 +16,7 @@
 "Add Exercises" = "Add Exercises";
 "Add Routine" = "Add Routine";
 "Add Set" = "Add Set";
-"Adds missing workouts to Apple Health and removes workouts from Apple Health that are no longer present in Iron. This also updates workouts where the start or end time has been modified." = "Adds missing workouts to Apple Health and removes workouts from Apple Health that are no longer present in Iron. This also updates workouts where the start or end time has been modified.";
+"Adds missing workouts to Apple Health and removes workouts from Apple Health that are no longer present in Steel. This also updates workouts where the start or end time has been modified." = "Adds missing workouts to Apple Health and removes workouts from Apple Health that are no longer present in Steel. This also updates workouts where the start or end time has been modified.";
 "All" = "All";
 "All Exercises" = "All Exercises";
 "All great achievements require time." = "All great achievements require time.";
@@ -116,9 +116,9 @@
 "No data available" = "No data available";
 "No exercise selected" = "No exercise selected";
 "No workout selected" = "No workout selected";
-"Not authorized for Apple Health. You can authorize Iron in the settings app." = "Not authorized for Apple Health. You can authorize Iron in the settings app.";
+"Not authorized for Apple Health. You can authorize Steel in the settings app." = "Not authorized for Apple Health. You can authorize Steel in the settings app.";
 "Ok" = "Ok";
-"Open Iron to launch the Apple Watch companion." = "Open Iron to launch the Apple Watch companion.";
+"Open Steel to launch the Apple Watch companion." = "Open Steel to launch the Apple Watch companion.";
 "Opening the watch app was unsuccessful" = "Opening the watch app was unsuccessful";
 "Other" = "Other";
 "Personal Record" = "Personal Record";
@@ -129,7 +129,7 @@
 "RPE" = "RPE";
 "RPE " = "RPE ";
 "RPE (Rating of Perceived Exertion)" = "RPE (Rating of Perceived Exertion)";
-"Rate Iron" = "Rate Iron";
+"Rate Steel" = "Rate Steel";
 "Recent" = "Recent";
 "References" = "References";
 "Repeat" = "Repeat";
@@ -207,8 +207,8 @@
 "Weight" = "Weight";
 "Weight Unit" = "Weight Unit";
 "Weight lifting time" = "Weight lifting time";
-"When you start a workout, Iron's Apple Watch companion app will automatically launch to measure your heart rate and approximate your calorie consumption during the workout." = "When you start a workout, Iron's Apple Watch companion app will automatically launch to measure your heart rate and approximate your calorie consumption during the workout.";
-"When you start a workout, Iron's Apple Watch companion app will not automatically launch to measure your heart rate and approximate your calorie consumption during the workout." = "When you start a workout, Iron's Apple Watch companion app will not automatically launch to measure your heart rate and approximate your calorie consumption during the workout.";
+"When you start a workout, Steel's Apple Watch companion app will automatically launch to measure your heart rate and approximate your calorie consumption during the workout." = "When you start a workout, Steel's Apple Watch companion app will automatically launch to measure your heart rate and approximate your calorie consumption during the workout.";
+"When you start a workout, Steel's Apple Watch companion app will not automatically launch to measure your heart rate and approximate your calorie consumption during the workout." = "When you start a workout, Steel's Apple Watch companion app will not automatically launch to measure your heart rate and approximate your calorie consumption during the workout.";
 "Whether you think you can, or you think you can’t, you’re right." = "Whether you think you can, or you think you can’t, you’re right.";
 "Workout" = "Workout";
 "Workout Data" = "Workout Data";

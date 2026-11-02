@@ -67,7 +67,7 @@ xcodebuild -project Iron.xcodeproj -scheme IronE2E \
 
 - Language selection, English and Polish exercise search, detail rendering and language persistence after relaunch.
 - A Polish workout with title persistence, exercise and set completion, finishing, and history verification after relaunch. The test handles both iOS Health authorization pages.
-- Siri starting a workout, checked by verifying an actual active workout in Iron. Assistant UI alone does not satisfy the assertion. `voiceRecognitionText` supplies recognized text and does not test microphone input or speech recognition.
+- Siri starting a workout, checked by verifying an actual active workout in Steel. Assistant UI alone does not satisfy the assertion. `voiceRecognitionText` supplies recognized text and does not test microphone input or speech recognition.
 
 Use `-only-testing:IronE2ETests/LocalizationE2ETests/<test-method>` to select a scenario. Xcode result bundles include explicit screenshot and accessibility-tree attachments. For a reproducible failure, inspect these before changing queries or app behavior. `-collect-test-diagnostics never` skips extended simulator diagnostics while retaining test assertions and explicit attachments.
 
@@ -76,9 +76,9 @@ Use `-only-testing:IronE2ETests/LocalizationE2ETests/<test-method>` to select a 
 The iPhone UI suite does not cover the complete Watch workout lifecycle. Use a paired iPhone and Watch for the following checks, with Health access granted on both:
 
 1. Change language on the phone and verify Watch updates without a Watch-specific launch override. Repeat with Watch offline, then reconnect it.
-2. Install over the previous app on the paired devices and verify existing data and companion association survive. Start a workout from the phone, confirm companion launch and preparation, then check elapsed time, heart rate, calories and the rest timer.
+2. Install Steel on the paired devices and verify companion association. Import a previous Iron backup if needed. Start a workout from the phone, confirm companion launch and preparation, then check elapsed time, heart rate, calories and the rest timer.
 3. Check WatchConnectivity with the Watch temporarily unreachable, then reconnect. Exercise finish and discard separately; relaunch during an active workout to check recovery and verify saved history after finishing.
 4. Check authorized Health data, heart-rate readings and workout behavior in the background on physical devices.
-5. Invoke Siri with a workout request naming Iron and verify that Iron creates a workout. Check app-owned localized responses separately from Siri's system language and voice.
+5. Invoke Siri with a workout request naming Steel and verify that Steel creates a workout. Check app-owned localized responses separately from Siri's system language and voice.
 
 Physical-device testing requires trusted devices with Developer Mode enabled and a development team/profile for the app, app group, HealthKit and Siri capabilities. Simulator builds and localized intent templates do not establish hardware sensor, background workout or spoken Siri behavior. Record device/OS versions and distinguish automated, manual and physical-device checks in test reports; store run-specific results with the issue or build artifacts.

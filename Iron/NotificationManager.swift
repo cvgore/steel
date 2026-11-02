@@ -53,7 +53,7 @@ class NotificationManager: NSObject {
                     content.body = L10n.string("Back to work 💪")
                 case .startedWorkout:
                     content.title = L10n.string("Your workout was started")
-                    content.body = L10n.string("Open Iron to launch the Apple Watch companion.")
+                    content.body = L10n.string("Open Steel to launch the Apple Watch companion.")
                 }
                 self.notificationCenter.add(UNNotificationRequest(identifier: request.identifier, content: content, trigger: request.trigger))
             }
@@ -140,7 +140,7 @@ class NotificationManager: NSObject {
             
             let content = UNMutableNotificationContent()
             content.title = L10n.string("Your workout was started")
-            content.body = L10n.string("Open Iron to launch the Apple Watch companion.")
+            content.body = L10n.string("Open Steel to launch the Apple Watch companion.")
             if #available(iOS 15.0, *) {
                 content.interruptionLevel = .timeSensitive
             }

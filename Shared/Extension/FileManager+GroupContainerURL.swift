@@ -9,7 +9,7 @@
 import Foundation
 
 extension FileManager {
-    static var appGroupIdentifier = "group.com.kabouzeid.Iron"
+    static var appGroupIdentifier = "group.cvgore.Steel"
     
     var appGroupContainerURL: URL {
         guard let containerURL = containerURL(forSecurityApplicationGroupIdentifier: Self.appGroupIdentifier) else {

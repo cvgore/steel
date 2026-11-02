@@ -2414,7 +2414,7 @@
 				MARKETING_VERSION = 1.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kabouzeid.Iron.IronIntents;
+				PRODUCT_BUNDLE_IDENTIFIER = cvgore.Steel.IronIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -2440,7 +2440,7 @@
 				);
 				MARKETING_VERSION = 1.6;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kabouzeid.Iron.IronIntents;
+				PRODUCT_BUNDLE_IDENTIFIER = cvgore.Steel.IronIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -2467,7 +2467,7 @@
 				MARKETING_VERSION = 1.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kabouzeid.Iron.IronIntentsUI;
+				PRODUCT_BUNDLE_IDENTIFIER = cvgore.Steel.IronIntentsUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -2493,7 +2493,7 @@
 				);
 				MARKETING_VERSION = 1.6;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kabouzeid.Iron.IronIntentsUI;
+				PRODUCT_BUNDLE_IDENTIFIER = cvgore.Steel.IronIntentsUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -2634,7 +2634,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.6;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kabouzeid.Iron;
+				PRODUCT_BUNDLE_IDENTIFIER = cvgore.Steel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -2659,7 +2659,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.6;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kabouzeid.Iron;
+				PRODUCT_BUNDLE_IDENTIFIER = cvgore.Steel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -2680,7 +2680,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kabouzeid.IronTests;
+				PRODUCT_BUNDLE_IDENTIFIER = cvgore.Steel.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2701,7 +2701,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kabouzeid.IronTests;
+				PRODUCT_BUNDLE_IDENTIFIER = cvgore.Steel.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2715,12 +2715,12 @@
 				MARKETING_VERSION = "1.6";
 				DEVELOPMENT_TEAM = "2L6CX7XT2U";
 				CURRENT_PROJECT_VERSION = "36";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.kabouzeid.Iron.watchkitapp";
+				PRODUCT_BUNDLE_IDENTIFIER = "cvgore.Steel.watchkitapp";
 				MTL_FAST_MATH = "YES";
-				INFOPLIST_KEY_CFBundleDisplayName = "Iron";
+				INFOPLIST_KEY_CFBundleDisplayName = "Steel";
 				MTL_ENABLE_DEBUG_INFO = "INCLUDE_SOURCE";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "YES";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.kabouzeid.Iron";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "cvgore.Steel";
 				TARGETED_DEVICE_FAMILY = "4";
 				CODE_SIGN_STYLE = "Automatic";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon";
@@ -2736,8 +2736,8 @@
 				CODE_SIGN_ENTITLEMENTS = "WatchIron Extension/WatchIron Extension.entitlements";
 				INFOPLIST_FILE = "WatchIron/Info.plist";
 				INFOPLIST_KEY_WKApplication = "YES";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Iron can display your heart rate and burned calories during a workout.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Iron can save your finished workouts to Apple Health.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Steel can display your heart rate and burned calories during a workout.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Steel can save your finished workouts to Apple Health.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2752,11 +2752,11 @@
 				MARKETING_VERSION = "1.6";
 				DEVELOPMENT_TEAM = "2L6CX7XT2U";
 				CURRENT_PROJECT_VERSION = "36";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.kabouzeid.Iron.watchkitapp";
+				PRODUCT_BUNDLE_IDENTIFIER = "cvgore.Steel.watchkitapp";
 				MTL_FAST_MATH = "YES";
-				INFOPLIST_KEY_CFBundleDisplayName = "Iron";
+				INFOPLIST_KEY_CFBundleDisplayName = "Steel";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "YES";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.kabouzeid.Iron";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "cvgore.Steel";
 				TARGETED_DEVICE_FAMILY = "4";
 				CODE_SIGN_STYLE = "Automatic";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon";
@@ -2772,8 +2772,8 @@
 				CODE_SIGN_ENTITLEMENTS = "WatchIron Extension/WatchIron Extension.entitlements";
 				INFOPLIST_FILE = "WatchIron/Info.plist";
 				INFOPLIST_KEY_WKApplication = "YES";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Iron can display your heart rate and burned calories during a workout.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Iron can save your finished workouts to Apple Health.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Steel can display your heart rate and burned calories during a workout.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Steel can save your finished workouts to Apple Health.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2803,7 +2803,7 @@
 				MARKETING_VERSION = 1.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kabouzeid.Iron.IronWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = cvgore.Steel.IronWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -2831,7 +2831,7 @@
 				);
 				MARKETING_VERSION = 1.6;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kabouzeid.Iron.IronWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = cvgore.Steel.IronWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -2863,7 +2863,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kabouzeid.WorkoutDataKit;
+				PRODUCT_BUNDLE_IDENTIFIER = cvgore.Steel.WorkoutDataKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -2897,7 +2897,7 @@
 					"@loader_path/Frameworks",
 				);
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kabouzeid.WorkoutDataKit;
+				PRODUCT_BUNDLE_IDENTIFIER = cvgore.Steel.WorkoutDataKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -3125,7 +3125,7 @@
 				DEVELOPMENT_TEAM = "2L6CX7XT2U";
 				GENERATE_INFOPLIST_FILE = "YES";
 				IPHONEOS_DEPLOYMENT_TARGET = "26.0";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.kabouzeid.Iron.e2etests";
+				PRODUCT_BUNDLE_IDENTIFIER = "cvgore.Steel.e2etests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = "iphoneos";
 				SWIFT_VERSION = "5.0";
@@ -3141,7 +3141,7 @@
 				DEVELOPMENT_TEAM = "2L6CX7XT2U";
 				GENERATE_INFOPLIST_FILE = "YES";
 				IPHONEOS_DEPLOYMENT_TARGET = "26.0";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.kabouzeid.Iron.e2etests";
+				PRODUCT_BUNDLE_IDENTIFIER = "cvgore.Steel.e2etests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = "iphoneos";
 				SWIFT_VERSION = "5.0";

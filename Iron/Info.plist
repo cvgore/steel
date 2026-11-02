@@ -5,7 +5,16 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Iron</string>
+	<string>Steel</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>cvgore.Steel</string>
+			<key>CFBundleURLSchemes</key>
+			<array><string>steel</string></array>
+		</dict>
+	</array>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -21,7 +30,7 @@
 				<string>iron_backup_file_images/iron_backup_file_320.png</string>
 			</array>
 			<key>CFBundleTypeName</key>
-			<string>Iron Backup</string>
+			<string>Steel Backup</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>LSHandlerRank</key>
@@ -53,17 +62,17 @@
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSHealthShareUsageDescription</key>
-	<string>Iron can display your bodyweight next to the sets of a previous workout.</string>
+	<string>Steel can display your bodyweight next to the sets of a previous workout.</string>
 	<key>NSHealthUpdateUsageDescription</key>
-	<string>Iron can save your finished workouts to Apple Health.</string>
+	<string>Steel can save your finished workouts to Apple Health.</string>
 	<key>NSUbiquitousContainers</key>
 	<dict>
-		<key>iCloud.com.kabouzeid.Iron</key>
+		<key>iCloud.cvgore.Steel</key>
 		<dict>
 			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
 			<true/>
 			<key>NSUbiquitousContainerName</key>
-			<string>Iron</string>
+			<string>Steel</string>
 			<key>NSUbiquitousContainerSupportedFolderLevels</key>
 			<string>Any</string>
 		</dict>
@@ -120,7 +129,7 @@
 				<string>public.data</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>Iron Backup</string>
+			<string>Steel Backup</string>
 			<key>UTTypeIconFiles</key>
 			<array>
 				<string>iron_backup_file_images/iron_backup_file_29.png</string>

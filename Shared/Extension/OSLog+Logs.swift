@@ -10,7 +10,7 @@ import Foundation
 import os.log
 
 extension OSLog {
-    private static let subsystem = Bundle.main.bundleIdentifier ?? "com.kabouzeid.Iron.nobundle"
+    private static let subsystem = Bundle.main.bundleIdentifier ?? "cvgore.Steel.nobundle"
     
     static let migration = OSLog(subsystem: subsystem, category: "Migration")
     static let backup = OSLog(subsystem: subsystem, category: "Backup")

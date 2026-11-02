@@ -48,7 +48,7 @@ struct SettingsView : View {
                 UIApplication.shared.open(writeReviewURL)
             }) {
                 HStack {
-                    Text("Rate Iron")
+                    Text("Rate Steel")
                     Spacer()
                     Image(systemName: "star")
                 }

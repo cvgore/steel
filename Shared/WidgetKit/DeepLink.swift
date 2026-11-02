@@ -13,7 +13,7 @@ enum DeepLink: String {
 }
 
 extension DeepLink {
-    static let URLScheme = "iron"
+    static let URLScheme = "steel"
     
     static func url(for deepLink: DeepLink) -> URL {
         URL(string: "\(URLScheme)://\(deepLink.rawValue)")!

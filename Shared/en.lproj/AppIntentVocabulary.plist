@@ -9,7 +9,7 @@
 			<string>INCancelWorkoutIntent</string>
 			<key>IntentExamples</key>
 			<array>
-				<string>Cancel my workout with Iron</string>
+				<string>Cancel my workout with Steel</string>
 			</array>
 		</dict>
 		<dict>
@@ -17,9 +17,9 @@
 			<string>INEndWorkoutIntent</string>
 			<key>IntentExamples</key>
 			<array>
-				<string>Finish my workout with Iron</string>
-				<string>End my workout with Iron</string>
-				<string>Stop my workout with Iron</string>
+				<string>Finish my workout with Steel</string>
+				<string>End my workout with Steel</string>
+				<string>Stop my workout with Steel</string>
 			</array>
 		</dict>
 		<dict>
@@ -27,7 +27,7 @@
 			<string>INStartWorkoutIntent</string>
 			<key>IntentExamples</key>
 			<array>
-				<string>Start a workout with Iron</string>
+				<string>Start a workout with Steel</string>
 			</array>
 		</dict>
 	</array>

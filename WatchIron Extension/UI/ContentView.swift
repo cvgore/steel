@@ -89,7 +89,7 @@ private struct _ContentView: View {
             return L10n.string("HealthKit is not available on this device.")
         }
         if WorkoutSessionManager.healthStore.authorizationStatus(for: .workoutType()) == .sharingDenied {
-            return L10n.string("Not authorized for Apple Health. You can authorize Iron in the settings app.")
+            return L10n.string("Not authorized for Apple Health. You can authorize Steel in the settings app.")
         }
         return nil
     }

@@ -13,7 +13,7 @@ class WorkoutExerciseMigrationPolicyV1: UuidMigrationPolicy {
     private static let exerciseStore = ExerciseStore(
         // not completely clean to hardcode the custom exercises path here
         customExercisesURL: FileManager.default
-            .containerURL(forSecurityApplicationGroupIdentifier: "group.com.kabouzeid.Iron")?
+            .containerURL(forSecurityApplicationGroupIdentifier: "group.cvgore.Steel")?
             .appendingPathComponent("Library")
             .appendingPathComponent("Application Support")
             .appendingPathComponent("custom_exercises").appendingPathExtension("json")

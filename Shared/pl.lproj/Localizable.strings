@@ -16,7 +16,7 @@
 "Add Exercises" = "Dodaj ćwiczenia";
 "Add Routine" = "Dodaj zestaw ćwiczeń";
 "Add Set" = "Dodaj serię";
-"Adds missing workouts to Apple Health and removes workouts from Apple Health that are no longer present in Iron. This also updates workouts where the start or end time has been modified." = "Dodaje brakujące treningi do Apple Zdrowie i usuwa z niego treningi, których nie ma już w Iron. Uaktualnia też treningi ze zmienionym czasem rozpoczęcia lub zakończenia.";
+"Adds missing workouts to Apple Health and removes workouts from Apple Health that are no longer present in Steel. This also updates workouts where the start or end time has been modified." = "Dodaje brakujące treningi do Apple Zdrowie i usuwa z niego treningi, których nie ma już w Steel. Uaktualnia też treningi ze zmienionym czasem rozpoczęcia lub zakończenia.";
 "All" = "Wszystkie";
 "All Exercises" = "Wszystkie ćwiczenia";
 "All great achievements require time." = "Wszystkie wielkie osiągnięcia wymagają czasu.";
@@ -116,9 +116,9 @@
 "No data available" = "Brak danych";
 "No exercise selected" = "Nie wybrano ćwiczenia";
 "No workout selected" = "Nie wybrano treningu";
-"Not authorized for Apple Health. You can authorize Iron in the settings app." = "Brak dostępu do Apple Zdrowie. Możesz przyznać dostęp aplikacji Iron w Ustawieniach.";
+"Not authorized for Apple Health. You can authorize Steel in the settings app." = "Brak dostępu do Apple Zdrowie. Możesz przyznać dostęp aplikacji Steel w Ustawieniach.";
 "Ok" = "OK";
-"Open Iron to launch the Apple Watch companion." = "Otwórz Iron, aby uruchomić aplikację na Apple Watch.";
+"Open Steel to launch the Apple Watch companion." = "Otwórz Steel, aby uruchomić aplikację na Apple Watch.";
 "Opening the watch app was unsuccessful" = "Nie udało się otworzyć aplikacji na zegarku";
 "Other" = "Inne";
 "Personal Record" = "Rekord osobisty";
@@ -129,7 +129,7 @@
 "RPE" = "RPE";
 "RPE " = "RPE ";
 "RPE (Rating of Perceived Exertion)" = "RPE (ocena odczuwanego wysiłku)";
-"Rate Iron" = "Oceń Iron";
+"Rate Steel" = "Oceń Steel";
 "Recent" = "Ostatnie";
 "References" = "Źródła";
 "Repeat" = "Powtórz";
@@ -207,8 +207,8 @@
 "Weight" = "Ciężar";
 "Weight Unit" = "Jednostka ciężaru";
 "Weight lifting time" = "Czas na trening siłowy";
-"When you start a workout, Iron's Apple Watch companion app will automatically launch to measure your heart rate and approximate your calorie consumption during the workout." = "Po rozpoczęciu treningu aplikacja Iron na Apple Watch uruchomi się automatycznie, aby mierzyć tętno i szacować liczbę spalonych kalorii.";
-"When you start a workout, Iron's Apple Watch companion app will not automatically launch to measure your heart rate and approximate your calorie consumption during the workout." = "Po rozpoczęciu treningu aplikacja Iron na Apple Watch nie uruchomi się automatycznie, aby mierzyć tętno i szacować liczbę spalonych kalorii.";
+"When you start a workout, Steel's Apple Watch companion app will automatically launch to measure your heart rate and approximate your calorie consumption during the workout." = "Po rozpoczęciu treningu aplikacja Steel na Apple Watch uruchomi się automatycznie, aby mierzyć tętno i szacować liczbę spalonych kalorii.";
+"When you start a workout, Steel's Apple Watch companion app will not automatically launch to measure your heart rate and approximate your calorie consumption during the workout." = "Po rozpoczęciu treningu aplikacja Steel na Apple Watch nie uruchomi się automatycznie, aby mierzyć tętno i szacować liczbę spalonych kalorii.";
 "Whether you think you can, or you think you can’t, you’re right." = "Niezależnie od tego, czy myślisz, że potrafisz, czy że nie potrafisz — masz rację.";
 "Workout" = "Trening";
 "Workout Data" = "Dane treningów";

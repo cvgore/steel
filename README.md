@@ -1,14 +1,8 @@
 <p align="center">
-  <a href="https://apps.apple.com/us/app/iron-workout-tracker/id1479893244?itsct=apps_box_link&itscg=30200" target="_blank" rel="noopener noreferrer">
-    <img width="180" height="180" src="assets/app_icon_rounded.png" alt="Iron App Icon">
-  </a>
+  <img width="180" height="180" src="assets/app_icon_rounded.png" alt="Steel App Icon">
 </p>
 
-<p align="center">
-  <a href="https://apps.apple.com/us/app/iron-workout-tracker/id1479893244?itsct=apps_box_badge&amp;itscg=30200" target="_blank" rel="noopener noreferrer"><img src="assets/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" style="width: 160px"></a>
-</p>
-
-# Iron
+# Steel
 
 A modern and completely free weightlifting workout tracker for iOS, written in SwiftUI.
 
@@ -19,12 +13,7 @@ A modern and completely free weightlifting workout tracker for iOS, written in S
 
 **Xcode 27** or later is required. Deployment targets are **iOS 26.0** and **watchOS 26.0**. Open `Iron.xcodeproj`; the shared schemes are `Iron` (app and unit tests), `IronE2E` (UI tests), and `WatchIron` (Watch app).
 
-- Select the "Iron" project in the Xcode sidebar
-- Under "Targets", select "Iron"
-- Change the "Bundle Identifier", "App Group" and "iCloud Container" to something unique like `com.yourname.Iron`
-- Go to the "Signing & Capabilities" tab and select your development team under "Signing > Team"
-- Repeat the same process for the other targets where applicable
-- Build the `Iron` scheme.
+Follow [Apple Developer setup](docs/apple-developer.md) for the exact Steel identifiers, capabilities and signing steps. Build the existing `Iron` scheme; target/module names remain unchanged.
 
 DGCharts is pinned to an upstream compiler fix in the checked-in SwiftPM lockfile. Resolve the recorded dependency version without editing downloaded package sources.
 

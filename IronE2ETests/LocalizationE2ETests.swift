@@ -97,9 +97,9 @@ final class LocalizationE2ETests: XCTestCase {
         XCTAssertTrue(tab("Workout", "Trening").waitForExistence(timeout: 30))
         tab("Workout", "Trening").tap()
         XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label == 'Start Workout' OR label == 'Rozpocznij trening'")).firstMatch.waitForExistence(timeout: 10), "Siri test requires no existing workout")
-        XCUIDevice.shared.siriService.activate(voiceRecognitionText: "Start a weight lifting workout in the Iron app")
+        XCUIDevice.shared.siriService.activate(voiceRecognitionText: "Start a weight lifting workout in the Steel app")
         let siriScreenshot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
-        siriScreenshot.name = "Siri response to Start a weight lifting workout in the Iron app"
+        siriScreenshot.name = "Siri response to Start a weight lifting workout in the Steel app"
         siriScreenshot.lifetime = .keepAlways
         add(siriScreenshot)
         let siri = XCUIApplication(bundleIdentifier: "com.apple.siri")

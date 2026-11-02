@@ -18,7 +18,7 @@ struct AboutView: View {
                     .frame(height: 80)
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Iron \(versionString)")
+                    Text("Steel \(versionString)")
                         .font(.headline)
                     
                     Text("by Karim Abou Zeid")

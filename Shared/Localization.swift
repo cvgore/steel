@@ -31,7 +31,7 @@ public extension Notification.Name {
 
 public enum L10n {
     public static let preferenceKey = "appLanguage"
-    private static let defaults = UserDefaults(suiteName: "group.com.kabouzeid.Iron") ?? .standard
+    private static let defaults = UserDefaults(suiteName: "group.cvgore.Steel") ?? .standard
 
     public static var language: AppLanguage {
         get { AppLanguage(rawValue: defaults.string(forKey: preferenceKey) ?? "") ?? .automatic }
