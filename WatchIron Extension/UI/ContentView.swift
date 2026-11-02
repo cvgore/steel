@@ -12,9 +12,11 @@ import HealthKit
 
 struct ContentView: View {
     var body: some View {
-        _ContentView()
+        VStack(spacing: 0) {
+            _ContentView()
+            WorkoutSynchronizationStatusView()
+        }
             .environmentObject(WorkoutSessionManagerStore.shared)
-            .safeAreaInset(edge: .top) { WorkoutSynchronizationStatusView() }
             .onAppear { PhoneConnectionManager.shared.synchronizeWorkout() }
     }
 }
@@ -399,22 +401,31 @@ struct ContentView_Previews: PreviewProvider {
 private struct WorkoutSynchronizationStatusView: View {
     @ObservedObject private var owner = WorkoutSessionManagerStore.shared
     @ObservedObject private var connection = PhoneConnectionManager.shared
-    private var message: String? {
+    @State private var showingDetails = false
+    private var syncStatuses: [(summary: String, message: String)] {
+        var statuses: [(summary: String, message: String)] = []
+        if let error = connection.workoutSyncError {
+            statuses.append((L10n.string("Sync error"), error))
+        }
         do {
             let state = try owner.workoutReplica.get().state
-            if let error = connection.workoutSyncError { return error }
-            guard let snapshot = state.snapshot else { return nil }
-            if !state.agreed { return L10n.string("Waiting for iPhone agreement") }
+            guard let snapshot = state.snapshot else { return statuses }
+            if !state.agreed {
+                statuses.append((L10n.string("Waiting for iPhone"), L10n.string("Waiting for iPhone agreement")))
+            }
             let resolved = state.acceptedSnapshot?.resolvedOperationIDs ?? []
-            if !(snapshot.unresolvedConflictIDs ?? []).isEmpty || state.receipts.contains(where: { $0.disposition == .conflict && !resolved.contains($0.operationID) }) {
-                return L10n.string("Resolve conflicts on iPhone")
+            let localConflict = state.conflicts.contains { conflict in
+                conflict.accepted.version >= (state.acceptedSnapshot?.version ?? conflict.accepted.version)
+            }
+            if localConflict || !(snapshot.unresolvedConflictIDs ?? []).isEmpty || state.receipts.contains(where: { $0.disposition == .conflict && !resolved.contains($0.operationID) }) {
+                statuses.insert((L10n.string("Conflict"), L10n.string("Resolve conflicts on iPhone")), at: 0)
             }
             let covered = state.acceptedSnapshot?.coveredOperationIDs ?? []
             if !state.pendingOperations.isEmpty || state.operations.contains(where: { !covered.contains($0.id) && !resolved.contains($0.id) }) || snapshot.phase == .pendingFinish || snapshot.phase == .pendingCancel {
-                return L10n.string("Changes pending synchronization")
+                statuses.append((L10n.string("Sync pending"), L10n.string("Changes pending synchronization")))
             }
-            return nil
-        } catch { return L10n.string("Could not load workout synchronization") }
+        } catch { statuses.append((L10n.string("Sync error"), L10n.string("Could not load workout synchronization"))) }
+        return statuses
     }
     private var healthMessage: String? {
         if let error = owner.healthEffectError { return error }
@@ -426,18 +437,37 @@ private struct WorkoutSynchronizationStatusView: View {
         }
     }
     var body: some View {
-        if message != nil || healthMessage != nil {
-            VStack {
-                if let message = message {
-                    Text(message).font(.caption).multilineTextAlignment(.center)
-                    Button("Retry synchronization") { connection.synchronizeWorkout() }.font(.caption)
+        if !syncStatuses.isEmpty || healthMessage != nil {
+            Button { showingDetails = true } label: {
+                HStack {
+                    Image(systemName: "exclamationmark.circle")
+                    Text([syncStatuses.first?.summary, healthMessage == nil ? nil : L10n.string("Health warning")].compactMap { $0 }.joined(separator: " · "))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
                 }
-                if let healthMessage = healthMessage {
-                    Text(healthMessage).font(.caption2).multilineTextAlignment(.center)
-                    Button("Check measurements") {
-                        owner.recoverSharedHealthEffect()
-                        connection.synchronizeWorkout()
-                    }.font(.caption)
+                .font(.caption2)
+                .frame(maxWidth: .infinity, minHeight: 30)
+                .background(.gray.opacity(0.35), in: Capsule())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel((syncStatuses.map(\.message) + [healthMessage].compactMap { $0 }).joined(separator: ". "))
+            .sheet(isPresented: $showingDetails) {
+                ScrollView {
+                    VStack(spacing: 8) {
+                        if !syncStatuses.isEmpty {
+                            ForEach(Array(syncStatuses.enumerated()), id: \.offset) { _, status in
+                                Text(status.message).font(.caption).multilineTextAlignment(.center)
+                            }
+                            Button("Retry synchronization") { connection.synchronizeWorkout() }.font(.caption)
+                        }
+                        if let healthMessage = healthMessage {
+                            Text(healthMessage).font(.caption2).multilineTextAlignment(.center)
+                            Button("Check measurements") {
+                                owner.recoverSharedHealthEffect()
+                                connection.synchronizeWorkout()
+                            }.font(.caption)
+                        }
+                    }
                 }
             }
         }
