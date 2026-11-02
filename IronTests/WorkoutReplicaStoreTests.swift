@@ -370,3 +370,196 @@ final class WorkoutReplicaStoreTests: XCTestCase {
         XCTAssertEqual(store.state, before)
     }
 }
+
+final class WatchWorkoutNavigationTests: XCTestCase {
+    private let session = UUID(), workout = UUID(), exercise = UUID(), set = UUID()
+    private func snapshot(completed: Bool = false) -> WorkoutSessionSnapshot {
+        .init(workoutID: workout, sessionID: session, version: 0, phase: .agreed,
+              title: nil, comment: nil, start: nil, end: nil, isCurrentWorkout: true,
+              restStart: nil, restDuration: nil,
+              exercises: [.init(id: exercise, exerciseID: nil, comment: nil, sets: [
+                .init(id: set, result: .init(weight: 42, repetitions: 7, tag: nil, rpe: 0, comment: nil),
+                      isCompleted: completed, minTargetRepetitions: nil, maxTargetRepetitions: nil)])])
+    }
+    func testPageChangesAndReopenPreserveStackAndDrafts() throws {
+        let snapshot = snapshot(completed: true)
+        var navigation = WatchWorkoutNavigation()
+        navigation.reconcile(snapshot: snapshot)
+        navigation.selectExercise(exercise, snapshot: snapshot)
+        navigation.drafts[set]?.weight = 51
+        navigation.showCorrection(exerciseID: exercise, setID: set, snapshot: snapshot)
+        navigation.correctionDraft?.weight = 49
+        navigation.page = .nowPlaying
+        var reopened = try JSONDecoder().decode(WatchWorkoutNavigation.self, from: JSONEncoder().encode(navigation))
+        reopened.reconcile(snapshot: snapshot)
+        XCTAssertEqual(reopened, navigation)
+        XCTAssertEqual(reopened.drafts[set]?.weight, 51)
+        XCTAssertEqual(reopened.correctionDraft?.weight, 49)
+        XCTAssertEqual(reopened.path.count, 3)
+    }
+    func testNativeBackDiscardsOnlyCorrectionAndReturnsOneLevel() {
+        let snapshot = snapshot(completed: true)
+        var navigation = WatchWorkoutNavigation()
+        navigation.reconcile(snapshot: snapshot)
+        navigation.selectExercise(exercise, snapshot: snapshot)
+        navigation.drafts[set]?.weight = 55
+        navigation.showCorrection(exerciseID: exercise, setID: set, snapshot: snapshot)
+        navigation.setPath([.currentSet(exercise), .sets(exercise)])
+        XCTAssertNil(navigation.correctionDraft)
+        XCTAssertEqual(navigation.drafts[set]?.weight, 55)
+        navigation.setPath([.currentSet(exercise)])
+        XCTAssertEqual(navigation.path, [.currentSet(exercise)])
+        navigation.setPath([])
+        XCTAssertTrue(navigation.path.isEmpty)
+    }
+    func testRemoteResultsAndOrderingDoNotChangeSelectionOrDraft() {
+        var snapshot = snapshot()
+        var navigation = WatchWorkoutNavigation()
+        navigation.reconcile(snapshot: snapshot)
+        navigation.selectExercise(exercise, snapshot: snapshot)
+        navigation.drafts[set]?.weight = 61
+        let path = navigation.path
+        snapshot.exercises[0].sets[0].isCompleted = true
+        snapshot.exercises[0].sets[0].result.weight = 77
+        navigation.reconcile(snapshot: snapshot)
+        XCTAssertEqual(navigation.path, path)
+        XCTAssertEqual(navigation.workingSets[exercise], set)
+        XCTAssertEqual(navigation.drafts[set]?.weight, 61)
+        navigation.selectExercise(exercise, snapshot: snapshot)
+        XCTAssertEqual(navigation.drafts[set]?.weight, 61)
+    }
+    func testRemovedExerciseTrimsStackWithoutLeavingInvalidDrafts() {
+        var snapshot = snapshot(completed: true)
+        var navigation = WatchWorkoutNavigation()
+        navigation.reconcile(snapshot: snapshot)
+        navigation.selectExercise(exercise, snapshot: snapshot)
+        navigation.showCorrection(exerciseID: exercise, setID: set, snapshot: snapshot)
+        snapshot.exercises = []
+        navigation.reconcile(snapshot: snapshot)
+        XCTAssertTrue(navigation.path.isEmpty)
+        XCTAssertTrue(navigation.drafts.isEmpty)
+        XCTAssertTrue(navigation.workingSets.isEmpty)
+        XCTAssertNil(navigation.correctionDraft)
+    }
+    func testEmptyAndCompletedExercisesRemainSelectable() {
+        var snapshot = snapshot(completed: true)
+        var navigation = WatchWorkoutNavigation()
+        navigation.reconcile(snapshot: snapshot)
+        navigation.selectExercise(exercise, snapshot: snapshot)
+        XCTAssertEqual(navigation.workingSets[exercise], set)
+        snapshot.exercises[0].sets = []
+        navigation.reconcile(snapshot: snapshot)
+        navigation.selectExercise(exercise, snapshot: snapshot)
+        XCTAssertEqual(navigation.path, [.currentSet(exercise)])
+        XCTAssertNil(navigation.workingSets[exercise])
+    }
+    func testTerminalAndNewSessionResetLocalContext() {
+        var snapshot = snapshot()
+        var navigation = WatchWorkoutNavigation()
+        navigation.reconcile(snapshot: snapshot)
+        navigation.selectExercise(exercise, snapshot: snapshot)
+        navigation.page = .finish
+        snapshot.phase = .finished
+        navigation.reconcile(snapshot: snapshot)
+        XCTAssertEqual(navigation, WatchWorkoutNavigation())
+        var next = self.snapshot()
+        next = .init(workoutID: workout, sessionID: UUID(), version: 0, phase: .joining,
+                     title: nil, comment: nil, start: nil, end: nil, isCurrentWorkout: true,
+                     restStart: nil, restDuration: nil, exercises: next.exercises)
+        navigation.reconcile(snapshot: next)
+        XCTAssertEqual(navigation.sessionID, next.sessionID)
+        XCTAssertEqual(navigation.page, .workout)
+        XCTAssertTrue(navigation.path.isEmpty)
+    }
+}
+
+extension WatchWorkoutNavigationTests {
+    func testRemoteUncompletionPreservesCorrectionRouteAndDraft() throws {
+        var snapshot = snapshot(completed: true)
+        var navigation = WatchWorkoutNavigation()
+        navigation.reconcile(snapshot: snapshot)
+        navigation.selectExercise(exercise, snapshot: snapshot)
+        navigation.showCorrection(exerciseID: exercise, setID: set, snapshot: snapshot)
+        navigation.correctionDraft?.weight = 64
+        let path = navigation.path
+        snapshot.exercises[0].sets[0].isCompleted = false
+        navigation.reconcile(snapshot: snapshot)
+        XCTAssertEqual(navigation.path, path)
+        XCTAssertEqual(navigation.correctionDraft?.weight, 64)
+        var reopened = try JSONDecoder().decode(WatchWorkoutNavigation.self, from: JSONEncoder().encode(navigation))
+        reopened.reconcile(snapshot: snapshot)
+        XCTAssertEqual(reopened, navigation)
+        reopened.setPath([.currentSet(exercise), .sets(exercise)])
+        XCTAssertNil(reopened.correctionDraft)
+    }
+
+    func testDeletingWorkingSetSelectsRemainingSetWithoutNavigating() throws {
+        for completed in [false, true] {
+            var snapshot = snapshot()
+            let remaining = UUID()
+            snapshot.exercises[0].sets.append(.init(id: remaining, result: .empty, isCompleted: completed,
+                minTargetRepetitions: nil, maxTargetRepetitions: nil))
+            var navigation = WatchWorkoutNavigation()
+            navigation.reconcile(snapshot: snapshot)
+            navigation.selectExercise(exercise, snapshot: snapshot)
+            navigation.selectWorkingSet(exerciseID: exercise, setID: remaining, snapshot: snapshot)
+            navigation.drafts[remaining]?.weight = 63
+            navigation.selectWorkingSet(exerciseID: exercise, setID: set, snapshot: snapshot)
+            let path = navigation.path
+            snapshot.exercises[0].sets.removeFirst()
+            navigation.reconcile(snapshot: snapshot)
+            XCTAssertEqual(navigation.path, path)
+            XCTAssertEqual(navigation.workingSets[exercise], remaining)
+            XCTAssertEqual(navigation.drafts[remaining]?.weight, 63)
+            XCTAssertNil(navigation.drafts[set])
+            var reopened = try JSONDecoder().decode(WatchWorkoutNavigation.self, from: JSONEncoder().encode(navigation))
+            reopened.reconcile(snapshot: snapshot)
+            XCTAssertEqual(reopened, navigation)
+        }
+    }
+
+    func testAddingFirstSetToOpenExerciseInitializesWorkingDraft() {
+        var snapshot = snapshot()
+        let first = snapshot.exercises[0].sets.removeFirst()
+        var navigation = WatchWorkoutNavigation()
+        navigation.reconcile(snapshot: snapshot)
+        navigation.selectExercise(exercise, snapshot: snapshot)
+        let path = navigation.path
+        snapshot.exercises[0].sets.append(first)
+        navigation.reconcile(snapshot: snapshot)
+        XCTAssertEqual(navigation.path, path)
+        XCTAssertEqual(navigation.workingSets[exercise], set)
+        XCTAssertEqual(navigation.drafts[set], first.result)
+    }
+
+    func testWorkoutRequiresDurableAgreementAndActiveSession() {
+        var snapshot = snapshot()
+        XCTAssertFalse(WatchWorkoutNavigation.canPresentWorkout(snapshot: nil, agreed: true))
+        XCTAssertFalse(WatchWorkoutNavigation.canPresentWorkout(snapshot: snapshot, agreed: false))
+        snapshot.phase = .joining
+        XCTAssertFalse(WatchWorkoutNavigation.canPresentWorkout(snapshot: snapshot, agreed: true))
+        snapshot.phase = .agreed
+        XCTAssertTrue(WatchWorkoutNavigation.canPresentWorkout(snapshot: snapshot, agreed: true))
+        snapshot.phase = .pendingFinish
+        XCTAssertTrue(WatchWorkoutNavigation.canPresentWorkout(snapshot: snapshot, agreed: true))
+        snapshot.phase = .pendingCancel
+        XCTAssertTrue(WatchWorkoutNavigation.canPresentWorkout(snapshot: snapshot, agreed: true))
+        snapshot.phase = .cancelled
+        XCTAssertFalse(WatchWorkoutNavigation.canPresentWorkout(snapshot: snapshot, agreed: true))
+    }
+    func testChangingWorkingSetDoesNotPushAnotherScreen() {
+        var snapshot = snapshot()
+        let next = UUID()
+        snapshot.exercises[0].sets.append(.init(id: next, result: .empty, isCompleted: false,
+                                              minTargetRepetitions: nil, maxTargetRepetitions: nil))
+        var navigation = WatchWorkoutNavigation()
+        navigation.reconcile(snapshot: snapshot)
+        navigation.selectExercise(exercise, snapshot: snapshot)
+        navigation.selectWorkingSet(exerciseID: exercise, setID: next, snapshot: snapshot)
+        XCTAssertEqual(navigation.path, [.currentSet(exercise)])
+        XCTAssertEqual(navigation.workingSets[exercise], next)
+        navigation.drafts[next]?.weight = 83
+        navigation.selectWorkingSet(exerciseID: exercise, setID: next, snapshot: snapshot)
+        XCTAssertEqual(navigation.drafts[next]?.weight, 83)
+    }
+}

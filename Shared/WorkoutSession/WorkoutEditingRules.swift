@@ -69,3 +69,83 @@ extension WorkoutSessionSnapshot {
             barbellWeight: defaults?.barbellWeight)
     }
 }
+
+/// Watch-only presentation context. It never travels in workout synchronization messages.
+public struct WatchWorkoutNavigation: Codable, Equatable {
+    public enum Page: String, Codable, Hashable { case finish, workout, measurements, nowPlaying }
+    public enum Route: Codable, Hashable {
+        case currentSet(UUID)
+        case sets(UUID)
+        case correction(exerciseID: UUID, setID: UUID)
+    }
+    public private(set) var sessionID: UUID?
+    public var page: Page = .workout
+    public var path: [Route] = []
+    public private(set) var workingSets: [UUID: UUID] = [:]
+    public var drafts: [UUID: WorkoutSetDraft] = [:]
+    public var correctionDraft: WorkoutSetDraft?
+
+    public init() {}
+
+    public static func canPresentWorkout(snapshot: WorkoutSessionSnapshot?, agreed: Bool) -> Bool {
+        guard agreed, let snapshot = snapshot, snapshot.sessionID != nil, snapshot.isCurrentWorkout else { return false }
+        return snapshot.phase == .agreed || snapshot.phase == .pendingFinish || snapshot.phase == .pendingCancel
+    }
+
+    public mutating func selectWorkingSet(exerciseID: UUID, setID: UUID, snapshot: WorkoutSessionSnapshot) {
+        guard let draft = snapshot.editorDraft(exerciseID: exerciseID, setID: setID) else { return }
+        workingSets[exerciseID] = setID
+        if drafts[setID] == nil { drafts[setID] = draft }
+    }
+
+    public mutating func reconcile(snapshot: WorkoutSessionSnapshot?) {
+        guard let snapshot = snapshot, let id = snapshot.sessionID, !snapshot.phase.isTerminal else {
+            self = Self(); return
+        }
+        if sessionID != id { self = Self(); sessionID = id }
+        let sets = Set(snapshot.exercises.flatMap { $0.sets.map(\.id) })
+        drafts = drafts.filter { sets.contains($0.key) }
+        workingSets = workingSets.filter { exerciseID, setID in
+            snapshot.exercises.contains { $0.id == exerciseID && $0.sets.contains { $0.id == setID } }
+        }
+        // Keep an open exercise usable when its selected set disappears or its first set arrives.
+        for exercise in snapshot.exercises where workingSets[exercise.id] == nil && path.contains(.currentSet(exercise.id)) {
+            if let set = exercise.sets.first(where: { !$0.isCompleted }) ?? exercise.sets.last {
+                selectWorkingSet(exerciseID: exercise.id, setID: set.id, snapshot: snapshot)
+            }
+        }
+        // A remote reorder or result update does not navigate. Only removed identities trim the stack.
+        let valid = path.prefix { route in
+            switch route {
+            case .currentSet(let id), .sets(let id): return snapshot.exercises.contains { $0.id == id }
+            case let .correction(exerciseID, setID):
+                return snapshot.exercises.contains { $0.id == exerciseID && $0.sets.contains { $0.id == setID } }
+            }
+        }
+        setPath(Array(valid))
+    }
+
+    public mutating func selectExercise(_ id: UUID, snapshot: WorkoutSessionSnapshot) {
+        guard let exercise = snapshot.exercises.first(where: { $0.id == id }) else { return }
+        if workingSets[id] == nil, let set = exercise.sets.first(where: { !$0.isCompleted }) ?? exercise.sets.last {
+            workingSets[id] = set.id
+        }
+        if let setID = workingSets[id], drafts[setID] == nil {
+            drafts[setID] = snapshot.editorDraft(exerciseID: id, setID: setID)
+        }
+        setPath([.currentSet(id)])
+    }
+
+    public mutating func showCorrection(exerciseID: UUID, setID: UUID, snapshot: WorkoutSessionSnapshot) {
+        guard let exercise = snapshot.exercises.first(where: { $0.id == exerciseID }),
+              let set = exercise.sets.first(where: { $0.id == setID && $0.isCompleted }) else { return }
+        correctionDraft = set.result
+        path = [.currentSet(exerciseID), .sets(exerciseID), .correction(exerciseID: exerciseID, setID: setID)]
+    }
+
+    /// Native Back discards a correction; paging never changes the path or drafts.
+    public mutating func setPath(_ newPath: [Route]) {
+        if path.last != newPath.last { correctionDraft = nil }
+        path = newPath
+    }
+}

@@ -20,56 +20,142 @@ struct ContentView: View {
 }
 
 private struct _ContentView: View {
-    @EnvironmentObject var workoutSessionManagerStore: WorkoutSessionManagerStore
-    
-    @State private var selectedTab = "workout"
-    
-    @ViewBuilder
+    @EnvironmentObject var owner: WorkoutSessionManagerStore
+    @AppStorage("watchWorkoutNavigation.v1") private var savedNavigation = Data()
+    @State private var navigation = WatchWorkoutNavigation()
+    @State private var restored = false
+
+    private var replicaState: WorkoutReplicaStore.State? { try? owner.workoutReplica.get().state }
+    private var snapshot: WorkoutSessionSnapshot? { replicaState?.snapshot }
+    private var hasJoinedWorkout: Bool {
+        WatchWorkoutNavigation.canPresentWorkout(snapshot: snapshot, agreed: replicaState?.agreed ?? false)
+    }
+    private var path: Binding<[WatchWorkoutNavigation.Route]> {
+        Binding(get: { navigation.path }, set: { navigation.setPath($0) })
+    }
+
     var body: some View {
-        if workoutSessionManagerStore.workoutSessionManager != nil {
-            TabView(selection: $selectedTab) {
-                OptionsView()
-                    .tag("options")
-                
-                WorkoutSessionView(workoutSessionManager: workoutSessionManagerStore.workoutSessionManager!)
-                    .tag("workout")
-                
-                NowPlayingView()
-                    .tag("now playing")
-            }
-        } else {
-            Group {
-                if let s = errorMessage {
-                    Text(s).foregroundColor(.red)
-                } else {
-                    VStack(spacing: 8) {
-                        Image(systemName: "iphone")
-                            .imageScale(.large)
-                        Text("Start a workout on your iPhone.")
-                            .multilineTextAlignment(.center)
+        Group {
+            if hasJoinedWorkout, let snapshot = snapshot {
+                TabView(selection: $navigation.page) {
+                    OptionsView().tag(WatchWorkoutNavigation.Page.finish)
+                    NavigationStack(path: path) {
+                        exerciseList(snapshot)
+                            .navigationDestination(for: WatchWorkoutNavigation.Route.self) { route in
+                                destination(route, snapshot: snapshot)
+                            }
                     }
+                    .tag(WatchWorkoutNavigation.Page.workout)
+                    measurements.tag(WatchWorkoutNavigation.Page.measurements)
+                    NowPlayingView().tag(WatchWorkoutNavigation.Page.nowPlaying)
                 }
-            }.onAppear {
-                self.selectedTab = "workout"
+                .tabViewStyle(.page)
+            } else {
+                VStack(spacing: 8) {
+                    Image(systemName: "iphone").imageScale(.large)
+                    Text(L10n.string(snapshot?.phase == .joining || owner.workoutSessionManager != nil
+                         ? "Waiting for iPhone agreement" : "Start a workout on your iPhone."))
+                        .multilineTextAlignment(.center)
+                }
+                .scenePadding()
             }
         }
+        .onAppear {
+            if !restored {
+                navigation = (try? JSONDecoder().decode(WatchWorkoutNavigation.self, from: savedNavigation)) ?? .init()
+                restored = true
+            }
+            if replicaState != nil { navigation.reconcile(snapshot: snapshot) }
+        }
+        .onChange(of: snapshot) { _, value in
+            if replicaState != nil { navigation.reconcile(snapshot: value) }
+        }
+        .onChange(of: navigation) { _, value in
+            if let data = try? JSONEncoder().encode(value) { savedNavigation = data }
+        }
     }
-    
-    private var errorMessage: String? {
+
+    @ViewBuilder private var measurements: some View {
+        if let manager = owner.workoutSessionManager {
+            WorkoutSessionView(workoutSessionManager: manager)
+        } else {
+            Text(measurementError ?? L10n.string("Waiting for workout measurements"))
+                .multilineTextAlignment(.center).scenePadding()
+        }
+    }
+
+    private var measurementError: String? {
         guard HKHealthStore.isHealthDataAvailable() else {
             return L10n.string("HealthKit is not available on this device.")
         }
-        
-        switch WorkoutSessionManager.healthStore.authorizationStatus(for: .workoutType()) {
-        case .notDetermined:
-            return nil
-        case .sharingAuthorized:
-            return nil
-        case .sharingDenied:
+        if WorkoutSessionManager.healthStore.authorizationStatus(for: .workoutType()) == .sharingDenied {
             return L10n.string("Not authorized for Apple Health. You can authorize Iron in the settings app.")
-        @unknown default:
-            return nil
         }
+        return nil
+    }
+
+    private func title(_ exercise: WorkoutSessionSnapshot.Exercise, snapshot: WorkoutSessionSnapshot) -> String {
+        snapshot.editorContext?.exercises.first { $0.id == exercise.id }?.title ?? L10n.string("Exercise")
+    }
+
+    private func exerciseList(_ snapshot: WorkoutSessionSnapshot) -> some View {
+        List {
+            if snapshot.exercises.isEmpty { Text("No exercises") }
+            ForEach(snapshot.exercises, id: \.id) { exercise in
+                Button {
+                    navigation.selectExercise(exercise.id, snapshot: snapshot)
+                } label: {
+                    VStack(alignment: .leading) {
+                        Text(title(exercise, snapshot: snapshot))
+                        Text("\(exercise.sets.filter(\.isCompleted).count)/\(exercise.sets.count)")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+            }
+        }
+        .navigationTitle(Text("Workout"))
+    }
+
+    @ViewBuilder private func destination(_ route: WatchWorkoutNavigation.Route, snapshot: WorkoutSessionSnapshot) -> some View {
+        switch route {
+        case .currentSet(let id):
+            if let exercise = snapshot.exercises.first(where: { $0.id == id }) {
+                List {
+                    if let setID = navigation.workingSets[id], let set = exercise.sets.first(where: { $0.id == setID }) {
+                        setSummary(navigation.drafts[setID] ?? set.result, unit: snapshot.editorContext?.weightUnit)
+                    } else { Text("No sets") }
+                    NavigationLink("Exercise Sets", value: WatchWorkoutNavigation.Route.sets(id))
+                }
+                .navigationTitle(title(exercise, snapshot: snapshot))
+            }
+        case .sets(let id):
+            if let exercise = snapshot.exercises.first(where: { $0.id == id }) {
+                List {
+                    ForEach(Array(exercise.sets.enumerated()), id: \.element.id) { index, set in
+                        Button {
+                            navigation.showCorrection(exerciseID: id, setID: set.id, snapshot: snapshot)
+                        } label: {
+                            VStack(alignment: .leading) {
+                                Text(L10n.format("Set %lld", index + 1))
+                                setSummary(set.result, unit: snapshot.editorContext?.weightUnit)
+                            }
+                        }.disabled(!set.isCompleted)
+                    }
+                }.navigationTitle(Text("Exercise Sets"))
+            }
+        case .correction:
+            List {
+                if let draft = navigation.correctionDraft { setSummary(draft, unit: snapshot.editorContext?.weightUnit) }
+            }.navigationTitle(Text("Set Details"))
+        }
+    }
+
+    private func setSummary(_ draft: WorkoutSetDraft, unit: String?) -> some View {
+        VStack(alignment: .leading) {
+            Text(draft.weight.map { WeightUnit.format(weight: $0, from: .metric, to: WeightUnit(rawValue: unit ?? "") ?? .metric) } ?? "–")
+            Text(draft.repetitions.map(String.init) ?? "–") + Text(" ") + Text("reps")
+        }
+        .font(.body.monospacedDigit())
     }
 }
 

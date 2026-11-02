@@ -350,3 +350,15 @@
 "Cancel requested; waiting for agreement" = "Cancel requested; waiting for agreement";
 
 "Could not synchronize workout. Please retry." = "Could not synchronize workout. Please retry.";
+
+"Waiting for workout measurements" = "Waiting for workout measurements";
+
+"No exercises" = "No exercises";
+
+"No sets" = "No sets";
+
+"Exercise Sets" = "Exercise Sets";
+
+"Set Details" = "Set Details";
+
+"Set %lld" = "Set %lld";

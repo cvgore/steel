@@ -350,3 +350,15 @@
 "Cancel requested; waiting for agreement" = "Zażądano anulowania; oczekiwanie na uzgodnienie";
 
 "Could not synchronize workout. Please retry." = "Nie można zsynchronizować treningu. Spróbuj ponownie.";
+
+"Waiting for workout measurements" = "Oczekiwanie na pomiary treningu";
+
+"No exercises" = "Brak ćwiczeń";
+
+"No sets" = "Brak serii";
+
+"Exercise Sets" = "Serie ćwiczenia";
+
+"Set Details" = "Szczegóły serii";
+
+"Set %lld" = "Seria %lld";
