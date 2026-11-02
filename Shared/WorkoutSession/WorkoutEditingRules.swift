@@ -31,3 +31,41 @@ extension WorkoutEditingRules {
         return remaining
     }
 }
+
+extension WorkoutEditingRules {
+    public static func initialDraft(result: WorkoutSetDraft, completed: Bool, index: Int,
+                                    current: [WorkoutSetDraft], history: [[WorkoutNumericResult]],
+                                    barbellWeight: Double?) -> WorkoutSetDraft {
+        guard !completed, result.weight == nil || result.repetitions == nil,
+              current.indices.contains(index) else { return result }
+        let previous: WorkoutNumericResult?
+        if index > 0 {
+            let matched = history.first { row in
+                row.indices.contains(index) && (0..<index).allSatisfy {
+                    row[$0].weight == (current[$0].weight ?? 0) && row[$0].repetitions == (current[$0].repetitions ?? 0)
+                }
+            }
+            previous = matched?[index] ?? .init(weight: current[index - 1].weight ?? 0, repetitions: current[index - 1].repetitions ?? 0)
+        } else { previous = history.first?.first }
+        var draft = result
+        if let previous = previous {
+            draft.weight = previous.weight; draft.repetitions = previous.repetitions
+        } else {
+            draft.repetitions = defaultRepetitions
+            if let barbellWeight = barbellWeight { draft.weight = barbellWeight }
+        }
+        return draft
+    }
+}
+
+extension WorkoutSessionSnapshot {
+    public func editorDraft(exerciseID: UUID, setID: UUID) -> WorkoutSetDraft? {
+        guard let exercise = exercises.first(where: { $0.id == exerciseID }),
+              let index = exercise.sets.firstIndex(where: { $0.id == setID }) else { return nil }
+        let defaults = editorContext?.exercises.first { $0.id == exerciseID }
+        return WorkoutEditingRules.initialDraft(result: exercise.sets[index].result,
+            completed: exercise.sets[index].isCompleted, index: index,
+            current: exercise.sets.map(\.result), history: defaults?.numericHistory ?? [],
+            barbellWeight: defaults?.barbellWeight)
+    }
+}

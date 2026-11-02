@@ -40,6 +40,107 @@ final class WorkoutReplicaStoreTests: XCTestCase {
         XCTAssertEqual(try WorkoutReplicaStore(url: url).snapshot?.phase, .agreed)
         XCTAssertThrowsError(try store.submit(.addSet(exerciseID: exercise, set: .init())) )
     }
+    func testTransportJoinPersistsBeforeReplyAndWaitsForPhoneAgreement() throws {
+        let store = try WorkoutReplicaStore(url: url)
+        let reply = try store.receiveSync(.snapshot(snapshot(phase: .joining)))
+        XCTAssertEqual(reply, .joined(workoutID: workout, sessionID: session))
+        XCTAssertFalse(try WorkoutReplicaStore(url: url).state.agreed)
+        XCTAssertThrowsError(try store.submit(save))
+        let reopened = try WorkoutReplicaStore(url: url)
+        XCTAssertEqual(try reopened.receiveSync(.snapshot(snapshot(phase: .joining))), reply)
+        _ = try reopened.receiveSync(.snapshot(snapshot(1, phase: .agreed)))
+        XCTAssertTrue(try WorkoutReplicaStore(url: url).state.agreed)
+        XCTAssertNoThrow(try reopened.submit(save))
+    }
+
+    func testOfflineResultInvalidatesConfirmedRecordsForAffectedExercise() throws {
+        var initial = snapshot()
+        initial.exercises[0].sets[0].isPersonalRecord = true
+        let store = try WorkoutReplicaStore(url: url)
+        try store.adopt(snapshot: initial)
+        try store.agree(sessionID: session)
+        _ = try store.submit(save)
+        XCTAssertNil(store.snapshot?.exercises[0].sets[0].isPersonalRecord)
+        XCTAssertNil(try WorkoutReplicaStore(url: url).snapshot?.exercises[0].sets[0].isPersonalRecord)
+    }
+
+    func testSharedDefaultsMatchHistoryPrefixAndOfflinePreviousSet() {
+        let first = WorkoutSetDraft(weight: 40, repetitions: 5, tag: nil, rpe: 8, comment: nil)
+        let second = WorkoutSetDraft.empty
+        let history: [[WorkoutNumericResult]] = [
+            [.init(weight: 30, repetitions: 5), .init(weight: 33, repetitions: 6)],
+            [.init(weight: 40, repetitions: 5), .init(weight: 44, repetitions: 7)]
+        ]
+        let matched = WorkoutEditingRules.initialDraft(result: second, completed: false, index: 1,
+            current: [first, second], history: history, barbellWeight: nil)
+        XCTAssertEqual(matched.weight, 44)
+        XCTAssertEqual(matched.repetitions, 7)
+        var offline = first; offline.weight = 50
+        let fallback = WorkoutEditingRules.initialDraft(result: second, completed: false, index: 1,
+            current: [offline, second], history: history, barbellWeight: nil)
+        XCTAssertEqual(fallback.weight, 50)
+        XCTAssertEqual(fallback.repetitions, 5)
+        let barbell = WorkoutEditingRules.initialDraft(result: .empty, completed: false, index: 0,
+            current: [.empty], history: [], barbellWeight: 20)
+        XCTAssertEqual(barbell.weight, 20)
+        XCTAssertEqual(barbell.repetitions, 5)
+    }
+
+    func testEditorContextSurvivesRestartAndDoesNotCreateSameVersionConflict() throws {
+        let store = try joined()
+        var incoming = snapshot()
+        incoming.editorContext = .init(weightUnit: "imperial", keepRestTimerRunning: true,
+            exercises: [.init(id: exercise, title: "Exercise", restDuration: 120, barbellWeight: 20.41165665,
+                numericHistory: [[.init(weight: 55, repetitions: 8)]])])
+        try store.adopt(snapshot: incoming)
+        let reopened = try WorkoutReplicaStore(url: url)
+        XCTAssertTrue(reopened.state.conflicts.isEmpty)
+        XCTAssertEqual(reopened.snapshot?.editorContext?.weightUnit, "imperial")
+        XCTAssertEqual(reopened.snapshot?.editorContext?.exercises.first?.restDuration, 120)
+        XCTAssertEqual(reopened.snapshot?.editorDraft(exerciseID: exercise, setID: set)?.weight, 55)
+        XCTAssertEqual(reopened.snapshot?.editorDraft(exerciseID: exercise, setID: set)?.repetitions, 8)
+    }
+
+    func testTrackingStartCannotReplaceUnresolvedOrResurrectTerminalWorkout() throws {
+        let store = try joined()
+        XCTAssertTrue(store.allowsTrackingStart(workoutID: workout))
+        XCTAssertFalse(store.allowsTrackingStart(workoutID: UUID()))
+        try store.adopt(snapshot: snapshot(1, phase: .finished))
+        let reopened = try WorkoutReplicaStore(url: url)
+        XCTAssertFalse(reopened.allowsTrackingStart(workoutID: workout))
+        XCTAssertTrue(reopened.allowsTrackingStart(workoutID: UUID()))
+    }
+
+    func testPhoneOnlyConflictSummarySurvivesRestartWithoutChangingDomain() throws {
+        let store = try joined()
+        var incoming = snapshot()
+        let conflictID = UUID()
+        incoming.unresolvedConflictIDs = [conflictID]
+        try store.adopt(snapshot: incoming)
+        XCTAssertEqual(try WorkoutReplicaStore(url: url).snapshot?.unresolvedConflictIDs, [conflictID])
+        XCTAssertTrue(store.state.conflicts.isEmpty)
+        XCTAssertTrue(store.state.operations.isEmpty)
+        // An older snapshot from the same operation version must not hide the server conflict.
+        try store.adopt(snapshot: snapshot())
+        XCTAssertEqual(store.snapshot?.unresolvedConflictIDs, [conflictID])
+        var resolved = snapshot(1)
+        resolved.resolvedOperationIDs = [conflictID]
+        try store.adopt(snapshot: resolved)
+        XCTAssertNil(try WorkoutReplicaStore(url: url).snapshot?.unresolvedConflictIDs)
+    }
+
+    func testRepeatedDivergentSnapshotDoesNotDuplicateConflict() throws {
+        let store = try joined()
+        let operation = try store.submit(save)
+        var divergent = snapshot()
+        divergent.title = "Divergent phone input"
+        try store.adopt(snapshot: divergent)
+        try store.adopt(snapshot: divergent)
+        XCTAssertEqual(store.state.conflicts.count, 1)
+        XCTAssertEqual(store.pendingOperations, [operation])
+        XCTAssertEqual(store.snapshot?.exercises[0].sets[0].result.weight, 42)
+        XCTAssertEqual(try WorkoutReplicaStore(url: url).state.conflicts.count, 1)
+    }
     func testOfflineChainRestartAndDuplicateRetry() throws {
         let store = try joined()
         let one = try store.submit(save)

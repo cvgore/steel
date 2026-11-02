@@ -466,3 +466,35 @@ extension WorkoutSessionManagerStore {
         }
     }
 }
+
+extension WorkoutSessionManagerStore {
+    /// Watch editors commit locally first; transport always reuses the durable operation ID.
+    @discardableResult
+    func submitWorkoutMutation(_ mutation: WorkoutMutation, id: UUID = UUID(), date: Date = Date()) throws -> WorkoutOperation {
+        switch mutation {
+        case .saveSet, .requestFinish, .requestCancel: break
+        default: throw WorkoutReplicaStore.Failure.invalidMutation
+        }
+        let operation = try workoutReplica.get().submit(mutation, id: id, date: date)
+        presentReplicaRest()
+        DispatchQueue.main.async {
+            self.objectWillChange.send()
+            PhoneConnectionManager.shared.synchronizeWorkout()
+        }
+        return operation
+    }
+}
+
+
+extension WorkoutSessionManagerStore {
+    func presentReplicaRest() {
+        guard let snapshot = try? workoutReplica.get().snapshot else { return }
+        WorkoutSessionManager.perform {
+            guard let manager = self.workoutSessionManager, manager.uuid == snapshot.workoutID else { return }
+            if let start = snapshot.start { manager.updateStartDate(start) }
+            manager.updateEndDate(snapshot.end)
+            manager.restTimerEnd = snapshot.restStart.flatMap { start in snapshot.restDuration.map { start.addingTimeInterval($0) } }
+            if let keepRunning = snapshot.editorContext?.keepRestTimerRunning { manager.keepRestTimerRunning = keepRunning }
+        }
+    }
+}

@@ -112,7 +112,7 @@ public final class WorkoutOperationStore {
         case let .workoutTime(start, end):
             guard start.timeIntervalSinceReferenceDate.isFinite,
                   end.map({ $0.timeIntervalSinceReferenceDate.isFinite && $0 >= start }) ?? true else { throw WorkoutOperationError.invalidPayload }
-        case .exerciseComment, .workoutMetadata, .requestFinish, .requestCancel: break
+        case .exerciseComment, .workoutMetadata, .requestFinish, .requestCancel, .resolveConflict: break
         }
     }
     private func validate(_ mutation: WorkoutMutation, workout: Workout, context: NSManagedObjectContext) throws {
@@ -150,7 +150,7 @@ public final class WorkoutOperationStore {
         case let .rest(start, duration):
             guard (start == nil) == (duration == nil), start.map({ $0.timeIntervalSinceReferenceDate.isFinite }) ?? true,
                   duration.map({ $0.isFinite && $0 >= 0 }) ?? true else { throw WorkoutOperationError.invalidPayload }
-        case .workoutMetadata, .workoutTime, .requestFinish, .requestCancel: break
+        case .workoutMetadata, .workoutTime, .requestFinish, .requestCancel, .resolveConflict: break
         }
     }
     private func insert(_ planned: WorkoutPlannedSet, exercise: WorkoutExercise, context: NSManagedObjectContext) {
@@ -204,6 +204,21 @@ public final class WorkoutOperationStore {
         case let .workoutMetadata(title, comment): workout.title = title; workout.comment = comment
         case let .workoutTime(start, end): workout.start = start; workout.end = end
         case let .rest(start, duration): session.setValue(start, forKey: "restStart"); session.setValue(duration, forKey: "restDuration")
+        case let .resolveConflict(operationID, useCandidate):
+            let records = try storedOperations(context)
+            guard let candidate = records.first(where: { $0.1.id == operationID }),
+                  candidate.1.workoutID == operation.workoutID,
+                  candidate.2.sessionID == operation.sessionID,
+                  candidate.2.disposition == .conflict,
+                  !resolvedIDs(records).contains(operationID) else { throw WorkoutOperationError.invalidPayload }
+            if useCandidate {
+                switch candidate.1.mutation {
+                case .saveSet, .requestFinish, .requestCancel: break
+                default: throw WorkoutOperationError.invalidPayload
+                }
+                try validate(candidate.1.mutation, workout: workout, context: context)
+                return try mutate(candidate.1, workout: workout, session: session, context: context)
+            }
         case .requestFinish: session.setValue(WorkoutSessionPhase.pendingFinish.rawValue, forKey: "phase")
         case .requestCancel: session.setValue(WorkoutSessionPhase.pendingCancel.rawValue, forKey: "phase")
         }
@@ -231,13 +246,19 @@ public final class WorkoutOperationStore {
             let current = version(session), state = try phase(session)
             guard current < Int64.max else { throw WorkoutOperationError.invalidPayload }
             let remote = operation.originID != "phone"
+            let resolving: Bool
+            if case .resolveConflict = operation.mutation {
+                guard !remote else { throw WorkoutOperationError.invalidPayload }
+                resolving = true
+            } else { resolving = false }
             guard !remote || (operation.sessionID != nil && operation.sequence > 0) else { throw WorkoutOperationError.invalidPayload }
+            if resolving && operation.expectedVersion != current { throw WorkoutOperationError.staleVersion }
             var disposition: WorkoutOperationDisposition = .applied
             var reason: WorkoutConflictReason?
             let terminalRequest: Bool
             switch operation.mutation { case .requestFinish, .requestCancel: terminalRequest = true; default: terminalRequest = false }
             if state.isTerminal || !workout.isCurrentWorkout && remote ||
-                (remote && state != .agreed) || (!remote && ![.local, .joining, .agreed].contains(state)) || (terminalRequest && state != .agreed) {
+                (remote && state != .agreed) || (!remote && ![.local, .joining, .agreed].contains(state) && !resolving) || (terminalRequest && state != .agreed) {
                 disposition = .conflict; reason = .sessionUnavailable
             } else if let predecessorID = operation.predecessorID {
                 if let predecessorRecord = try record("WorkoutAppliedOperation", key: "operationID", id: predecessorID, in: context),
@@ -329,8 +350,10 @@ public final class WorkoutOperationStore {
             let allowed = (state == .joining && target == .agreed) || (state == .pendingFinish && target == .finished) || (state == .pendingCancel && target == .cancelled)
             guard allowed, version(value) < Int64.max else { throw WorkoutOperationError.invalidSession }
             if target.isTerminal {
-                let unresolved = try storedOperations(context).contains { _, operation, receipt in
-                    operation.workoutID == workoutID && receipt.sessionID == sessionID && receipt.disposition != .applied
+                let records = try storedOperations(context)
+                let resolved = resolvedIDs(records)
+                let unresolved = records.contains { _, operation, receipt in
+                    operation.workoutID == workoutID && receipt.sessionID == sessionID && receipt.disposition != .applied && !resolved.contains(operation.id)
                 }
                 guard !unresolved else { throw WorkoutOperationError.unresolvedOperations }
                 value.setValue(nil, forKey: "restStart"); value.setValue(nil, forKey: "restDuration")
@@ -349,7 +372,7 @@ public final class WorkoutOperationStore {
             let coverage = try storedOperations(context).compactMap { _, operation, receipt -> UUID? in
                 operation.workoutID == workoutID && receipt.sessionID == sessionID && receipt.disposition == .applied ? operation.id : nil
             }.sorted { $0.uuidString < $1.uuidString }
-            return try WorkoutSessionSnapshot(workoutID: workoutID, sessionID: sessionID,
+            var snapshot = try WorkoutSessionSnapshot(workoutID: workoutID, sessionID: sessionID,
                 version: session.map(version) ?? 0, phase: session.map { try phase($0) } ?? .local, coveredOperationIDs: coverage,
                 title: workout.title, comment: workout.comment, start: workout.start, end: workout.end,
                 isCurrentWorkout: workout.isCurrentWorkout, restStart: session?.value(forKey: "restStart") as? Date,
@@ -359,10 +382,80 @@ public final class WorkoutOperationStore {
                     return try WorkoutSessionSnapshot.Exercise(id: id, exerciseID: exercise.exerciseUuid, comment: exercise.comment,
                         sets: (exercise.workoutSets?.array as? [WorkoutSet] ?? []).map { set in
                             guard let id = set.uuid else { throw WorkoutOperationError.missingObject }
-                            return WorkoutSessionSnapshot.Set(id: id, result: WorkoutSetDraft(set: set), isCompleted: set.isCompleted,
+                            var snapshotSet = WorkoutSessionSnapshot.Set(id: id, result: WorkoutSetDraft(set: set), isCompleted: set.isCompleted,
                                 minTargetRepetitions: set.minTargetRepetitionsValue, maxTargetRepetitions: set.maxTargetRepetitionsValue)
+                            snapshotSet.isPersonalRecord = set.isCompleted ? set.isPersonalRecord : nil
+                            return snapshotSet
                         })
                 })
+            let resolved = resolvedIDs(try storedOperations(context).filter { $0.1.workoutID == workoutID && $0.2.sessionID == sessionID })
+            snapshot.resolvedOperationIDs = resolved.isEmpty ? nil : resolved.sorted { $0.uuidString < $1.uuidString }
+            let conflicts = try storedOperations(context).compactMap { _, operation, receipt -> UUID? in
+                operation.workoutID == workoutID && receipt.sessionID == sessionID && receipt.disposition == .conflict && !resolved.contains(operation.id) ? operation.id : nil
+            }.sorted { $0.uuidString < $1.uuidString }
+            snapshot.unresolvedConflictIDs = conflicts.isEmpty ? nil : conflicts
+            return snapshot
+        }
+    }
+    private func resolvedIDs(_ records: [(NSManagedObject, WorkoutOperation, WorkoutOperationReceipt)]) -> Set<UUID> {
+        Set(records.compactMap { _, operation, receipt in
+            guard receipt.disposition == .applied,
+                  case let .resolveConflict(id, _) = operation.mutation else { return nil }
+            return id
+        })
+    }
+}
+
+extension WorkoutOperationStore {
+    /// Selects the durable shared session, independently of which delayed message is being answered.
+    public func activeSharedSnapshot() throws -> WorkoutSessionSnapshot? {
+        let id: UUID? = try transaction { context in
+            let rows = try context.fetch(NSFetchRequest<NSManagedObject>(entityName: "WorkoutSessionState"))
+            if let active = try rows.first(where: { try phase($0).occupiesSharedSlot }) {
+                return active.value(forKey: "workoutID") as? UUID
+            }
+            let current = try context.fetch(Workout.currentWorkoutFetchRequest).first?.uuid
+            return rows.first { ($0.value(forKey: "workoutID") as? UUID) == current &&
+                ($0.value(forKey: "phase") as? String) != WorkoutSessionPhase.local.rawValue }?.value(forKey: "workoutID") as? UUID
+        }
+        return try id.map { try snapshot(workoutID: $0) }
+    }
+
+    /// Replies are constructed only after the corresponding persistent transaction succeeds.
+    public func receiveSync(_ message: WorkoutSyncMessage, mergingInto context: NSManagedObjectContext? = nil) throws -> WorkoutSyncMessage? {
+        switch message {
+        case let .joined(workoutID, sessionID):
+            let current = try snapshot(workoutID: workoutID)
+            guard current.sessionID == sessionID, current.phase != .local else { throw WorkoutOperationError.invalidSession }
+            if current.phase != .joining { return .snapshot(current) }
+            return .snapshot(try recordSessionAgreement(workoutID: workoutID, sessionID: sessionID, phase: .agreed, mergingInto: context))
+        case let .request(workoutID?, sessionID):
+            let snapshot = try snapshot(workoutID: workoutID)
+            guard snapshot.sessionID == sessionID, snapshot.phase != .local else { throw WorkoutOperationError.invalidSession }
+            return .update(snapshot: snapshot, receipts: try operations(workoutID: workoutID).map(\.receipt))
+        case let .operation(operation):
+            guard operation.originID != "phone", operation.sessionID != nil else { throw WorkoutOperationError.invalidPayload }
+            switch operation.mutation {
+            case .saveSet, .requestFinish, .requestCancel: break
+            default: throw WorkoutOperationError.invalidPayload
+            }
+            _ = try apply(operation: operation, mergingInto: context)
+            // Revisit durable successors received before this predecessor, in causal order.
+            var waiting = try operations(workoutID: operation.workoutID, disposition: .waitingForPredecessor)
+                .sorted { $0.operation.sequence < $1.operation.sequence }
+            while !waiting.isEmpty {
+                var progressed = false
+                for candidate in waiting {
+                    let receipt = try apply(operation: candidate.operation, mergingInto: context)
+                    if receipt.disposition != .waitingForPredecessor { progressed = true }
+                }
+                if !progressed { break }
+                waiting = try operations(workoutID: operation.workoutID, disposition: .waitingForPredecessor)
+                    .sorted { $0.operation.sequence < $1.operation.sequence }
+            }
+            return .update(snapshot: try snapshot(workoutID: operation.workoutID),
+                           receipts: try operations(workoutID: operation.workoutID).map(\.receipt))
+        default: throw WorkoutOperationError.invalidPayload
         }
     }
 }

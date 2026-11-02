@@ -17,7 +17,7 @@ A modern and completely free weightlifting workout tracker for iOS, written in S
 
 ## Building
 
-**Xcode 27** or later is required. Deployment targets are **iOS 27.0** and **watchOS 27.0**. Open `Iron.xcodeproj`; the shared schemes are `Iron` (app and unit tests), `IronE2E` (UI tests), and `WatchIron` (Watch app).
+**Xcode 27** or later is required. Deployment targets are **iOS 26.0** and **watchOS 26.0**. Open `Iron.xcodeproj`; the shared schemes are `Iron` (app and unit tests), `IronE2E` (UI tests), and `WatchIron` (Watch app).
 
 - Select the "Iron" project in the Xcode sidebar
 - Under "Targets", select "Iron"

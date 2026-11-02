@@ -42,6 +42,7 @@ public enum WorkoutMutation: Codable, Equatable {
     case workoutMetadata(title: String?, comment: String?)
     case workoutTime(start: Date, end: Date?)
     case rest(start: Date?, duration: TimeInterval?)
+    case resolveConflict(operationID: UUID, useCandidate: Bool)
     case requestFinish
     case requestCancel
 }
@@ -113,6 +114,7 @@ public struct WorkoutSessionSnapshot: Codable, Equatable {
         public let id: UUID
         public var result: WorkoutSetDraft
         public var isCompleted: Bool
+        public var isPersonalRecord: Bool?
         public let minTargetRepetitions: Int16?
         public let maxTargetRepetitions: Int16?
         public init(id: UUID, result: WorkoutSetDraft, isCompleted: Bool, minTargetRepetitions: Int16?, maxTargetRepetitions: Int16?) {
@@ -135,6 +137,9 @@ public struct WorkoutSessionSnapshot: Codable, Equatable {
     public var phase: WorkoutSessionPhase
     /// Only applied IDs. A receipt alone does not mean a previously received snapshot covers its result.
     public let coveredOperationIDs: [UUID]
+    public var editorContext: WorkoutEditorContext?
+    public var unresolvedConflictIDs: [UUID]?
+    public var resolvedOperationIDs: [UUID]?
     public var title: String?
     public var comment: String?
     public var start: Date?
@@ -188,5 +193,57 @@ extension WorkoutOperationReceipt {
             version: try c.decode(Int64.self, forKey: .version), disposition: try c.decodeIfPresent(WorkoutOperationDisposition.self, forKey: .disposition) ?? .applied,
             reason: try c.decodeIfPresent(WorkoutConflictReason.self, forKey: .reason), didComplete: try c.decode(Bool.self, forKey: .didComplete),
             restStart: try c.decodeIfPresent(Date.self, forKey: .restStart), restDuration: try c.decodeIfPresent(Double.self, forKey: .restDuration))
+    }
+}
+
+/// Versioned workout-only messages; HealthKit preparation is a separate protocol.
+public enum WorkoutSyncMessage: Codable, Equatable {
+    case snapshot(WorkoutSessionSnapshot)
+    case joined(workoutID: UUID, sessionID: UUID)
+    case request(workoutID: UUID?, sessionID: UUID?)
+    case operation(WorkoutOperation)
+    case update(snapshot: WorkoutSessionSnapshot, receipts: [WorkoutOperationReceipt])
+
+    public static let payloadKey = "workoutSync.v1"
+    public func encoded() throws -> Data { try JSONEncoder().encode(self) }
+    public static func decode(_ data: Data) throws -> WorkoutSyncMessage { try JSONDecoder().decode(Self.self, from: data) }
+}
+
+
+/// Only numeric defaults for the active exercises are exchanged, never historical workout graphs.
+public struct WorkoutNumericResult: Codable, Equatable {
+    public let weight: Double
+    public let repetitions: Int16
+    public init(weight: Double, repetitions: Int16) { self.weight = weight; self.repetitions = repetitions }
+}
+public struct WorkoutEditorContext: Codable, Equatable {
+    public struct Exercise: Codable, Equatable {
+        public let id: UUID
+        public let title: String
+        public let restDuration: TimeInterval
+        public let barbellWeight: Double?
+        public let numericHistory: [[WorkoutNumericResult]]
+        public init(id: UUID, title: String, restDuration: TimeInterval, barbellWeight: Double?, numericHistory: [[WorkoutNumericResult]]) {
+            self.id = id; self.title = title; self.restDuration = restDuration
+            self.barbellWeight = barbellWeight; self.numericHistory = numericHistory
+        }
+    }
+    public let weightUnit: String
+    public let keepRestTimerRunning: Bool
+    public let exercises: [Exercise]
+    public init(weightUnit: String, keepRestTimerRunning: Bool, exercises: [Exercise]) {
+        self.weightUnit = weightUnit; self.keepRestTimerRunning = keepRestTimerRunning; self.exercises = exercises
+    }
+}
+extension WorkoutSessionSnapshot {
+    /// Presentation changes cannot create a concurrent workout edit or invalidate a causal prefix.
+    public var domainSnapshot: Self {
+        var copy = self
+        copy.editorContext = nil
+        copy.unresolvedConflictIDs = nil
+        for e in copy.exercises.indices {
+            for s in copy.exercises[e].sets.indices { copy.exercises[e].sets[s].isPersonalRecord = nil }
+        }
+        return copy
     }
 }

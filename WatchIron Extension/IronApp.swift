@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct IronApp: App {
     @State private var languageCode = L10n.languageCode
+    @Environment(\.scenePhase) private var scenePhase
     @WKApplicationDelegateAdaptor private var appDelegate: AppDelegate
     
     @SceneBuilder var body: some Scene {
@@ -17,6 +18,9 @@ struct IronApp: App {
             NavigationView {
                 ContentView()
                     .environment(\.locale, Locale(identifier: languageCode))
+                    .onChange(of: scenePhase) { _, phase in
+                        if phase == .active { PhoneConnectionManager.shared.synchronizeWorkout() }
+                    }
                     .onReceive(NotificationCenter.default.publisher(for: .appLanguageChanged)) { _ in
                         languageCode = L10n.languageCode
                     }

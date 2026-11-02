@@ -122,49 +122,19 @@ struct WorkoutExerciseDetailView : View {
     }
     
     private func initialDraft(for set: WorkoutSet) -> WorkoutSetDraft {
-        var draft = WorkoutSetDraft(set: set)
-        guard !set.isCompleted, set.repetitions == nil || set.weight == nil else { return draft }
-        let index = workoutExercise.workoutSets!.index(of: set)
-        let previousSet: WorkoutSet?
-        if index > 0 { // not the first set
-            if let set = previousSetFromEqualExercise(for: set, at: index) {
-                previousSet = set
-            } else {
-                previousSet = workoutExercise.workoutSets![index - 1] as? WorkoutSet
-            }
-        } else { // first set
-            previousSet = workoutExerciseHistory.first?.workoutSets?.firstObject as? WorkoutSet
-        }
-        if let previousSet = previousSet {
-            draft.repetitions = previousSet.repetitionsValue
-            draft.weight = previousSet.weightValue
-        } else {
-            // TODO: let the user configure default repetitions and weight
-            draft.repetitions = WorkoutEditingRules.defaultRepetitions
-            if workoutExercise.exercise(in: exerciseStore.exercises)?.type == .barbell {
-                let weightUnit = self.settingsStore.weightUnit
-                draft.weight = WeightUnit.convert(weight: weightUnit.barbellWeight, from: weightUnit, to: .metric)
+        let sets = workoutExercise.workoutSets?.array as? [WorkoutSet] ?? []
+        guard let index = sets.firstIndex(of: set) else { return WorkoutSetDraft(set: set) }
+        let history = workoutExerciseHistory.map { exercise in
+            (exercise.workoutSets?.array as? [WorkoutSet] ?? []).map {
+                WorkoutNumericResult(weight: $0.weightValue, repetitions: $0.repetitionsValue)
             }
         }
-        return draft
+        let barbell = workoutExercise.exercise(in: exerciseStore.exercises)?.type == .barbell
+            ? WeightUnit.convert(weight: settingsStore.weightUnit.barbellWeight, from: settingsStore.weightUnit, to: .metric) : nil
+        return WorkoutEditingRules.initialDraft(result: WorkoutSetDraft(set: set), completed: set.isCompleted,
+            index: index, current: sets.map { WorkoutSetDraft(set: $0) }, history: history, barbellWeight: barbell)
     }
-    
-    // looks for a previous exercise where the same sequence of sets was performed
-    private func previousSetFromEqualExercise(for set: WorkoutSet, at index: Int) -> WorkoutSet? {
-        let exercise = workoutExerciseHistory.first {
-            guard let count = $0.workoutSets?.count, index < count  else { return false }
-            for i in 0..<index {
-                guard let workoutSet1 = workoutExercise.workoutSets?[i] as? WorkoutSet else { return false }
-                guard let workoutSet2 = $0.workoutSets?[i] as? WorkoutSet else { return false }
-                if workoutSet1.weightValue != workoutSet2.weightValue || workoutSet1.repetitionsValue != workoutSet2.repetitionsValue {
-                    return false
-                }
-            }
-            return true
-        }
-        return exercise?.workoutSets?[index] as? WorkoutSet
-    }
-    
+
     private func shouldHighlightRow(for set: WorkoutSet) -> Bool {
         !self.isCurrentWorkout || set == self.firstUncompletedSet
     }

@@ -40,6 +40,7 @@ struct CurrentWorkoutView: View {
     
     private enum SheetType: Identifiable {
         case exerciseSelector
+        case synchronization
         case finish
         
         var id: Self { self }
@@ -58,6 +59,8 @@ struct CurrentWorkoutView: View {
                     }
                 }
             ).typeErased
+        case .synchronization:
+            return WorkoutSynchronizationView().typeErased
         case .finish:
             return self.finishWorkoutSheet.typeErased
         }
@@ -283,6 +286,11 @@ struct CurrentWorkoutView: View {
                             }
                         })
                     }
+                    Section {
+                        Button(action: { activeSheet = .synchronization }) {
+                            Label("Watch synchronization", systemImage: "applewatch")
+                        }
+                    }
                     Section(header: Text(L10n.string("Exercises").uppercased(with: L10n.locale))) {
                         ForEach(workoutExercises) { workoutExercise in
                             self.workoutExerciseCell(workoutExercise: workoutExercise)
@@ -358,3 +366,76 @@ struct WorkoutView_Previews: PreviewProvider {
     }
 }
 #endif
+
+
+private struct WorkoutSynchronizationView: View {
+    @ObservedObject private var connection = WatchConnectionManager.shared
+    @EnvironmentObject private var settings: SettingsStore
+    @State private var snapshot: WorkoutSessionSnapshot?
+    @State private var conflicts: [WorkoutOperationConflict] = []
+    @State private var failed = false
+
+    private func reload() {
+        connection.publishSharedWorkout()
+        snapshot = connection.workoutSyncSnapshot
+        conflicts = connection.workoutSyncConflicts
+    }
+    private func resolve(_ conflict: WorkoutOperationConflict, useCandidate: Bool) {
+        guard let snapshot = snapshot else { return }
+        do {
+            try connection.resolveWorkoutConflict(conflict.operation.id, expectedVersion: snapshot.version, useCandidate: useCandidate)
+            reload()
+        } catch { failed = true }
+    }
+    private func result(_ draft: WorkoutSetDraft) -> String {
+        let weight = draft.weight.map { WeightUnit.format(weight: $0, from: .metric, to: settings.weightUnit) } ?? "–"
+        var text = "\(weight) × \(draft.repetitions.map(String.init) ?? "–")"
+        if draft.rpe > 0 { text += " · " + L10n.string("RPE") + " " + String(format: "%.1f", locale: L10n.locale, draft.rpe) }
+        if let raw = draft.tag, let tag = WorkoutSetTag(rawValue: raw) { text += " · " + tag.title }
+        return text
+    }
+    private func candidateLabel(_ mutation: WorkoutMutation) -> String {
+        switch mutation {
+        case let .saveSet(_, _, draft, _, _): return result(draft) + (draft.comment.map { " · " + $0 } ?? "")
+        case .requestFinish: return L10n.string("Finish Workout")
+        case .requestCancel: return L10n.string("Discard Workout")
+        default: return L10n.string("Could not save changes")
+        }
+    }
+    var body: some View {
+        NavigationView {
+            List {
+                Section {
+                    Text(L10n.string(snapshot == nil ? "Start a workout on your iPhone." : snapshot?.phase == .joining ? "Waiting for Watch agreement" : "Shared workout with Watch"))
+                    if snapshot?.phase == .pendingFinish { Text("Finish requested; waiting for agreement") }
+                    if snapshot?.phase == .pendingCancel { Text("Cancel requested; waiting for agreement") }
+                    if let error = connection.workoutSyncError { Text(error).foregroundColor(.red) }
+                    Button("Retry synchronization", action: reload)
+                }
+                ForEach(conflicts, id: \.operation.id) { conflict in
+                    Section(header: Text("Conflicting changes")) {
+                        if let setID = conflict.operation.setID,
+                           let current = snapshot?.exercises.flatMap(\.sets).first(where: { $0.id == setID }) {
+                            Text(L10n.string("Saved changes") + ": " + result(current.result) + (current.result.comment.map { " · " + $0 } ?? ""))
+                        }
+                        Text(L10n.string("Proposed changes") + " (" + L10n.string(conflict.operation.originID == "phone" ? "iPhone" : "Watch") + "): " + candidateLabel(conflict.operation.mutation))
+                        Button("Keep saved changes") { resolve(conflict, useCandidate: false) }
+                        switch conflict.operation.mutation {
+                        case .saveSet, .requestFinish, .requestCancel:
+                            Button("Use proposed changes") { resolve(conflict, useCandidate: true) }
+                        default: EmptyView()
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Watch synchronization")
+            .onAppear(perform: reload)
+            .onReceive(connection.$workoutSyncSnapshot) { snapshot = $0 }
+            .onReceive(connection.$workoutSyncConflicts) { conflicts = $0 }
+            .alert(isPresented: $failed) {
+                Alert(title: Text("Could not save changes"), message: Text("Reload changes before resolving the conflict."),
+                      dismissButton: .default(Text("Ok")))
+            }
+        }
+    }
+}

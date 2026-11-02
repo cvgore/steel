@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-Use Xcode 27 or later with iOS 27 and watchOS 27 simulator runtimes. Follow the signing and app-group setup in the [README](../README.md). Keep simulator builds ad-hoc signed with `CODE_SIGN_IDENTITY=-`; disabling signing removes the app-group entitlement needed at startup.
+Use Xcode 27 or later with iOS 27 and watchOS 27 simulator runtimes. Deployment minimums are iOS 26.0 and watchOS 26.0; SDK/runtime versions are separate from deployment minimums. Follow the signing and app-group setup in the [README](../README.md). Keep simulator builds ad-hoc signed with `CODE_SIGN_IDENTITY=-`; disabling signing removes the app-group entitlement needed at startup.
 
 The checked-in SwiftPM lockfile pins DGCharts to upstream revision `afc7c983d2f98c4d81cac28b1169951cc7323bb5`, which qualifies math functions with `Foundation` for the compiler. Use the recorded revision without patching downloaded package sources. The Watch app builds through the single executable `WatchIron` target.
 
@@ -37,12 +37,19 @@ xcodebuild -project Iron.xcodeproj -scheme Iron \
 
 `IronTests` covers workout data, migrations, backup/import/export, chart rendering and localization behavior. `PolishLocalizationTests` checks language resolution, resource fallback, bilingual catalog search, custom content and stable exercise encoding. `IronBackupTests.testBackupAndWorkoutJSONKeepCanonicalNamesAcrossLanguages` compares full backup and workout JSON payloads across languages, including nested workout-plan references.
 
-Build the Watch app separately:
+Build the full iPhone app (including its embedded Watch app) and the Watch app separately in both configurations:
 
 ```sh
-xcodebuild -project Iron.xcodeproj -scheme WatchIron \
-  -destination 'generic/platform=watchOS Simulator' \
-  -onlyUsePackageVersionsFromResolvedFile CODE_SIGN_IDENTITY=- build
+for configuration in Debug Release; do
+  xcodebuild -project Iron.xcodeproj -scheme Iron \
+    -configuration "$configuration" \
+    -destination 'generic/platform=iOS Simulator' \
+    -onlyUsePackageVersionsFromResolvedFile CODE_SIGN_IDENTITY=- build
+  xcodebuild -project Iron.xcodeproj -scheme WatchIron \
+    -configuration "$configuration" \
+    -destination 'generic/platform=watchOS Simulator' \
+    -onlyUsePackageVersionsFromResolvedFile CODE_SIGN_IDENTITY=- build
+done
 ```
 
 ## iPhone UI tests
@@ -69,8 +76,9 @@ Use `-only-testing:IronE2ETests/LocalizationE2ETests/<test-method>` to select a 
 The iPhone UI suite does not cover the complete Watch workout lifecycle. Use a paired iPhone and Watch for the following checks, with Health access granted on both:
 
 1. Change language on the phone and verify Watch updates without a Watch-specific launch override. Repeat with Watch offline, then reconnect it.
-2. Start a workout from the phone, confirm the companion launches, complete the workout and verify saved history.
-3. Check authorized Health data, heart-rate readings and workout behavior in the background on physical devices.
-4. Invoke Siri with a workout request naming Iron and verify that Iron creates a workout. Check app-owned localized responses separately from Siri's system language and voice.
+2. Install over the previous app on the paired devices and verify existing data and companion association survive. Start a workout from the phone, confirm companion launch and preparation, then check elapsed time, heart rate, calories and the rest timer.
+3. Check WatchConnectivity with the Watch temporarily unreachable, then reconnect. Exercise finish and discard separately; relaunch during an active workout to check recovery and verify saved history after finishing.
+4. Check authorized Health data, heart-rate readings and workout behavior in the background on physical devices.
+5. Invoke Siri with a workout request naming Iron and verify that Iron creates a workout. Check app-owned localized responses separately from Siri's system language and voice.
 
 Physical-device testing requires trusted devices with Developer Mode enabled and a development team/profile for the app, app group, HealthKit and Siri capabilities. Simulator builds and localized intent templates do not establish hardware sensor, background workout or spoken Siri behavior. Record device/OS versions and distinguish automated, manual and physical-device checks in test reports; store run-specific results with the issue or build artifacts.
