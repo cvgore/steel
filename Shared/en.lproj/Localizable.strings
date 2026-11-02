@@ -306,6 +306,11 @@
 "wide bar" = "wide bar";
 
 "Could not save set" = "Could not save set";
+"Could not save set. Please retry." = "Could not save set. Please retry.";
+"Save Set" = "Save Set";
+"Weight step: standard" = "Weight step: standard";
+"Weight step: 0.1" = "Weight step: 0.1";
+"Weight step: 0.001" = "Weight step: 0.001";
 "Your changes are still in the editor. Please try again." = "Your changes are still in the editor. Please try again.";
 
 "Could not save changes" = "Could not save changes";

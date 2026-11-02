@@ -306,6 +306,11 @@
 "wide bar" = "szeroki drążek";
 
 "Could not save set" = "Nie udało się zapisać serii";
+"Could not save set. Please retry." = "Nie udało się zapisać serii. Spróbuj ponownie.";
+"Save Set" = "Zapisz serię";
+"Weight step: standard" = "Skok ciężaru: standardowy";
+"Weight step: 0.1" = "Skok ciężaru: 0,1";
+"Weight step: 0.001" = "Skok ciężaru: 0,001";
 "Your changes are still in the editor. Please try again." = "Twoje zmiany pozostały w edytorze. Spróbuj ponownie.";
 
 "Could not save changes" = "Nie udało się zapisać zmian";

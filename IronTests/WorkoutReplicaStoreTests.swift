@@ -381,6 +381,33 @@ final class WatchWorkoutNavigationTests: XCTestCase {
                 .init(id: set, result: .init(weight: 42, repetitions: 7, tag: nil, rpe: 0, comment: nil),
                       isCompleted: completed, minTargetRepetitions: nil, maxTargetRepetitions: nil)])])
     }
+    func testCompletionAdvancesWithinExerciseThenWrapsUsingCurrentOrder() {
+        var value = snapshot()
+        let second = UUID(), earlier = UUID(), earlierSet = UUID(), later = UUID(), laterSet = UUID()
+        value.exercises[0].sets.append(.init(id: second, result: .empty, isCompleted: false, minTargetRepetitions: nil, maxTargetRepetitions: nil))
+        value.exercises.append(.init(id: earlier, exerciseID: nil, comment: nil, sets: [.init(id: earlierSet, result: .empty, isCompleted: false, minTargetRepetitions: nil, maxTargetRepetitions: nil)]))
+        value.exercises.append(.init(id: later, exerciseID: nil, comment: nil, sets: [.init(id: laterSet, result: .empty, isCompleted: true, minTargetRepetitions: nil, maxTargetRepetitions: nil)]))
+        var navigation = WatchWorkoutNavigation()
+        navigation.reconcile(snapshot: value)
+        navigation.selectExercise(exercise, snapshot: value)
+        value.exercises[0].sets[0].isCompleted = true
+        navigation.advanceAfterCompletion(exerciseID: exercise, snapshot: value)
+        XCTAssertEqual(navigation.workingSets[exercise], second)
+        XCTAssertEqual(navigation.path, [.currentSet(exercise)])
+        value.exercises[0].sets[1].isCompleted = true
+        // Current shared order after reordering: A, B, C; completion of B wraps to A.
+        value.exercises.swapAt(0, 1)
+        navigation.advanceAfterCompletion(exerciseID: exercise, snapshot: value)
+        XCTAssertEqual(navigation.path, [.currentSet(exercise)])
+        XCTAssertEqual(navigation.currentExerciseID, earlier)
+        XCTAssertEqual(navigation.workingSets[earlier], earlierSet)
+        value.exercises[0].sets[0].isCompleted = true
+        navigation.advanceAfterCompletion(exerciseID: earlier, snapshot: value)
+        XCTAssertEqual(navigation.path, [.currentSet(exercise)])
+        XCTAssertEqual(navigation.workingSets[earlier], earlierSet)
+        navigation.setPath([])
+        XCTAssertTrue(navigation.path.isEmpty)
+    }
     func testPageChangesAndReopenPreserveStackAndDrafts() throws {
         let snapshot = snapshot(completed: true)
         var navigation = WatchWorkoutNavigation()
@@ -426,6 +453,23 @@ final class WatchWorkoutNavigationTests: XCTestCase {
         XCTAssertEqual(navigation.workingSets[exercise], set)
         XCTAssertEqual(navigation.drafts[set]?.weight, 61)
         navigation.selectExercise(exercise, snapshot: snapshot)
+        XCTAssertEqual(navigation.drafts[set]?.weight, 61)
+    }
+    func testReopeningAfterRemoteCompletionSelectsUnfinishedSetWithoutDiscardingDraft() {
+        var value = snapshot()
+        let next = UUID()
+        value.exercises[0].sets.append(.init(id: next, result: .empty, isCompleted: false, minTargetRepetitions: nil, maxTargetRepetitions: nil))
+        var navigation = WatchWorkoutNavigation()
+        navigation.reconcile(snapshot: value)
+        navigation.selectExercise(exercise, snapshot: value)
+        navigation.drafts[set]?.weight = 61
+        value.exercises[0].sets[0].isCompleted = true
+        navigation.reconcile(snapshot: value)
+        XCTAssertEqual(navigation.workingSets[exercise], set)
+        XCTAssertEqual(navigation.drafts[set]?.weight, 61)
+        navigation.setPath([])
+        navigation.selectExercise(exercise, snapshot: value)
+        XCTAssertEqual(navigation.workingSets[exercise], next)
         XCTAssertEqual(navigation.drafts[set]?.weight, 61)
     }
     func testRemovedExerciseTrimsStackWithoutLeavingInvalidDrafts() {

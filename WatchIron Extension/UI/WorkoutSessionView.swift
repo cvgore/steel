@@ -64,7 +64,7 @@ private struct ElapsedTimeView: View {
     }
 }
 
-private struct RestTimerView: View {
+struct RestTimerView: View {
     private static let durationFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
         formatter.unitsStyle = .positional

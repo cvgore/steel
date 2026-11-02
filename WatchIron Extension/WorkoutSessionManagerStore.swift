@@ -45,6 +45,7 @@ extension WorkoutSessionManagerStore {
             // TODO: also recover custom start / end dates
             let workoutSessionManager = WorkoutSessionManager(session: workoutSession) // documentation says this must happen immediately
             self.workoutSessionManager = workoutSessionManager
+            self.presentReplicaRest()
         }
     }
     
@@ -204,6 +205,7 @@ extension WorkoutSessionManagerStore {
             do {
                 os_log("Setting uuid=%@ for workout session manager", uuid as NSUUID)
                 try workoutSessionManager.setUuid(uuid)
+                self.presentReplicaRest()
             } catch {
                 os_log("Could not set uuid: %@", type: .error, error.localizedDescription)
                 os_log("Discarding workout session manager", type: .info)
